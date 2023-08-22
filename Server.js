@@ -1,27 +1,25 @@
-import express from 'express';
-import * as dotenv from 'dotenv';
-import router from './routes/Router.js';
-import cors from 'cors';
+import express from 'express'
+import * as dotenv from 'dotenv'
+import cors from 'cors'
+import router from './routing/Router.js'
 
 dotenv.config();
 
-const server = express(), serverPort = process.env.SERVER_PORT, websiteAddresses = JSON.parse(process.env.WEBSITE_ADDRESSES);
-const options = {origin:websiteAddresses};
+const server = express()
+const port = process.env.PORT
+const addresses = JSON.parse(process.env.ADDRESSES)
 
-server.use(cors(options));
-server.options('*', cors(options));
+const options = { origin: addresses }
 
-server.disable('x-powered-by');
+server.use(cors(options))
+server.options('*', cors(options))
+server.use(express.json({ limit: '1mb' }))
+server.use(express.urlencoded({ extended: false }))
 
-server.use(express.json({ limit: '1mb' }));
-server.use(express.urlencoded({ extended: false }));
+server.disable('x-powered-by')
 
-server.get('/', (req, res) => {
-  res.send(JSON.stringify({
-      brah:{
-          brah
-      }
-  }));
-});
+server.use(router);
 
-server.listen(serverPort, () => console.log(`[server] Listening on http://localhost:${serverPort}`));
+server.listen(port, () => {
+    console.log(`[server] listening on http://localhost:${port}`)
+})

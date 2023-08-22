@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "REST API for my own local basketball team",
   "main": "Server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon Server.js"
   },
   "repository": {
     "type": "git",
@@ -30,5 +32,8 @@
     "express": "^4.18.2",
     "express-rate-limit": "^6.9.0",
     "nodemailer": "^6.9.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

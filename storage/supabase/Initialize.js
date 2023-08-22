@@ -1,5 +1,17 @@
-
+import * as dotenv from 'dotenv'
 import { createClient } from '@supabase/supabase-js'
 
-// Create a single supabase client for interacting with your database
-const supabase = createClient('https://xyzcompany.supabase.co', 'public-anon-key')
+dotenv.config();
+
+const url = process.env.SUPABASE_URL
+const key = process.env.SUPABASE_KEY
+let supabase = null;
+
+const initializeSupabase = () => {
+    supabase = createClient(url, key, { auth: { persistSession: false } })
+    return supabase;
+}
+
+export default function () {
+    return (supabase) ? supabase : initializeSupabase()
+}
