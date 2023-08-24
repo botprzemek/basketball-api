@@ -1,11 +1,11 @@
 import * as dotenv from 'dotenv'
 import { createClient } from '@supabase/supabase-js'
 
-dotenv.config();
+dotenv.config()
 
 const url = process.env.SUPABASE_URL
 const key = process.env.SUPABASE_KEY
-let supabase = null;
+let supabase = null
 
 const initializeSupabase = () => {
     supabase = createClient(url, key, { auth: { persistSession: false } })
@@ -13,5 +13,8 @@ const initializeSupabase = () => {
 }
 
 export default function () {
-    return (supabase) ? supabase : initializeSupabase()
+    console.log('[storage] reconnected supabase client')
+    return (supabase)
+        ? supabase
+        : initializeSupabase()
 }
