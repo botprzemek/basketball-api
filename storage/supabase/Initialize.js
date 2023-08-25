@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv'
-import { createClient } from '@supabase/supabase-js'
+import {createClient} from '@supabase/supabase-js'
+import listener from './Listener.js'
 
 dotenv.config()
 
@@ -9,12 +10,12 @@ let supabase = null
 
 const initializeSupabase = () => {
     supabase = createClient(url, key, { auth: { persistSession: false } })
+    listener('players')
     return supabase;
 }
 
 export default function () {
-    console.log('[storage] reconnected supabase client')
-    return (supabase)
+    return supabase
         ? supabase
         : initializeSupabase()
 }

@@ -1,12 +1,12 @@
 import express from 'express'
-import {getPlayersByValue} from '../../../storage/supabase/Statement.js'
 import {Player} from '../../../model/Player.js'
+import storage from "../../../storage/Storage.js";
 
 const router = express.Router()
 
 router.get('/by/:key/:value/:limit?', async (req, res) => {
     const limit = (req.params.limit) ? parseInt(req.params.limit) : 999
-    let { data: players, error } = await getPlayersByValue(req.params.key, req.params.value, limit)
+    let { data: players, error } = await storage().playersBy(req.params.key, req.params.value, limit)
 
     if (!players || players.length === 0 || error) {
         console.log((error)

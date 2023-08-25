@@ -1,12 +1,12 @@
 import express from 'express'
-import {getPlayers} from '../../storage/supabase/Statement.js'
-import player from './player/Player.js'
-import {Player} from '../../model/Player.js'
+import storage from '../../../storage/Storage.js'
+import player from '../player/Player.js'
+import {Player} from '../../../model/Player.js'
 
 const router = express.Router()
 
 router.get('', async (req, res) => {
-    const { data: players, error } = await getPlayers()
+    const { data: players, error } = await storage().players()
 
     if (!players || error) {
         console.log((error) ?`[supabase] an ${error.code} error occurred (${error.message})` : '[supabase] requested players are null')

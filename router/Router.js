@@ -1,8 +1,10 @@
 import express from 'express'
 import * as dotenv from 'dotenv'
 import cors from 'cors'
-import players from './route/Players.js'
-import error from './route/Error.js'
+import validate from './Validate.js'
+import players from './route/players/Players.js'
+import web from './route/web/Web.js'
+import error from './route/error/Error.js'
 
 dotenv.config()
 
@@ -13,17 +15,9 @@ const options = { origin: addresses }
 router.use(cors(options))
 router.options('*', cors(options))
 
-router.use((req, res, next) => {
-    if (
-        req.headers['secret'] !== process.env.SECRET ||
-        req.headers['content-type'] !== 'application/json'
-    ) return res.sendStatus(401)
-
-    res.locals.start = performance.now()
-    next()
-})
-
+router.use((req, res, next) => validate(req, res, next))
 router.use('/players', players)
+router.use('/web', web)
 router.use('*', error)
 
 export default router
