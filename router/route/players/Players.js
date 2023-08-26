@@ -6,7 +6,7 @@ import {Player} from '../../../model/Player.js'
 const router = express.Router()
 
 router.get('', async (req, res) => {
-    const { data: players, error } = await storage().players()
+    const { data: players, error } = await storage.players()
 
     if (!players || error) {
         console.log((error) ?`[supabase] an ${error.code} error occurred (${error.message})` : '[supabase] requested players are null')
@@ -14,7 +14,7 @@ router.get('', async (req, res) => {
     }
 
     res.send(players.map(player => new Player(player)))
-    console.log(`[${req.ip}] GET ${req.baseUrl + req.path} - requested players with ${((performance.now() - res.locals.start) / 1000).toFixed(2)}s`)
+    console.log(`[request] GET ${req.baseUrl + req.path} - requested players with ${((performance.now() - res.locals.start) / 1000).toFixed(2)}s`)
 })
 
 router.use('/filter', player)

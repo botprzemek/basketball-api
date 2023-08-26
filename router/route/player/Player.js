@@ -21,7 +21,7 @@ router.get('/by/:key/:value/:limit?', async (req, res) => {
     }
 
     res.send(players.map(player => new Player(player)))
-    console.log(`[${req.ip}] GET ${req.baseUrl + req.path} - requested ${players.length} players with ${((performance.now() - res.locals.start) / 1000).toFixed(2)}s`)
+    console.log(`[request] GET ${req.baseUrl + req.path} - requested ${players.length} players with ${((performance.now() - res.locals.start) / 1000).toFixed(2)}s`)
 })
 
 export default router

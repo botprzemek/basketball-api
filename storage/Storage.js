@@ -1,6 +1,6 @@
 import cache from './cache/Initialize.js'
 import supabase from './supabase/Initialize.js'
-import {queryPlayers} from './supabase/Statement.js'
+import query from './supabase/Statement.js'
 
 supabase()
 
@@ -8,7 +8,7 @@ const getPlayers = async () => {
     let data = cache().get('players')
     if (data) return data
 
-    data = await queryPlayers()
+    data = await query.players()
     cache().set('players', data, 3600000)
     return data
 }
@@ -21,7 +21,7 @@ const getPlayersBy = async (key, value, limit) => {
     let data = cache().get('players')
 
     if (!data) {
-        data = await queryPlayers()
+        data = await query.players()
         cache().set('players', data, 3600000)
     }
 
@@ -47,9 +47,7 @@ const getPlayersBy = async (key, value, limit) => {
     return data
 }
 
-export default function () {
-    return {
-        players: () => getPlayers(),
-        playersBy: (key, value, limit) => getPlayersBy(key, value, limit)
-    }
+export default{
+    players: () => getPlayers(),
+    playersBy: (key, value, limit) => getPlayersBy(key, value, limit)
 }

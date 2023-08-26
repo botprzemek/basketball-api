@@ -1,7 +1,6 @@
 import supabase from './Initialize.js'
 import cache from '../cache/Initialize.js'
-import storage from '../Storage.js'
-import {queryPlayers} from "./Statement.js";
+import query from './Statement.js'
 
 export default function (identifier) {
     console.log(`[channel] subscribed to changes on ${identifier}`)
@@ -16,10 +15,15 @@ export default function (identifier) {
             },
             async (payload) => {
                 if (payload.errors) return
-                // const data = await storage()[`${identifier}By`](identifier, '*', 'id', payload.new.id, 'id')
-                const data = await queryPlayers()
+                const insertion = (await query[`${identifier}By`]('id', payload.new.id)).data[0]
+                const data = cache().get(identifier)
+                data.data.push(insertion)
+                data.data.sort((first, second) => {
+                    if (first.id < second.id) return -1
+                    if (first.id > second.id) return 1
+                    return 0
+                })
                 cache().set(identifier, data, 3600000)
-                console.log(cache().get(identifier).data)
                 console.log(`[storage] inserted row in ${identifier} (${payload.new.name} ${payload.new.lastname})`)
             })
         .subscribe()
@@ -35,10 +39,14 @@ export default function (identifier) {
             async (payload) => {
                 if (payload.errors) return
                 const data = cache().get(identifier)
-                console.log(payload)
-                console.log(data)
-                // cache().set(tables.at(0), data, cacheTime)
-                // console.log(`[storage] refreshed table ${identifier} - new (${payload.new.name} ${payload.new.lastname})`)
+                data.data.push(payload.new)
+                data.data.sort((first, second) => {
+                    if (first.id < second.id) return -1
+                    if (first.id > second.id) return 1
+                    return 0
+                })
+                cache().set(identifier, data, 3600000)
+                console.log(`[storage] updated row with id ${payload.new.id} (${payload.new.name} ${payload.new.lastname})`)
             })
         .subscribe()
     supabase()

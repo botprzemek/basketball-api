@@ -4,6 +4,7 @@ import cors from 'cors'
 import validate from './Validate.js'
 import players from './route/players/Players.js'
 import web from './route/web/Web.js'
+import files from './route/files/Files.js'
 import error from './route/error/Error.js'
 
 dotenv.config()
@@ -18,6 +19,7 @@ router.options('*', cors(options))
 router.use((req, res, next) => validate(req, res, next))
 router.use('/players', players)
 router.use('/web', web)
+router.use('/files', files)
 router.use('*', error)
 
 export default router
