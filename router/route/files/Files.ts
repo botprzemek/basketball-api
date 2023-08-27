@@ -1,8 +1,8 @@
 import * as stream from 'stream'
-import express, {response} from 'express'
-import supabase from '../../../storage/supabase/Initialize.js'
+import {Router} from 'express'
+import supabase from '../../../storage/supabase/Initialize'
 
-const router = express.Router()
+const router = Router()
 
 router.get('/:file/:extension', async (req, res) => {
     const readStream = new stream.PassThrough()
@@ -12,7 +12,9 @@ router.get('/:file/:extension', async (req, res) => {
         .from('files')
         .download(fileName)
 
-    const buffer = new Buffer(await data.arrayBuffer(), 'base64')
+    if (!data || error) return res.sendStatus(404)
+
+    const buffer = Buffer.from(await data.arrayBuffer(), 'base64')
     readStream.end(buffer)
 
     res.set('Content-disposition', `attachment; filename=${fileName}`)

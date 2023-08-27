@@ -1,16 +1,16 @@
-import express from 'express'
-import storage from '../../../storage/Storage.js'
-import player from '../player/Player.js'
-import {Player} from '../../../model/Player.js'
+import {Router} from 'express'
+import {Player} from '../../../model/Player'
+import storage from '../../../storage/Storage'
+import player from '../player/Player'
 
-const router = express.Router()
+const router = Router()
 
 router.get('', async (req, res) => {
     const { data: players, error } = await storage.players()
 
     if (!players || error) {
         console.log((error) ?`[supabase] an ${error.code} error occurred (${error.message})` : '[supabase] requested players are null')
-        return res.sendStatus(404)
+        return res.sendStatus(400)
     }
 
     res.send(players.map(player => new Player(player)))

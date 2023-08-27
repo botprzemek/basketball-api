@@ -2,11 +2,10 @@
   "name": "basketball-api",
   "version": "1.0.0",
   "description": "REST API for my own local basketball team",
-  "main": "Server.js",
-  "type": "module",
+  "main": "Server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon Server.js"
+    "dev": "nodemon Server.ts"
   },
   "repository": {
     "type": "git",
@@ -35,6 +34,9 @@
     "nodemailer": "^6.9.4"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/nodemailer": "^6.4.9",
     "nodemon": "^3.0.1"
   }
 }

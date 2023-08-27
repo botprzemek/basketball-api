@@ -1,9 +1,9 @@
-import supabase from './Initialize.js'
-import cache from '../cache/Initialize.js'
-import query from './Statement.js'
+import supabase from './Initialize'
+import cache from '../cache/Initialize'
+import storage from '../Storage'
 
-export default function (identifier) {
-    console.log(`[channel] subscribed to changes on ${identifier}`)
+export default function (identifier: string) {
+    console.log(`[channel] listening to changes on ${identifier} table`)
     supabase()
         .channel(`${identifier}-insert`)
         .on(
@@ -15,7 +15,7 @@ export default function (identifier) {
             },
             async (payload) => {
                 if (payload.errors) return
-                const insertion = (await query[`${identifier}By`]('id', payload.new.id)).data[0]
+                const insertion = (await storage[`${identifier}By`]('id', payload.new.id)).data[0]
                 const data = cache().get(identifier)
                 data.data.push(insertion)
                 data.data.sort((first, second) => {

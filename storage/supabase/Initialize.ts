@@ -1,15 +1,13 @@
 import * as dotenv from 'dotenv'
 import {createClient} from '@supabase/supabase-js'
-import listener from './Listener.js'
+import listener from './Listener'
 
 dotenv.config()
 
-const url = process.env.SUPABASE_URL
-const key = process.env.SUPABASE_KEY
 let supabase = null
 
 const initializeSupabase = () => {
-    supabase = createClient(url, key, { auth: { persistSession: false } })
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, { auth: { persistSession: false } })
     listener('players')
     return supabase;
 }

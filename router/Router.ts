@@ -1,15 +1,16 @@
-import express from 'express'
+import {Router} from 'express'
 import * as dotenv from 'dotenv'
-import cors from 'cors'
-import validate from './Validate.js'
-import players from './route/players/Players.js'
-import web from './route/web/Web.js'
-import files from './route/files/Files.js'
-import error from './route/error/Error.js'
+import * as cors from 'cors'
+import validate from './Validate'
+import players from './route/players/Players'
+import web from './route/web/Web'
+import form from './route/form/Form'
+import files from './route/files/Files'
+import error from './route/error/Error'
 
 dotenv.config()
 
-const router = express.Router()
+const router = Router()
 const addresses = JSON.parse(process.env.ADDRESSES)
 const options = { origin: addresses }
 
@@ -19,6 +20,7 @@ router.options('*', cors(options))
 router.use((req, res, next) => validate(req, res, next))
 router.use('/players', players)
 router.use('/web', web)
+router.use('/form', form)
 router.use('/files', files)
 router.use('*', error)
 

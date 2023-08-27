@@ -1,6 +1,6 @@
-import cache from './cache/Initialize.js'
-import supabase from './supabase/Initialize.js'
-import query from './supabase/Statement.js'
+import cache from './cache/Initialize'
+import supabase from './supabase/Initialize'
+import query from './supabase/Statement'
 
 supabase()
 
@@ -13,9 +13,9 @@ const getPlayers = async () => {
     return data
 }
 
-getPlayers()
+getPlayers().then(r => r)
 
-const getPlayersBy = async (key, value, limit) => {
+const getPlayersBy = async (key: string, value: string | number, limit: number) => {
     if (!key || !value) return { data: null, error: null }
 
     let data = cache().get('players')
@@ -27,12 +27,11 @@ const getPlayersBy = async (key, value, limit) => {
 
     if (data.error) return data
 
-    let filteredPlayers = data.data.filter(player => {
-        if (typeof player[key] === 'number') return player[key] === parseInt(value)
+    let filteredPlayers = data.data.filter((player: object) => {
         return player[key] === value
     })
 
-    filteredPlayers.filter((player, index) => { return index === limit })
+    filteredPlayers.filter((_: null, index: number) => { return index === limit })
 
     if (filteredPlayers.length !== 0) data.data = (filteredPlayers.length === 1)
         ? filteredPlayers.at(0)
@@ -49,5 +48,5 @@ const getPlayersBy = async (key, value, limit) => {
 
 export default{
     players: () => getPlayers(),
-    playersBy: (key, value, limit) => getPlayersBy(key, value, limit)
+    playersBy: (key: string, value: string | number, limit: number) => getPlayersBy(key, value, limit)
 }

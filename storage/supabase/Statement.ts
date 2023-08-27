@@ -1,4 +1,4 @@
-import supabase from './Initialize.js'
+import supabase from './Initialize'
 
 const queryPlayers = async () => {
     return supabase()
@@ -12,14 +12,6 @@ const queryPlayersBy = async (key, value) => {
         .from('players')
         .select('*')
         .eq(key, value)
-}
-
-const getDataEqual = async (identifier, select, equalKey, equalValue, order) => {
-    return supabase()
-        .from(identifier)
-        .select(select)
-        .eq(equalKey, equalValue)
-        .order(order, { ascending: true })
 }
 
 export default {
