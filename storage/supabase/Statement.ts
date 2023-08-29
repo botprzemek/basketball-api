@@ -2,14 +2,14 @@ import supabase from './Initialize'
 
 const queryPlayers = async () => {
     return supabase()
-        .from('players')
+        .from('Player')
         .select('*')
         .order('id', { ascending: true })
 }
 
 const queryPlayersBy = async (key, value) => {
     return supabase()
-        .from('players')
+        .from('Player')
         .select('*')
         .eq(key, value)
 }

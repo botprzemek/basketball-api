@@ -1,6 +1,6 @@
 import supabase from './Initialize'
 import cache from '../cache/Initialize'
-import storage from '../Storage'
+import {storage} from '../Storage'
 
 export default function (identifier: string) {
     console.log(`[channel] listening to changes on ${identifier} table`)
@@ -15,7 +15,7 @@ export default function (identifier: string) {
             },
             async (payload) => {
                 if (payload.errors) return
-                const insertion = (await storage[`${identifier}By`]('id', payload.new.id)).data[0]
+                const insertion = (await storage()[`${identifier}By`]('id', payload.new.id)).data[0]
                 const data = cache().get(identifier)
                 data.data.push(insertion)
                 data.data.sort((first, second) => {
@@ -24,7 +24,7 @@ export default function (identifier: string) {
                     return 0
                 })
                 cache().set(identifier, data, 3600000)
-                console.log(`[storage] inserted row in ${identifier} (${payload.new.name} ${payload.new.lastname})`)
+                console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] inserted row in ${identifier} (${payload.new.name} ${payload.new.lastname})`)
             })
         .subscribe()
     supabase()
@@ -46,7 +46,7 @@ export default function (identifier: string) {
                     return 0
                 })
                 cache().set(identifier, data, 3600000)
-                console.log(`[storage] updated row with id ${payload.new.id} (${payload.new.name} ${payload.new.lastname})`)
+                console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] updated row with id ${payload.new.id} (${payload.new.name} ${payload.new.lastname})`)
             })
         .subscribe()
     supabase()
@@ -64,7 +64,7 @@ export default function (identifier: string) {
                 const match = data.data.filter(row => { return payload.old.id === row.id }).at(0)
                 const mismatch = data.data.filter(row => { return payload.old.id !== row.id })
                 cache().set(identifier, mismatch, 3600000)
-                console.log(`[storage] removed row in ${identifier} (${match.name} ${match.lastname})`)
+                console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] removed row in ${identifier} (${match.name} ${match.lastname})`)
             })
         .subscribe()
 }

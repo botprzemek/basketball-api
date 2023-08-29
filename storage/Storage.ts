@@ -1,19 +1,16 @@
 import cache from './cache/Initialize'
-import supabase from './supabase/Initialize'
-import query from './supabase/Statement'
+import query from './Statement'
 
-supabase()
 
 const getPlayers = async () => {
     let data = cache().get('players')
+
     if (data) return data
 
-    data = await query.players()
-    cache().set('players', data, 3600000)
+    data = await query().players()
+    cache().set('players', data, 30000)
     return data
 }
-
-getPlayers().then(r => r)
 
 const getPlayersBy = async (key: string, value: string | number, limit: number) => {
     if (!key || !value) return { data: null, error: null }
@@ -21,8 +18,8 @@ const getPlayersBy = async (key: string, value: string | number, limit: number) 
     let data = cache().get('players')
 
     if (!data) {
-        data = await query.players()
-        cache().set('players', data, 3600000)
+        data = await query().playersBy(key, value)
+        cache().set('players', data, 30000)
     }
 
     if (data.error) return data
@@ -46,7 +43,15 @@ const getPlayersBy = async (key: string, value: string | number, limit: number) 
     return data
 }
 
-export default{
-    players: () => getPlayers(),
-    playersBy: (key: string, value: string | number, limit: number) => getPlayersBy(key, value, limit)
+export async function setupStorage() {
+    const data = await query().players()
+    if (!data) return console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] an error occurred while connecting to database`)
+    cache().set('players', data, 30000)
+}
+
+export const storage = () => {
+    return {
+        players: () => getPlayers(),
+        playersBy: (key: string, value: string | number, limit: number) => getPlayersBy(key, value, limit)
+    }
 }

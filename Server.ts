@@ -1,17 +1,23 @@
 import * as express from 'express'
-import * as dotenv from 'dotenv'
+import helmet from 'helmet'
 import router from './router/Router'
-
-dotenv.config()
+import {setupStorage} from './storage/Storage'
+import {setupMail} from './mail/Initialize'
 
 const server = express()
 const port = process.env.PORT
 
-server.use(express.json({ limit: '1mb' }))
-server.use(express.urlencoded({ extended: false }))
-
 server.disable('x-powered-by')
 
+server.set('trust proxy', 1)
+
+server.use(express.json({ limit: '1kb' }))
+server.use(express.urlencoded({ limit: '1kb', extended: false }))
+server.use(helmet())
 server.use(router)
 
-server.listen(port, () => console.log(`[server] listening on http://localhost:${port}`))
+server.listen(port, async () => {
+    setupStorage()
+    setupMail()
+    console.log(`${new Date().toLocaleTimeString('pl-PL')} [server] listening on http://localhost:${port}`)
+})

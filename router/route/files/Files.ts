@@ -20,6 +20,7 @@ router.get('/:file/:extension', async (req, res) => {
     res.set('Content-disposition', `attachment; filename=${fileName}`)
     res.set('Content-Type', 'text/plain')
     readStream.pipe(res)
+    console.log(`${new Date().toLocaleTimeString('pl-PL')} [request] GET ${req.baseUrl + req.path} - requested ${fileName}`)
 })
 
 export default router
