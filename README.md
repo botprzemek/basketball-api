@@ -5,10 +5,7 @@ This documentation provides an overview of the REST API project developed for th
 > [!WARNING]
 > <p id="status">Project is work in progress :construction:</p>
 
-## Navigation
-
-Easily jump between various topics
-
+<details><summary><h2>Navigation</h2></summary>
 ### [1. Status](#status)
 ### [2. Project Overview](#overview)
 ### [3. Setup](#setup)
@@ -17,6 +14,7 @@ Easily jump between various topics
 ### [7. Endpoints](#endpoints)
 ### [8. Database Models](#database)
 ### [9. TODO](#todo)
+</details>
 
 
 ## <p id="overview">Project Overview</p>
