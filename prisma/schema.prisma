@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PRISMA_URL")
+  directUrl = env("PRISMA_DIRECT")
+}
+
+model Player {
+  id        Int @default(autoincrement()) @id @unique
+  name      String @default("Brak")
+  lastname  String @default("Brak")
+  number    Int @default(0)
+  height    Int?
+  position  Int?
+}
