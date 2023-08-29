@@ -5,34 +5,17 @@ This documentation provides an overview of the REST API project developed for th
 > [!WARNING]
 > <p id="status">Project is work in progress :construction:</p>
 
-<details><summary><h2>Navigation</h2></summary>
-  <ol>
-    <li>
-      <a href="#status"><h3>Status</h3></a>
-    </li>
-    <li>
-      <a href="#overview"><h3>Project Overview</h3></a>
-    </li>
-    <li>
-      <a href="#setup"><h3>Setup</h3></a>
-    </li>
-    <li>
-      <a href="#usage"><h3>Usage</h3></a>
-    </li>
-    <li>
-      <a href="#technologies"><h3>Technologies used</h3></a>
-    </li>
-    <li>
-      <a href="#endpoints"><h3>Endpoints</h3></a>
-    </li>
-    <li>
-      <a href="#database"><h3>Database Models</h3></a>
-    </li>
-    <li>
-      <a href="#todo"><h3>TODO</h3></a>
-    </li>
-  </ol>
-</details>
+## Navigation
+
+1. [Status](#status)
+2. [Project Overview](#overview)
+3. [Setup](#setup)
+4. [Usage](#usage)
+5. [Technologies used](#technologies)
+6. [Endpoints](#endpoints)
+7. [Database Models](#database)
+8. [TODO](#todo)
+
 
 ## <p id="overview">Project Overview</p>
 
