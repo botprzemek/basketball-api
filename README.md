@@ -2,6 +2,9 @@
 
 This documentation provides an overview of the REST API project developed for the Knury Knurów basketball team. The API is built using JavaScript + TypeScript :milky_way: with Express framework (Node.js), and it integrates technologies such as Supabase :sparkle:, Prisma :gem:, and Node-Cache :eight_pointed_black_star: package for caching.
 
+> [!WARNING]
+> <p id="status">Project is work in progress :construction:</p>
+
 ## Navigation
 
 Easily jump between various topics
@@ -14,9 +17,6 @@ Easily jump between various topics
 ### [7. Endpoints](#endpoints)
 ### [8. Database Models](#database)
 ### [9. TODO](#todo)
-
-> [!WARNING]
-> <p id="status">Project is work in progress :construction:</p>
 
 
 ## <p id="overview">Project Overview</p>
