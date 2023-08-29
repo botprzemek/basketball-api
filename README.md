@@ -6,14 +6,32 @@ This documentation provides an overview of the REST API project developed for th
 > <p id="status">Project is work in progress :construction:</p>
 
 <details><summary><h2>Navigation</h2></summary>
-<a href="#status"><h3>1. Status</h3></a>
-<a href="#overview"><h3>2. Project Overview</h3></a>
-<a href="#setup"><h3>3. Setup</h3></a>
-<a href="#usage"><h3>4. Usage</h3></a>
-<a href="#technologies"><h3>5. Technologies used</h3></a>
-<a href="#endpoints"><h3>7. Endpoints</h3></a>
-<a href="#database"><h3>8. Database Models</h3></a>
-<a href="#todo"><h3>9. TODO</h3></a>
+  <ol>
+    <li>
+      <a href="#status"><h3>Status</h3></a>
+    </li>
+    <li>
+      <a href="#overview"><h3>Project Overview</h3></a>
+    </li>
+    <li>
+      <a href="#setup"><h3>Setup</h3></a>
+    </li>
+    <li>
+      <a href="#usage"><h3>Usage</h3></a>
+    </li>
+    <li>
+      <a href="#technologies"><h3>Technologies used</h3></a>
+    </li>
+    <li>
+      <a href="#endpoints"><h3>Endpoints</h3></a>
+    </li>
+    <li>
+      <a href="#database"><h3>Database Models</h3></a>
+    </li>
+    <li>
+      <a href="#todo"><h3>TODO</h3></a>
+    </li>
+  </ol>
 </details>
 
 ## <p id="overview">Project Overview</p>
