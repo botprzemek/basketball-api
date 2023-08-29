@@ -6,14 +6,14 @@ This documentation provides an overview of the REST API project developed for th
 > <p id="status">Project is work in progress :construction:</p>
 
 <details><summary><h2>Navigation</h2></summary>
-### [1. Status](#status)
-### [2. Project Overview](#overview)
-### [3. Setup](#setup)
-### [4. Usage](#usage)
-### [5. Technologies used](#technologies)
-### [7. Endpoints](#endpoints)
-### [8. Database Models](#database)
-### [9. TODO](#todo)
+<a href="#status"><h3>Status</h3></a>
+<a href="#overview"><h3>Project Overview</h3></a>
+<a href="#setup"><h3>3. Setup</h3></a>
+<a href="#usage"><h3>4. Usage</h3></a>
+<a href="#technologies"><h3>5. Technologies used</h3></a>
+<a href="#endpoints"><h3>7. Endpoints</h3></a>
+<a href="#database"><h3>8. Database Models</h3></a>
+<a href="#todo"><h3>9. TODO</h3></a>
 </details>
 
 
