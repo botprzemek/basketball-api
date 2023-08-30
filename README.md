@@ -2,25 +2,24 @@
 
 This documentation provides an overview of the REST API project developed for the Knury Knurów basketball team. The API is built using JavaScript + TypeScript :milky_way: with Express framework (Node.js), and it integrates technologies such as Supabase :sparkle:, Prisma :gem:, and Node-Cache :eight_pointed_black_star: package for caching.
 
+> [!WARNING]
+> <p id="status">Project is work in progress :construction:</p>
+
 ## Navigation
 
-Easily jump between various topics
-
-### [1. Status](#status)
-### [2. Project Overview](#overview)
-### [3. Setup](#setup)
-### [4. Usage](#usage)
-### [5. Technologies used](#technologies)
-### [7. Endpoints](#endpoints)
-### [8. TODO](#todo)
-
-> [!WARNING]
-> <p id="status">:construction: Status - Work in progress :construction:</p>
+1. [Status](#status)
+2. [Project Overview](#overview)
+3. [Setup](#setup)
+4. [Usage](#usage)
+5. [Technologies used](#technologies)
+6. [Endpoints](#endpoints)
+7. [Database Models](#database)
+8. [TODO](#todo)
 
 
 ## <p id="overview">Project Overview</p>
 
-The Knury Knurów Basketball Team REST API serves as an extension to the team's website, allowing administrator to manage player information, contact details, and other data that identifies the team. The API is designed to enhance the team's online presence by providing various functionalities to interact with team-related data.
+The Knury Knurów basketball team REST API serves as an extension to the team's website, allowing administrator to manage player information, contact details, and other data that identifies the team. The API is designed to enhance the team's online presence by providing various functionalities to interact with team-related data.
 
 ## <p id="setup">Setup</p>
 
@@ -71,21 +70,74 @@ npm run server
   - `name` - Name of the file.
   - `extension` - File's extension.
 
-### 4. Send Match Notification Email
+### 4. Send Match Notification Email :mailbox_with_mail:
 
 - **Endpoint**: `/news`
 - **Method**: POST
 - **Description**: This endpoint enables sending match notification emails to users via NodeMailer. Users can submit a form to receive email notifications about upcoming matches. The API processes the form data and sends an email to the user's provided address inside request body.
 
-### 5. Error Handling for Invalid Paths
+### 5. Error Handling for Invalid Paths :axe:
 
 - **Endpoint**: `/*`
 - **Method**: GET
 - **Description**: This endpoint handles requests made to non-existent paths and returns an error message indicating that the path is not recognized.
 
-## <p id="todo">TODO</p>
+## <p id="database">Database Models :abacus:</p>
 
-- [ ] Match schedule 
-- [ ] Match score 
+These models define the structure of the sports-related database, including players, teams, matches, and schedules, along with their respective relationships.
+
+### 1. Player :bouncing_ball_person:
+
+The Player model represents a player in a sports team.
+
+- id: `Int (Primary Key)`
+- team: `Team (Foreign key)`
+- teamId: `Int`
+- name: `String`
+- lastname: `String`
+- number: `Int`
+- height: `Int`
+- position: `Int`
+
+### 2. Team :department_store:
+
+The Team model represents a sports team.
+
+- id: `Int (Primary Key)`
+- name: `String`
+- city: `String`
+- players: `Player (Foreign key)`
+- hostMatches: `Match (Foreign key)`
+- opponentMatches: `Match (Foreign key)`
+- won: `Int`
+- lost: `Int`
+
+### 3. Match :basketball:
+
+The Match model represents a match between two teams.
+
+- id: `Int (Primary Key)`
+- schedule: `Schedule (Foreign key)`
+- host: `Team (Foreign key)`
+- opponent: `Team (Foreign key)`
+- hostId: `Int`
+- opponentId: `Int`
+- hostPoints: `Int`
+- opponentPoints: `Int`
+
+### 4. Schedule :date:
+
+The Schedule model represents the schedule of a match.
+
+- id: `Int (Primary key)`
+- match: `Match (Foreign key)`
+- matchId: `Int`
+- city: `String`
+- datetime: `DateTime`
+
+## <p id="todo">TODO :clipboard:</p>
+
+- [ ] Match schedule
+- [ ] Match score
 - [ ] Player stats
 - [ ] Players stats table

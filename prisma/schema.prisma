@@ -9,10 +9,42 @@ datasource db {
 }
 
 model Player {
-  id        Int @default(autoincrement()) @id @unique
-  name      String @default("Brak")
-  lastname  String @default("Brak")
-  number    Int @default(0)
-  height    Int?
-  position  Int?
+  id              Int @default(autoincrement()) @id @unique
+  team            Team @relation(fields: [teamId], references: [id])
+  teamId          Int @unique
+  name            String @default("Brak")
+  lastname        String @default("Brak")
+  number          Int @default(0)
+  height          Int?
+  position        Int?
+}
+
+model Team {
+  id              Int @default(autoincrement()) @id @unique
+  name            String @default("Brak")
+  city            String @default("Brak")
+  players         Player[]
+  hostMatches     Match[] @relation("host")
+  opponentMatches Match[] @relation("opponent")
+  won             Int @default(0)
+  lost            Int @default(0)
+}
+
+model Match {
+  id             Int @default(autoincrement()) @id @unique
+  schedule       Schedule[]
+  host           Team @relation("host", fields: [hostId], references: [id])
+  opponent       Team @relation("opponent", fields: [opponentId], references: [id])
+  hostId         Int @unique
+  opponentId     Int @unique
+  hostPoints     Int @default(0)
+  opponentPoints Int @default(0)
+}
+
+model Schedule {
+  id              Int @default(autoincrement()) @id @unique
+  match           Match @relation(fields: [matchId], references: [id])
+  matchId         Int @unique
+  city            String @default("Brak")
+  datetime        DateTime
 }
