@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import mail from '../../../mail/Mail'
+import mail from 'mail/Mail'
 
 const router = Router()
 

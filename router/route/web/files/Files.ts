@@ -1,6 +1,6 @@
 import * as stream from 'stream'
 import {Router} from 'express'
-import supabase from '../../../storage/supabase/Initialize'
+import supabase from '../../../../supabase_old/Initialize'
 
 const router = Router()
 

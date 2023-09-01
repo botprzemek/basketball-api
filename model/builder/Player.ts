@@ -1,3 +1,5 @@
+import {Player as _Player} from '@prisma/client'
+
 export class Player {
     name
     lastname
@@ -5,7 +7,7 @@ export class Player {
     height
     position
 
-    constructor(player: PlayerType) {
+    constructor(player: _Player) {
         this.name = player.name ? player.name : 'Imię'
         this.lastname = player.lastname ? player.lastname : 'Nazwisko'
         this.number = player.number ? player.number : 99
@@ -16,14 +18,6 @@ export class Player {
             index: player.position ? player.position : 0
         }
     }
-}
-
-export type PlayerType = {
-    name: string,
-    lastname: string,
-    number: number,
-    height: HeightType,
-    position: PositionType
 }
 
 type HeightType = {
