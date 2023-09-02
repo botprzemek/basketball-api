@@ -3,13 +3,13 @@
 This documentation provides an overview of the REST API project developed for the Knury Knurów basketball team. The API is built using JavaScript + TypeScript :milky_way: with Express framework (Node.js), and it integrates technologies such as Supabase :sparkle:, Prisma :gem:, and Node-Cache :eight_pointed_black_star: package for caching.
 
 > [!WARNING]
-> <p id="status">Project is work in progress :construction:</p>
+> <span id="status">Project is work in progress :construction:</span>
 
 ## Navigation
 
 1. [Status](#status)
 2. [Project Overview](#overview)
-3. [Setup](#setup)
+3. [Quick Start](#setup)
 4. [Usage](#usage)
 5. [Technologies used](#technologies)
 6. [Endpoints](#endpoints)
@@ -17,13 +17,13 @@ This documentation provides an overview of the REST API project developed for th
 8. [TODO](#todo)
 
 
-## <p id="overview">Project Overview</p>
+## <span id="overview">Project Overview</span>
 
 The Knury Knurów basketball team REST API serves as an extension to the team's website, allowing administrator to manage player information, contact details, and other data that identifies the team. The API is designed to enhance the team's online presence by providing various functionalities to interact with team-related data.
 
-## <p id="setup">Setup</p>
+## <span id="setup">Quick Start :rocket:</span>
 
-## <p id="usage">Usage</p>
+## <span id="usage">Usage</span>
 
 To run the project in development mode  (Nodemon - Restarting after changes), execute the following command:
 
@@ -37,7 +37,7 @@ To run the project in production mode (PM2 - daemonize app and logging), execute
 npm run server
 ```
 
-## <p id="technologies">Technologies Used</p>
+## <span id="technologies">Technologies Used</span>
 
 1. **JavaScript**: Programming language used for the API's core functionality. :toolbox:
 2. **TypeScript**: Superset of mentioned above JavaScript, used for adding static typing and enhancing code maintainability. :link:
@@ -47,7 +47,7 @@ npm run server
 6. **Node-Cache**: Caching mechanisms implemented using Node-Cache package to optimize API performance. :package:
 7. **Node-Mailer**:  Allows easy as cake email sending. :mailbox:
 
-## <p id="endpoints">Endpoints</p>
+## <span id="endpoints">Endpoints</span>
 
 ### 1. Get List of Players
 
@@ -82,7 +82,7 @@ npm run server
 - **Method**: GET
 - **Description**: This endpoint handles requests made to non-existent paths and returns an error message indicating that the path is not recognized.
 
-## <p id="database">Database Models :abacus:</p>
+## <span id="database">Database Models :abacus:</span>
 
 These models define the structure of the sports-related database, including players, teams, matches, and schedules, along with their respective relationships.
 
@@ -135,9 +135,10 @@ The Schedule model represents the schedule of a match.
 - city: `String`
 - datetime: `DateTime`
 
-## <p id="todo">TODO :clipboard:</p>
+## <span id="todo">TODO :clipboard:</span>
 
 - [ ] Match schedule
 - [ ] Match score
 - [ ] Player stats
 - [ ] Players stats table
+- [ ] Match protocol generator

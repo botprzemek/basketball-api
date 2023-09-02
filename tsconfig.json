@@ -1,9 +1,19 @@
 {
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
     "sourceMap": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "api.config": ["./api.config.ts"],
+      "mail/*": ["./mail/*"],
+      "model/*": ["./model/*"],
+      "router/*": ["./router/*"],
+      "storage/*": ["./storage/*"]
+    }
   },
   "exclude": [
     "node_modules"
