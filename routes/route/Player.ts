@@ -1,20 +1,25 @@
-import {Request, Response, Router, RouterOptions} from 'express'
-import {Player} from '@prisma/client'
-import {Player as PlayerBuilder} from 'models/Player'
+import { Request, Response, Router } from 'express'
+import { Player } from '@prisma/client'
+import { Player as PlayerBuilder } from 'models/Player'
 import storage from 'services/Storage'
 
-const router: Router = Router({mergeParams: true} as RouterOptions)
+const router: Router = Router()
 
-router.get('/players', async (req: Request, res: Response): Promise<Response> => {
-    const data: Player[] = await storage.playersByTeam(req.params.team)
+router.get('/', async (req: Request, res: Response): Promise<Response> => {
+  const data: Player[] = await storage.players()
 
-    if (!Array.isArray(data) || data.length === 0) {
-        console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] requested players are null`)
-        return res.sendStatus(404)
-    }
+  if (!Array.isArray(data) || data.length === 0) {
+    console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] requested players are null`)
+    return res.sendStatus(404)
+  }
 
-    res.send(data.map((player: Player) => new PlayerBuilder(player)))
-    console.log(`${new Date().toLocaleTimeString('pl-PL')} [request] GET ${decodeURI(req.baseUrl + req.path)} - requested players from ${req.params.team} (${((performance.now() - res.locals.start) / 1000).toFixed(2)}s)`)
+  res.send(data.map((player: Player) => new PlayerBuilder(player)))
+  console.log(
+    `${new Date().toLocaleTimeString('pl-PL')} [request] GET ${decodeURI(req.baseUrl + req.path)} - requested players (${(
+      (performance.now() - res.locals.start) /
+      1000
+    ).toFixed(2)}s)`,
+  )
 })
 
 export default router

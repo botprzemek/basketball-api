@@ -1,12 +1,12 @@
 import query from './storage/ActiveSource'
-import {MatchFiltered, MatchSelect} from 'services/storage/prisma/QueryType'
+import { MatchFiltered, MatchSelect } from 'models/Query'
 import cache from 'services/storage/cache/Cache'
-import responseFilter from 'services/storage/prisma/ResponseFilter'
+import responseFilter from '../utils/Filter'
 
 const storage = async (identifier: string, values?: any): Promise<any> => {
-    const data = await cache.getData(identifier)
-    if (data) return data
-    return cache.setData(identifier, await query()[identifier](values))
+  const data = await cache.getData(identifier)
+  if (data) return data
+  return cache.setData(identifier, await query()[identifier](values))
 }
 
 // const teams = async (): Promise<Team[]> => {
@@ -16,7 +16,7 @@ const storage = async (identifier: string, values?: any): Promise<any> => {
 // }
 
 const teamsByName = async (name: string): Promise<any> => {
-    return query().teamsByName(name)
+  return query().teamsByName(name)
 }
 
 // const players = async (): Promise<any> => {
@@ -26,22 +26,22 @@ const teamsByName = async (name: string): Promise<any> => {
 // }
 
 const playersByTeam = async (name: string): Promise<any> => {
-    return query().playersByTeam(name)
+  return query().playersByTeam(name)
 }
 
 const matches = async (): Promise<MatchFiltered[]> => {
-    const cached: MatchFiltered[] = await cache.getData('matches')
-    if (cached) return cached
-    const data: MatchSelect[] = await query()['matches']()
-    return cache.setData('matches', responseFilter.matchFilter(data))
+  const cached: MatchFiltered[] = await cache.getData('matches')
+  if (cached) return cached
+  const data: MatchSelect[] = await query()['matches']()
+  return cache.setData('matches', responseFilter.matchFilter(data))
 }
 
 const matchesByDate = async (date: string): Promise<MatchFiltered[]> => {
-    const cached: MatchFiltered[] = await cache.getData('matches')
-    if (cached) return responseFilter.methods.matchByDate(cached, date)
-    const data: MatchSelect[] = await query()['matchesByDate'](date)
-    cache.setData('matches', responseFilter.matchFilter(await query()['matches']()))
-    return responseFilter.matchFilter(data)
+  const cached: MatchFiltered[] = await cache.getData('matches')
+  if (cached) return responseFilter.methods.matchByDate(cached, date)
+  const data: MatchSelect[] = await query()['matchesByDate'](date)
+  cache.setData('matches', responseFilter.matchFilter(await query()['matches']()))
+  return responseFilter.matchFilter(data)
 }
 
 // const playersByValue = async (key: string, value: string | number, limit: number) => {
@@ -70,12 +70,12 @@ const matchesByDate = async (date: string): Promise<MatchFiltered[]> => {
 // }
 
 export default {
-    teams: () => storage('teams'),
-    teamsByName: (name: string) => teamsByName(name),
-    players: () => storage('players'),
-    playersByTeam: (name: string) => playersByTeam(name),
-    matches: () => matches(),
-    matchesByDate: (date: string) => matchesByDate(date),
-    schedules: () => storage('schedules')
-    // playersByValue: (key: string, value: string | number, limit: number) => playersByValue(key, value, limit),
+  teams: () => storage('teams'),
+  teamsByName: (name: string) => teamsByName(name),
+  players: () => storage('players'),
+  playersByTeam: (name: string) => playersByTeam(name),
+  matches: () => matches(),
+  matchesByDate: (date: string) => matchesByDate(date),
+  schedules: () => storage('schedules'),
+  // playersByValue: (key: string, value: string | number, limit: number) => playersByValue(key, value, limit),
 }

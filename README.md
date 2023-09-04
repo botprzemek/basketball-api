@@ -1,11 +1,12 @@
 # basketball-api
 
-This documentation provides an overview of the REST API project developed for the Knury Knurów basketball team. The API is built using JavaScript + TypeScript :milky_way: with Express framework (Node.js), and it integrates technologies such as Supabase :sparkle:, Prisma :gem:, and Node-Cache :eight_pointed_black_star: package for caching.
+This documentation provides an overview of the REST API project developed for the Knury Knurów basketball team. The API is built using JavaScript + TypeScript :milky_way: with Express framework (Node.js), and it integrates technologies such as Supabase :sparkle:, Prisma :gem:, Socket.IO :loudspeaker:, and Node-Cache :eight_pointed_black_star: package for caching.
 
 > [!WARNING]
-> <span id="status">Project is work in progress :construction:</span>
+>
+> > <span id="status">Project is work in progress</span>
 
-## Navigation
+## Navigation :busstop:
 
 1. [Status](#status)
 2. [Project Overview](#overview)
@@ -16,16 +17,17 @@ This documentation provides an overview of the REST API project developed for th
 7. [Database Models](#database)
 8. [TODO](#todo)
 
-
-## <span id="overview">Project Overview</span>
+## <span id="overview">Project Overview :memo:</span>
 
 The Knury Knurów basketball team REST API serves as an extension to the team's website, allowing administrator to manage player information, contact details, and other data that identifies the team. The API is designed to enhance the team's online presence by providing various functionalities to interact with team-related data.
 
 ## <span id="setup">Quick Start :rocket:</span>
 
-## <span id="usage">Usage</span>
+Testing API instance running on [this link](https://api.testing.knuryknurow.pl/) (CORS is disabled for known reasons)
 
-To run the project in development mode  (Nodemon - Restarting after changes), execute the following command:
+## <span id="usage">Usage :tada:</span>
+
+To run the project in development mode (Nodemon - Restarting after changes), execute the following command:
 
 ```shell
 npm run dev
@@ -37,7 +39,7 @@ To run the project in production mode (PM2 - daemonize app and logging), execute
 npm run server
 ```
 
-## <span id="technologies">Technologies Used</span>
+## <span id="technologies">Technologies Used :bulb:</span>
 
 1. **JavaScript**: Programming language used for the API's core functionality. :toolbox:
 2. **TypeScript**: Superset of mentioned above JavaScript, used for adding static typing and enhancing code maintainability. :link:
@@ -45,11 +47,12 @@ npm run server
 4. **Supabase**: Database service used for storing and retrieving team-related data. :file_folder:
 5. **Prisma**: ORM (Object-Relational Mapping) tool for interacting with the database and managing data models. :floppy_disk:
 6. **Node-Cache**: Caching mechanisms implemented using Node-Cache package to optimize API performance. :package:
-7. **Node-Mailer**:  Allows easy as cake email sending. :mailbox:
+7. **Node-Mailer**: Allows easy as cake email sending. :mailbox:
+8. **Socket.IO**: Caching mechanisms implemented using Node-Cache package to optimize API performance. :package:
 
-## <span id="endpoints">Endpoints</span>
+## <span id="endpoints">Endpoints :satellite:</span>
 
-### 1. Get List of Players
+### 1. Get List of Players :basketball:
 
 - **Endpoint**: `/players`
 - **Method**: GET
