@@ -142,3 +142,4 @@ The Schedule model represents the schedule of a match.
 - [ ] Player stats
 - [ ] Players stats table
 - [ ] Match protocol generator
+- [ ] WEBSOCKETS FOR LIVE GAMEPLAY

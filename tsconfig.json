@@ -8,11 +8,11 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "api.config": ["./api.config.ts"],
-      "mail/*": ["./mail/*"],
-      "model/*": ["./model/*"],
-      "router/*": ["./router/*"],
-      "storage/*": ["./storage/*"]
+      "Config": ["./configs/Config.ts"],
+      "models/*": ["./models/*"],
+      "routes/*": ["./routes/*"],
+      "controllers/*": ["./controllers/*"],
+      "services/*": ["./services/*"]
     }
   },
   "exclude": [

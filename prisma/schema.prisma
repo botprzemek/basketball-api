@@ -3,90 +3,90 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("PRISMA_URL")
+  provider  = "postgresql"
+  url       = env("PRISMA_URL")
   directUrl = env("PRISMA_DIRECT")
 }
 
 model Player {
-  id              Int    @default(autoincrement()) @id @unique
-  team            Team   @relation(fields: [teamId], references: [id])
-  teamId          Int    @unique
-  statistics      Statistics[]
-  name            String
-  lastname        String
-  number          Int?
-  age             Int?
-  height          Int?
-  position        Int?
+  id         Int         @id @unique @default(autoincrement())
+  teamId     Int         @unique
+  name       String
+  lastname   String
+  number     Int?
+  height     Int?
+  position   Int?
+  age        Int?
+  team       Team        @relation(fields: [teamId], references: [id])
+  statistics Statistics?
 }
 
 model Statistics {
-  id              Int    @default(autoincrement()) @id @unique
-  player          Player @relation(fields: [playerId], references: [id])
-  playerId        Int    @unique
-  match           Match  @relation(fields: [matchId], references: [id])
-  matchId         Int
-  minutes         Int    @default(0)
-  points          Int    @default(0)
-  insideFga       Int    @default(0)
-  outsideFga      Int    @default(0)
-  freethrowsFga   Int    @default(0)
-  insideFgm       Int    @default(0)
-  outsideFgm      Int    @default(0)
-  freethrowsFgm   Int    @default(0)
-  assists         Int    @default(0)
-  reboundsSum     Int    @default(0)
-  reboundsOff     Int    @default(0)
-  reboundsDef     Int    @default(0)
-  blocks          Int    @default(0)
-  steals          Int    @default(0)
-  turnovers       Int    @default(0)
-  fouls           Int    @default(0)
+  id            Int    @id @unique @default(autoincrement())
+  playerId      Int    @unique
+  matchId       Int
+  minutes       Int    @default(0)
+  points        Int    @default(0)
+  insideFga     Int    @default(0)
+  outsideFga    Int    @default(0)
+  freethrowsFga Int    @default(0)
+  insideFgm     Int    @default(0)
+  outsideFgm    Int    @default(0)
+  freethrowsFgm Int    @default(0)
+  assists       Int    @default(0)
+  reboundsSum   Int    @default(0)
+  reboundsOff   Int    @default(0)
+  reboundsDef   Int    @default(0)
+  blocks        Int    @default(0)
+  steals        Int    @default(0)
+  turnovers     Int    @default(0)
+  fouls         Int    @default(0)
+  match         Match  @relation(fields: [matchId], references: [id])
+  player        Player @relation(fields: [playerId], references: [id])
 }
 
 model Team {
-  id              Int      @default(autoincrement()) @id @unique
+  id              Int     @id @unique @default(autoincrement())
   name            String
-  city            City     @relation(fields: [cityId], references: [id])
-  cityId          Int      @unique
-  players         Player[]
-  hostMatches     Match[]  @relation("host")
-  opponentMatches Match[]  @relation("opponent")
-  won             Int      @default(0)
-  lost            Int      @default(0)
+  won             Int     @default(0)
+  lost            Int     @default(0)
+  cityId          Int     @unique
+  hostMatches     Match?  @relation("host")
+  opponentMatches Match?  @relation("opponent")
+  players         Player?
+  city            City    @relation(fields: [cityId], references: [id])
 }
 
 model City {
-  id              Int      @default(autoincrement()) @id @unique
-  name            String
-  state           String
-  teams           Team[]
-  schedules       Schedule[]
+  id        Int       @id @unique @default(autoincrement())
+  name      String
+  state     String
+  schedules Schedule?
+  teams     Team?
 }
 
 model Match {
-  id              Int      @default(autoincrement()) @id @unique
-  schedule        Schedule?
-  score           Score?
-  statistics      Statistics[]
-  host            Team     @relation("host", fields: [hostId], references: [id])
-  opponent        Team     @relation("opponent", fields: [opponentId], references: [id])
-  hostId          Int      @unique
-  opponentId      Int      @unique
+  id         Int          @id @unique @default(autoincrement())
+  hostId     Int          @unique
+  opponentId Int          @unique
+  host       Team         @relation("host", fields: [hostId], references: [id])
+  opponent   Team         @relation("opponent", fields: [opponentId], references: [id])
+  schedule   Schedule?
+  score      Score?
+  statistics Statistics[]
 }
 
 model Schedule {
-  match           Match    @relation(fields: [matchId], references: [id])
-  matchId         Int      @unique
-  city            City     @relation(fields: [cityId], references: [id])
-  cityId          Int      @unique
-  datetime        DateTime
+  matchId  Int      @unique
+  datetime DateTime
+  cityId   Int      @unique
+  city     City     @relation(fields: [cityId], references: [id])
+  match    Match    @relation(fields: [matchId], references: [id])
 }
 
 model Score {
-  match           Match    @relation(fields: [matchId], references: [id])
-  matchId         Int      @unique
-  host            Int[]
-  opponent        Int[]
+  matchId  Int   @unique
+  host     Int[]
+  opponent Int[]
+  match    Match @relation(fields: [matchId], references: [id])
 }
