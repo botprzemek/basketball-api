@@ -14,7 +14,6 @@ export default () => {
     process.exit()
   } finally {
     console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] connected to database`)
-    console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] created fresh cache`)
     setupCache()
   }
   return prisma

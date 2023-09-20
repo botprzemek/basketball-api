@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { matches, matchesByDate } from 'controllers/Match'
+import { matches, matchesByDate } from 'controllers/Match.controller'
 
 const router: Router = Router()
 

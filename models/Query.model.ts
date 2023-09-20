@@ -1,4 +1,18 @@
-export type MatchSelect = {
+export interface TeamSelect {
+  name: string
+  city: {
+    name: string
+  }
+  players: any[]
+}
+
+export interface TeamFiltered {
+  name: string
+  city: string
+  players: any[]
+}
+
+export interface MatchSelect {
   schedule: {
     city: {
       id: number
@@ -20,7 +34,7 @@ export type MatchSelect = {
   }
 }
 
-export type MatchFiltered = {
+export interface MatchFiltered {
   schedule: {
     city: string
     datetime: string

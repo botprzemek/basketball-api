@@ -8,7 +8,7 @@ datasource db {
   directUrl = env("PRISMA_DIRECT")
 }
 
-model Player {
+model PlayerModel {
   id         Int         @id @unique @default(autoincrement())
   teamId     Int         @unique
   name       String
@@ -19,6 +19,10 @@ model Player {
   age        Int?
   team       Team        @relation(fields: [teamId], references: [id])
   statistics Statistics?
+  rosters    Roster[]
+
+  @@index([id, lastname, teamId])
+  @@map("players")
 }
 
 model Statistics {
@@ -26,54 +30,88 @@ model Statistics {
   playerId      Int    @unique
   matchId       Int
   minutes       Int    @default(0)
-  points        Int    @default(0)
-  insideFga     Int    @default(0)
-  outsideFga    Int    @default(0)
-  freethrowsFga Int    @default(0)
-  insideFgm     Int    @default(0)
-  outsideFgm    Int    @default(0)
-  freethrowsFgm Int    @default(0)
-  assists       Int    @default(0)
-  reboundsSum   Int    @default(0)
-  reboundsOff   Int    @default(0)
-  reboundsDef   Int    @default(0)
-  blocks        Int    @default(0)
-  steals        Int    @default(0)
-  turnovers     Int    @default(0)
-  fouls         Int    @default(0)
+  points        Int?
+  insideFga     Int?
+  outsideFga    Int?
+  freethrowsFga Int?
+  insideFgm     Int?
+  outsideFgm    Int?
+  freethrowsFgm Int?
+  assists       Int?
+  reboundsSum   Int?
+  reboundsOff   Int?
+  reboundsDef   Int?
+  blocks        Int?
+  steals        Int?
+  turnovers     Int?
+  fouls         Int?
   match         Match  @relation(fields: [matchId], references: [id])
   player        Player @relation(fields: [playerId], references: [id])
+
+  @@index([id, playerId, matchId])
+  @@map("statistics")
 }
 
 model Team {
-  id              Int     @id @unique @default(autoincrement())
+  id              Int      @id @unique @default(autoincrement())
   name            String
-  won             Int     @default(0)
-  lost            Int     @default(0)
-  cityId          Int     @unique
-  hostMatches     Match?  @relation("host")
-  opponentMatches Match?  @relation("opponent")
-  players         Player?
-  city            City    @relation(fields: [cityId], references: [id])
-}
+  won             Int      @default(0)
+  lost            Int      @default(0)
+  cityId          Int      @unique
+  hostMatches     Match?   @relation("hostTeam")
+  opponentMatches Match?   @relation("opponentTeam")
+  players         Player[]
+  city            City     @relation(fields: [cityId], references: [id])
 
-model City {
-  id        Int       @id @unique @default(autoincrement())
-  name      String
-  state     String
-  schedules Schedule?
-  teams     Team?
+  @@index([id, name])
+  @@map("teams")
 }
 
 model Match {
   id         Int          @id @unique @default(autoincrement())
   hostId     Int          @unique
   opponentId Int          @unique
-  host       Team         @relation("host", fields: [hostId], references: [id])
-  opponent   Team         @relation("opponent", fields: [opponentId], references: [id])
+  host       Team         @relation("hostTeam", fields: [hostId], references: [id])
+  opponent   Team         @relation("opponentTeam", fields: [opponentId], references: [id])
   schedule   Schedule?
   score      Score?
   statistics Statistics[]
+  rosters    Roster[]
+  backlogs   Backlog[]
+
+  @@index([id, hostId, opponentId])
+  @@map("matches")
+}
+
+model Roster {
+  id       Int     @id @default(autoincrement())
+  playerId Int
+  matchId  Int
+  player   Player  @relation(fields: [playerId], references: [id])
+  match    Match   @relation(fields: [matchId], references: [id])
+
+  @@index([id, playerId, matchId])
+  @@map("rosters")
+}
+
+model Score {
+  matchId  Int   @unique
+  host     Int[]
+  opponent Int[]
+  match    Match @relation(fields: [matchId], references: [id])
+
+  @@index([matchId])
+  @@map("score")
+}
+
+model Backlog {
+  match    Match @relation(fields: [matchId], references: [id])
+  matchId  Int   @unique
+  data     String
+  datetime DateTime
+
+  @@index([matchId])
+  @@map("backlog")
 }
 
 model Schedule {
@@ -82,11 +120,18 @@ model Schedule {
   cityId   Int      @unique
   city     City     @relation(fields: [cityId], references: [id])
   match    Match    @relation(fields: [matchId], references: [id])
+
+  @@index([matchId, cityId])
+  @@map("schedules")
 }
 
-model Score {
-  matchId  Int   @unique
-  host     Int[]
-  opponent Int[]
-  match    Match @relation(fields: [matchId], references: [id])
+model City {
+  id        Int       @id @unique @default(autoincrement())
+  name      String
+  state     String
+  schedules Schedule?
+  teams     Team?
+
+  @@index([id, name])
+  @@map("cities")
 }

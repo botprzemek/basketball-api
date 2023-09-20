@@ -1,5 +1,5 @@
 import * as NodeCache from 'node-cache'
-import config from 'Config'
+import config from '../../../configs/Default.config'
 
 let cache = null
 

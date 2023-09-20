@@ -1,4 +1,17 @@
-import { MatchFiltered, MatchSelect } from 'models/Query'
+import {MatchFiltered, MatchSelect, TeamFiltered, TeamSelect} from 'models/Query.model'
+
+const teamFilter = (data: TeamSelect[], method?: string, value?: any): TeamFiltered[] => {
+  const filtered: TeamFiltered[] = []
+  data.forEach((team: TeamSelect): void => {
+    filtered.push({
+      name: team.name,
+      city: team.city.name,
+      players: team.players,
+    })
+  })
+
+  return method ? methods[method](filtered, value) : filtered
+}
 
 const matchFilter = (data: MatchSelect[], method?: string, value?: any): MatchFiltered[] => {
   const filtered: MatchFiltered[] = []
@@ -28,7 +41,8 @@ const matchFilter = (data: MatchSelect[], method?: string, value?: any): MatchFi
 }
 
 type Methods = {
-  matchByDate: (data: MatchFiltered[], value: any) => MatchFiltered[]
+  matchByDate: (data: MatchFiltered[], date: string) => MatchFiltered[]
+  teamByName: (data: TeamFiltered[], name: string) => TeamFiltered[]
 }
 
 const methods: Methods = {
@@ -38,9 +52,15 @@ const methods: Methods = {
       return date === scheduleDate
     })
   },
+  teamByName: (data: TeamFiltered[], name: string): TeamFiltered[] => {
+    return data.filter((team: TeamFiltered): boolean => {
+      return team.name === name
+    })
+  },
 }
 
 export default {
   methods,
+  teamFilter: (data: TeamSelect[], method?: string, value?: any) => teamFilter(data, method, value),
   matchFilter: (data: MatchSelect[], method?: string, value?: any) => matchFilter(data, method, value),
 }

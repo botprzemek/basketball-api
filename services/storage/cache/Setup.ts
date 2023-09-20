@@ -1,4 +1,4 @@
-import config from 'Config'
+import config from '../../../configs/Default.config'
 import cache from 'services/storage/cache/Cache'
 import storage from 'services/Storage'
 

@@ -1,6 +1,6 @@
-import { Player as _Player } from '@prisma/client'
+import {Player as _Player} from '@prisma/client'
 
-export class Player {
+export class PlayerModel {
   name: string
   lastname: string
   number: number

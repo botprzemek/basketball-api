@@ -1,30 +1,63 @@
 import { io } from 'https://cdn.socket.io/4.4.1/socket.io.esm.min.js'
 
-const socket = io()
+const socket = io('http://localhost:3001')
+
+const formatTime = (sec) => {
+  if (!sec) return '00:00'
+  const min = Math.floor(sec / 60)
+  const secLeft = sec % 60
+  const newMin = min < 10 ? `0${min}` : `${min}`
+  const newSec = secLeft < 10 ? `0${secLeft}` : `${secLeft}`
+
+  return `${newMin}:${newSec}`
+}
+
+// socket.on("connect_error", (err) => {
+//   console.log(`connect_error due to ${err.message}`);
+// });
 
 socket.on('initialData', (data) => {
-  document.getElementById('pointsTeamA').textContent = data.pointsHost
-  document.getElementById('pointsTeamB').textContent = data.pointsOpponent
-  document.getElementById('gameTime').textContent = data.time
-  document.getElementById('quarter').textContent = (data.quarter) ? data.quarter : 'Game ended'
+  document.getElementById('gameTime').textContent = formatTime(data.time)
+  document.getElementById('quarter').textContent = data.quarter ? data.quarter : 'End of regulation'
+  document.getElementById('status').textContent = data.status ? 'Started' : 'Ended'
 })
 
-socket.on('updateGameData', (data) => {
-  document.getElementById('pointsTeamA').textContent = data.pointsHost
-  document.getElementById('pointsTeamB').textContent = data.pointsOpponent
-  document.getElementById('gameTime').textContent = data.time
-  document.getElementById('quarter').textContent = (data.quarter) ? data.quarter : 'Game ended'
+socket.on('updateData', (data) => {
+  document.querySelector('.scoreHost').textContent = data.scoreHost
+  document.querySelector('.scoreOpponent').textContent = data.scoreOpponent
+  document.getElementById('gameTime').textContent = formatTime(data.time)
+  document.getElementById('quarter').textContent = data.quarter ? data.quarter : 'End of regulation'
+  document.getElementById('status').textContent = data.status ? 'Started' : 'Ended'
 })
 
-document.getElementById('addPointsTeamA').addEventListener('click', () => {
-  socket.emit('updateScore', { pointsHost: 2, pointsOpponent: 0 })
+socket.on('updateScore', (data) => {
+  document.querySelector('.scoreHost').textContent = data.scoreHost
+  document.querySelector('.scoreOpponent').textContent = data.scoreOpponent
 })
 
-document.getElementById('addPointsTeamB').addEventListener('click', () => {
-  socket.emit('updateScore', { pointsHost: 0, pointsOpponent: 2 })
+socket.on('updateTimer', (data) => {
+  document.getElementById('gameTime').textContent = formatTime(data.time)
+  document.getElementById('quarter').textContent = data.quarter ? data.quarter : 4
+  document.getElementById('status').textContent = data.status ? 'Started' : 'End of regulation'
+  document.getElementById('paused').textContent = data.paused ? 'Paused' : 'Playing'
 })
 
-document.getElementById('updateGameInfo').addEventListener('click', () => {
-  const quarter = prompt('Enter quarter:')
-  socket.emit('updateGameInfo', { gameTime, quarter })
+document.getElementById('changeStatus').addEventListener('click', () => {
+  socket.emit('changeStatus')
 })
+
+document.getElementById('pauseGame').addEventListener('click', () => {
+  socket.emit('pauseGame')
+})
+
+document.querySelectorAll('.changeScoreHost').forEach((element) =>
+  element.addEventListener('click', () => {
+    socket.emit('updateScore', { scoreHost: element.value, scoreOpponent: 0 })
+  }),
+)
+
+document.querySelectorAll('.changeScoreOpponent').forEach((element) =>
+  element.addEventListener('click', () => {
+    socket.emit('updateScore', { scoreHost: 0, scoreOpponent: element.value })
+  }),
+)

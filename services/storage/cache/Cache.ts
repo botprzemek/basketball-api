@@ -10,6 +10,7 @@ const getData = (key: string): any => {
 }
 
 export default {
-  setData: (key, value) => setData(key, value),
-  getData: (key) => getData(key),
+  setData: (key: string, value: any) => setData(key, value),
+  getData: (key: string) => getData(key),
+  cache: () => cache(),
 }

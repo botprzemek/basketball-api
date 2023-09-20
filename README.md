@@ -2,8 +2,7 @@
 
 This documentation provides an overview of the REST API project developed for the Knury Knurów basketball team. The API is built using JavaScript + TypeScript :milky_way: with Express framework (Node.js), and it integrates technologies such as Supabase :sparkle:, Prisma :gem:, Socket.IO :loudspeaker:, and Node-Cache :eight_pointed_black_star: package for caching.
 
-> [!WARNING]
-> <span id="status">Project is work in progress</span>
+> [!WARNING] > <span id="status">Project is work in progress</span>
 
 ## Navigation :busstop:
 
@@ -88,9 +87,9 @@ npm run server
 
 These models define the structure of the sports-related database, including players, teams, matches, and schedules, along with their respective relationships.
 
-### 1. Player :bouncing_ball_person:
+### 1. PlayerModel :bouncing_ball_person:
 
-The Player model represents a player in a sports team.
+The PlayerModel model represents a player in a sports team.
 
 - id: `Int (Primary Key)`
 - team: `Team (Foreign key)`
@@ -108,7 +107,7 @@ The Team model represents a sports team.
 - id: `Int (Primary Key)`
 - name: `String`
 - city: `String`
-- players: `Player (Foreign key)`
+- players: `PlayerModel (Foreign key)`
 - hostMatches: `Match (Foreign key)`
 - opponentMatches: `Match (Foreign key)`
 - won: `Int`
@@ -141,7 +140,7 @@ The Schedule model represents the schedule of a match.
 
 - [ ] Match schedule
 - [ ] Match score
-- [ ] Player stats
+- [ ] PlayerModel stats
 - [ ] Players stats table
 - [ ] Match protocol generator
 - [ ] WEBSOCKETS FOR LIVE GAMEPLAY

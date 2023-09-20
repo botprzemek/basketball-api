@@ -8,7 +8,7 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "Config": ["./configs/Config.ts"],
+      "Config": ["./configs/Default.config.ts"],
       "controllers/*": ["./controllers/*"],
       "middleware/*": ["./middleware/*"],
       "models/*": ["./models/*"],

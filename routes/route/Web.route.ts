@@ -7,6 +7,6 @@ const router = Router()
 router.use('/form', form)
 router.use('/files', files)
 
-router.get('/', (req, res) => res.send({ test: 'Test' }))
+router.get('/', (_req, res) => res.send({ test: 'Test' }))
 
 export default router
