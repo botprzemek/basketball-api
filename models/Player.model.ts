@@ -1,4 +1,4 @@
-import {Player as _Player} from '@prisma/client'
+import { Player as _Player } from '@prisma/client'
 
 export class PlayerModel {
   name: string

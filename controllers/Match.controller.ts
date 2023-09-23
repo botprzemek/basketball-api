@@ -1,5 +1,5 @@
-import {Request, Response} from 'express'
-import {MatchFiltered} from 'models/Query.model'
+import { Request, Response } from 'express'
+import { MatchFiltered } from 'models/Query.model'
 import storage from 'services/Storage'
 import sendData from 'utils/SendData'
 

@@ -1,5 +1,5 @@
 import config from '../../configs/Default.config'
-import {Server} from 'socket.io'
+import { Server } from 'socket.io'
 import * as http from 'http'
 import Game from '../../public/Game'
 

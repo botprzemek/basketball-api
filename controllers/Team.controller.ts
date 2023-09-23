@@ -1,7 +1,7 @@
-import {Request, Response} from 'express'
+import { Request, Response } from 'express'
 import storage from 'services/Storage'
 import sendData from 'utils/SendData'
-import {TeamFiltered} from 'models/Query.model'
+import { TeamFiltered } from 'models/Query.model'
 
 export async function teams(req: Request, res: Response): Promise<void> {
   const data: TeamFiltered[] = await storage.teams()

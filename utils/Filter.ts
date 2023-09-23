@@ -1,4 +1,4 @@
-import {MatchFiltered, MatchSelect, TeamFiltered, TeamSelect} from 'models/Query.model'
+import { MatchFiltered, MatchSelect, TeamFiltered, TeamSelect } from 'models/Query.model'
 
 const teamFilter = (data: TeamSelect[], method?: string, value?: any): TeamFiltered[] => {
   const filtered: TeamFiltered[] = []
@@ -6,6 +6,7 @@ const teamFilter = (data: TeamSelect[], method?: string, value?: any): TeamFilte
     filtered.push({
       name: team.name,
       city: team.city.name,
+      league: team.league.name,
       players: team.players,
     })
   })

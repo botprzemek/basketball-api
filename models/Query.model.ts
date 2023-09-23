@@ -3,12 +3,16 @@ export interface TeamSelect {
   city: {
     name: string
   }
+  league: {
+    name: string
+  }
   players: any[]
 }
 
 export interface TeamFiltered {
   name: string
   city: string
+  league: string
   players: any[]
 }
 

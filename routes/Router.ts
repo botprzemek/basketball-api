@@ -1,4 +1,4 @@
-import {Router} from 'express'
+import { Router } from 'express'
 import player from 'routes/route/Player.route'
 import team from './route/Team.route'
 import match from './route/Match.route'

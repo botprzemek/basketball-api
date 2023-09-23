@@ -1,5 +1,5 @@
 import prisma from './Initialize'
-import {MatchSelect, TeamSelect} from 'models/Query.model'
+import { MatchSelect, TeamSelect } from 'models/Query.model'
 import config from '../../../configs/Default.config'
 
 const cacheStrategy: { swr: number; ttl: number } = {
@@ -14,6 +14,11 @@ const teams = async (): Promise<TeamSelect[]> => {
       select: {
         name: true,
         city: {
+          select: {
+            name: true,
+          },
+        },
+        league: {
           select: {
             name: true,
           },

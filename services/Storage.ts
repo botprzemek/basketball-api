@@ -1,5 +1,5 @@
 import query from './storage/ActiveSource'
-import {MatchFiltered, MatchSelect, TeamFiltered, TeamSelect} from 'models/Query.model'
+import { MatchFiltered, MatchSelect, TeamFiltered, TeamSelect } from 'models/Query.model'
 import cache from 'services/storage/cache/Cache'
 import responseFilter from '../utils/Filter'
 

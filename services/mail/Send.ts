@@ -1,4 +1,4 @@
-import {MailOptions} from 'nodemailer/lib/sendmail-transport'
+import { MailOptions } from 'nodemailer/lib/sendmail-transport'
 import mail from './Mail'
 import config from '../../configs/Default.config'
 

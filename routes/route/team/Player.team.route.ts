@@ -1,6 +1,6 @@
-import {Request, Response, Router, RouterOptions} from 'express'
-import {Player} from '@prisma/client'
-import {PlayerModel as PlayerBuilder} from 'models/Player.model'
+import { Request, Response, Router, RouterOptions } from 'express'
+import { Player } from '@prisma/client'
+import { PlayerModel as PlayerBuilder } from 'models/Player.model'
 import storage from 'services/Storage'
 
 const router: Router = Router({ mergeParams: true } as RouterOptions)
