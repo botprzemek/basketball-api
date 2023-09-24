@@ -46,7 +46,7 @@ const teamsByName = async (name: string): Promise<TeamSelect> => {
       cacheStrategy,
       where: {
         name: {
-          equals: name,
+          contains: name,
         },
       },
       select: {
@@ -99,7 +99,7 @@ const playersByTeam = async (team: string): Promise<any> => {
       where: {
         team: {
           name: {
-            equals: team,
+            contains: team,
           },
         },
       },

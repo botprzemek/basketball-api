@@ -64,6 +64,7 @@ model Team {
   cityId          Int
   league          League   @relation(fields: [leagueId], references: [id])
   leagueId        Int
+  rosters         Roster[]
 
   @@index([id, name])
   @@map("teams")
@@ -86,9 +87,11 @@ model Match {
 }
 
 model Roster {
-  id      Int     @id @default(autoincrement())
+  id      Int      @id @default(autoincrement())
   players Player[]
-  match   Match   @relation(fields: [matchId], references: [id])
+  team    Team     @relation(fields: [teamId], references: [id])
+  teamId  Int
+  match   Match    @relation(fields: [matchId], references: [id])
   matchId Int
 
   @@index([id, matchId])
@@ -139,9 +142,9 @@ model City {
 }
 
 model League {
-  id     Int       @id @unique @default(autoincrement())
+  id     Int    @id @unique @default(autoincrement())
   name   String
-  city   City @relation(fields: [cityId], references: [id])
+  city   City   @relation(fields: [cityId], references: [id])
   cityId Int
   teams  Team[]
 

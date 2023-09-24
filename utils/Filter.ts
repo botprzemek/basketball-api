@@ -1,5 +1,10 @@
 import { MatchFiltered, MatchSelect, TeamFiltered, TeamSelect } from 'models/Query.model'
 
+type Methods = {
+  matchByDate: (data: MatchFiltered[], date: string) => MatchFiltered[]
+  teamByName: (data: TeamFiltered[], name: string) => TeamFiltered[]
+}
+
 const teamFilter = (data: TeamSelect[], method?: string, value?: any): TeamFiltered[] => {
   const filtered: TeamFiltered[] = []
   data.forEach((team: TeamSelect): void => {
@@ -41,11 +46,6 @@ const matchFilter = (data: MatchSelect[], method?: string, value?: any): MatchFi
   return method ? methods[method](filtered, value) : filtered
 }
 
-type Methods = {
-  matchByDate: (data: MatchFiltered[], date: string) => MatchFiltered[]
-  teamByName: (data: TeamFiltered[], name: string) => TeamFiltered[]
-}
-
 const methods: Methods = {
   matchByDate: (data: MatchFiltered[], date: string): MatchFiltered[] => {
     return data.filter((match: MatchFiltered): boolean => {
@@ -55,7 +55,7 @@ const methods: Methods = {
   },
   teamByName: (data: TeamFiltered[], name: string): TeamFiltered[] => {
     return data.filter((team: TeamFiltered): boolean => {
-      return team.name === name
+      return team.name.includes(name)
     })
   },
 }

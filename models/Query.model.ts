@@ -6,14 +6,22 @@ export interface TeamSelect {
   league: {
     name: string
   }
-  players: any[]
+  players: PlayerSelect[]
 }
 
 export interface TeamFiltered {
   name: string
   city: string
   league: string
-  players: any[]
+  players: PlayerSelect[]
+}
+
+export interface PlayerSelect {
+  name: string
+  lastname: string
+  number: number
+  height: number
+  position: number
 }
 
 export interface MatchSelect {

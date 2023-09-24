@@ -1,6 +1,5 @@
 import { Request, Response, Router, RouterOptions } from 'express'
 import { Player } from '@prisma/client'
-import { PlayerModel as PlayerBuilder } from 'models/Player.model'
 import storage from 'services/Storage'
 
 const router: Router = Router({ mergeParams: true } as RouterOptions)
@@ -13,7 +12,7 @@ router.get('/players', async (req: Request, res: Response): Promise<Response> =>
     return res.sendStatus(404)
   }
 
-  res.send(data.map((player: Player) => new PlayerBuilder(player)))
+  res.send(data)
   console.log(
     `${new Date().toLocaleTimeString('pl-PL')} [request] GET ${decodeURI(req.baseUrl + req.path)} - requested players from ${req.params.team} (${(
       (performance.now() - res.locals.start) /
