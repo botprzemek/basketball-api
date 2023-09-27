@@ -1,31 +1,41 @@
 import query from './storage/ActiveSource'
-import { MatchFiltered, MatchSelect, TeamFiltered, TeamSelect } from 'models/Query.model'
+import { MatchFiltered, MatchSelect, PlayerFiltered, PlayerSelect, TeamFiltered, TeamSelect } from 'models/Query.model'
 import cache from 'services/storage/cache/Cache'
-import responseFilter from '../utils/Filter'
+import responseFilter from 'utils/Filter.util'
 
 const teams = async (): Promise<TeamFiltered[]> => {
   const cached: TeamFiltered[] = await cache.getData('teams')
   if (cached) return cached
   const data: TeamSelect[] = await query().teams()
-  return cache.setData('teams', responseFilter.teamFilter(data))
+  return cache.setData('teams', data)
 }
 
 const teamsByName = async (name: string): Promise<TeamFiltered[]> => {
   const cached: TeamFiltered[] = await cache.getData('teams')
   if (cached) return responseFilter.methods.teamByName(cached, name)
   cache.setData('teams', responseFilter.teamFilter(await query().teams()))
-  return responseFilter.teamFilter([await query().teamsByName(name)])
+  return responseFilter.teamFilter(await query().teamsByName(name))
 }
 
-const players = async (): Promise<any> => {
-  return await query().players()
-  // const data = await cache.getData('players')
-  // if (data) return data
-  // return cache.setData('players', await query().players())
+const players = async (): Promise<PlayerFiltered[]> => {
+  const cached: PlayerFiltered[] = await cache.getData('players')
+  if (cached) return cached
+  const data: PlayerSelect[] = await query().players()
+  return cache.setData('players', responseFilter.playerFilter(data))
 }
 
-const playersByTeam = async (name: string): Promise<any> => {
-  return await query().playersByTeam(name)
+const playersByName = async (name: string): Promise<PlayerFiltered[]> => {
+  const cached: PlayerFiltered[] = await cache.getData('players')
+  if (cached) return responseFilter.methods.playerByName(cached, name)
+  cache.setData('players', responseFilter.playerFilter(await query().players()))
+  return responseFilter.playerFilter(await query().playersByName(name))
+}
+
+const playersByTeam = async (name: string): Promise<PlayerFiltered[]> => {
+  const cached: PlayerFiltered[] = await cache.getData('players')
+  if (cached) return responseFilter.methods.playerByTeam(cached, name)
+  cache.setData('players', responseFilter.playerFilter(await query().players()))
+  return responseFilter.playerFilter(await query().playersByTeam(name))
 }
 
 const matches = async (): Promise<MatchFiltered[]> => {
@@ -71,6 +81,7 @@ export default {
   teams: () => teams(),
   teamsByName: (name: string) => teamsByName(name),
   players: () => players(),
+  playersByName: (name: string) => playersByName(name),
   playersByTeam: (name: string) => playersByTeam(name),
   matches: () => matches(),
   matchesByDate: (date: string) => matchesByDate(date),

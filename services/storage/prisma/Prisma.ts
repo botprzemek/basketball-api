@@ -1,5 +1,5 @@
 import prisma from './Initialize'
-import { MatchSelect, TeamSelect } from 'models/Query.model'
+import { MatchSelect, PlayerSelect, TeamSelect } from 'models/Query.model'
 import config from '../../../configs/Default.config'
 
 const cacheStrategy: { swr: number; ttl: number } = {
@@ -40,13 +40,14 @@ const teams = async (): Promise<TeamSelect[]> => {
   }
 }
 
-const teamsByName = async (name: string): Promise<TeamSelect> => {
+const teamsByName = async (name: string): Promise<TeamSelect[]> => {
   try {
     return prisma().team.findFirst({
       cacheStrategy,
       where: {
         name: {
-          contains: name,
+          equals: name,
+          mode: 'insensitive',
         },
       },
       select: {
@@ -69,7 +70,7 @@ const teamsByName = async (name: string): Promise<TeamSelect> => {
   }
 }
 
-const players = async (): Promise<any> => {
+const players = async (): Promise<PlayerSelect[]> => {
   try {
     return prisma().player.findMany({
       cacheStrategy,
@@ -82,6 +83,11 @@ const players = async (): Promise<any> => {
         age: true,
         team: {
           select: {
+            league: {
+              select: {
+                name: true,
+              },
+            },
             name: true,
           },
         },
@@ -92,14 +98,67 @@ const players = async (): Promise<any> => {
   }
 }
 
-const playersByTeam = async (team: string): Promise<any> => {
+const playersByName = async (name: string): Promise<PlayerSelect[]> => {
+  try {
+    return prisma().player.findMany({
+      cacheStrategy,
+      where: {
+        name: {
+          startsWith: name,
+          mode: 'insensitive',
+        },
+      },
+      select: {
+        name: true,
+        lastname: true,
+        number: true,
+        height: true,
+        position: true,
+        age: true,
+        team: {
+          select: {
+            league: {
+              select: {
+                name: true,
+              },
+            },
+            name: true,
+          },
+        },
+      },
+    })
+  } catch (error) {
+    return null
+  }
+}
+
+const playersByTeam = async (team: string): Promise<PlayerSelect[]> => {
   try {
     return prisma().player.findMany({
       cacheStrategy,
       where: {
         team: {
           name: {
-            contains: team,
+            equals: team,
+            mode: 'insensitive',
+          },
+        },
+      },
+      select: {
+        name: true,
+        lastname: true,
+        number: true,
+        height: true,
+        position: true,
+        age: true,
+        team: {
+          select: {
+            league: {
+              select: {
+                name: true,
+              },
+            },
+            name: true,
           },
         },
       },
@@ -221,8 +280,8 @@ export default {
   teams: () => teams(),
   teamsByName: (name: string) => teamsByName(name),
   players: () => players(),
+  playersByName: (name: string) => playersByName(name),
   playersByTeam: (name: string) => playersByTeam(name),
-  // playersByValue: (key: string, value: string | number, limit: number) => playersByValue(key, value, limit),
   matches: () => matches(),
   matchesByDate: (date: string) => matchesByDate(date),
   schedules: () => schedules(),

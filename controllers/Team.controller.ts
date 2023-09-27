@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import storage from 'services/Storage'
-import sendData from 'utils/SendData'
+import sendData from 'utils/Data.util'
 import { TeamFiltered } from 'models/Query.model'
 
 export async function teams(req: Request, res: Response): Promise<void> {

@@ -1,3 +1,29 @@
+export interface PlayerSelect {
+  name: string
+  lastname: string
+  number: number
+  height: number
+  position: number
+  age: Date
+  team: {
+    league: {
+      name: string
+    }
+    name: string
+  }
+}
+
+export interface PlayerFiltered {
+  name: string
+  lastname: string
+  number: number
+  height: number
+  position: number
+  age: Date
+  team: string
+  league: string
+}
+
 export interface TeamSelect {
   name: string
   city: {
@@ -13,7 +39,7 @@ export interface TeamFiltered {
   name: string
   city: string
   league: string
-  players: PlayerSelect[]
+  players: PlayerFiltered[]
 }
 
 export interface PlayerSelect {
