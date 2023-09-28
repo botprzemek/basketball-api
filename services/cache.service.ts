@@ -12,5 +12,4 @@ const getData = (key: string): any => {
 export default {
   setData: (key: string, value: any) => setData(key, value),
   getData: (key: string) => getData(key),
-  cache: () => cache(),
 }

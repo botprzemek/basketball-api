@@ -1,16 +1,10 @@
-export interface PlayerSelect {
+export interface PlayerSelected {
   name: string
   lastname: string
   number: number
   height: number
   position: number
   age: Date
-  team: {
-    league: {
-      name: string
-    }
-    name: string
-  }
 }
 
 export interface PlayerFiltered {
@@ -20,11 +14,9 @@ export interface PlayerFiltered {
   height: number
   position: number
   age: Date
-  team: string
-  league: string
 }
 
-export interface TeamSelect {
+export interface TeamSelected {
   name: string
   city: {
     name: string
@@ -32,7 +24,7 @@ export interface TeamSelect {
   league: {
     name: string
   }
-  players: PlayerSelect[]
+  players: PlayerSelected[]
 }
 
 export interface TeamFiltered {
@@ -42,15 +34,7 @@ export interface TeamFiltered {
   players: PlayerFiltered[]
 }
 
-export interface PlayerSelect {
-  name: string
-  lastname: string
-  number: number
-  height: number
-  position: number
-}
-
-export interface MatchSelect {
+export interface MatchSelected {
   schedule: {
     city: {
       id: number
@@ -59,7 +43,7 @@ export interface MatchSelect {
     }
     datetime: string
   }
-  score: null | {
+  score: {
     host: number[]
     opponent: number[]
     final: number[]
@@ -77,7 +61,7 @@ export interface MatchFiltered {
     city: string
     datetime: string
   }
-  score: null | {
+  score: {
     host: number[]
     opponent: number[]
     final: number[]

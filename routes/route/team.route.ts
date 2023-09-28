@@ -7,6 +7,6 @@ const router: Router = Router()
 router.get('/', teams)
 router.get('/:name', teamsByName)
 
-router.use('/:team', player)
+router.use('/:name', player)
 
 export default router

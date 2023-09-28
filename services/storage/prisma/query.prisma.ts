@@ -1,5 +1,5 @@
-import prisma from './prisma/initialize.prisma'
-import { MatchSelect, PlayerSelect, TeamSelect } from 'models/query.model'
+import prisma from './prisma/initialize.prisma.storage'
+import { type MatchSelected, type PlayerSelected, type TeamSelected } from 'models/query.model'
 import config from 'config'
 
 const cacheStrategy: { swr: number; ttl: number } = {
@@ -7,72 +7,9 @@ const cacheStrategy: { swr: number; ttl: number } = {
   ttl: config.cacheTime,
 }
 
-const teams = async (): Promise<TeamSelect[]> => {
+const players = async (): Promise<PlayerSelected[]> => {
   try {
-    return prisma().team.findMany({
-      cacheStrategy,
-      select: {
-        name: true,
-        city: {
-          select: {
-            name: true,
-          },
-        },
-        league: {
-          select: {
-            name: true,
-          },
-        },
-        players: {
-          select: {
-            name: true,
-            lastname: true,
-            number: true,
-            height: true,
-            position: true,
-            age: true,
-          },
-        },
-      },
-    })
-  } catch (error) {
-    return []
-  }
-}
-
-const teamsByName = async (name: string): Promise<TeamSelect[]> => {
-  try {
-    return prisma().team.findFirst({
-      cacheStrategy,
-      where: {
-        name: {
-          equals: name,
-          mode: 'insensitive',
-        },
-      },
-      select: {
-        name: true,
-        city: true,
-        players: {
-          select: {
-            name: true,
-            lastname: true,
-            number: true,
-            height: true,
-            position: true,
-            age: true,
-          },
-        },
-      },
-    })
-  } catch (error) {
-    return []
-  }
-}
-
-const players = async (): Promise<PlayerSelect[]> => {
-  try {
-    return prisma().player.findMany({
+    return (await prisma()).player.findMany({
       cacheStrategy,
       select: {
         name: true,
@@ -98,9 +35,9 @@ const players = async (): Promise<PlayerSelect[]> => {
   }
 }
 
-const playersByName = async (name: string): Promise<PlayerSelect[]> => {
+const playersByName = async (name: string): Promise<PlayerSelected[]> => {
   try {
-    return prisma().player.findMany({
+    return (await prisma()).player.findMany({
       cacheStrategy,
       where: {
         name: {
@@ -132,9 +69,9 @@ const playersByName = async (name: string): Promise<PlayerSelect[]> => {
   }
 }
 
-const playersByTeam = async (team: string): Promise<PlayerSelect[]> => {
+const playersByTeam = async (team: string): Promise<PlayerSelected[]> => {
   try {
-    return prisma().player.findMany({
+    return (await prisma()).player.findMany({
       cacheStrategy,
       where: {
         team: {
@@ -168,9 +105,74 @@ const playersByTeam = async (team: string): Promise<PlayerSelect[]> => {
   }
 }
 
-const matches = async (): Promise<MatchSelect[]> => {
+const teams = async (): Promise<TeamSelected[]> => {
   try {
-    return prisma().match.findMany({
+    return (await prisma()).team.findMany({
+      cacheStrategy,
+      select: {
+        name: true,
+        city: {
+          select: {
+            name: true,
+          },
+        },
+        league: {
+          select: {
+            name: true,
+          },
+        },
+        players: {
+          select: {
+            name: true,
+            lastname: true,
+            number: true,
+            height: true,
+            position: true,
+            age: true,
+          },
+        },
+      },
+    })
+  } catch (error) {
+    return []
+  }
+}
+
+const teamsByName = async (name: string): Promise<TeamSelected[]> => {
+  try {
+    return await (
+      await prisma()
+    ).team.findFirst({
+      cacheStrategy,
+      where: {
+        name: {
+          equals: name,
+          mode: 'insensitive',
+        },
+      },
+      select: {
+        name: true,
+        city: true,
+        players: {
+          select: {
+            name: true,
+            lastname: true,
+            number: true,
+            height: true,
+            position: true,
+            age: true,
+          },
+        },
+      },
+    })
+  } catch (error) {
+    return []
+  }
+}
+
+const matches = async (): Promise<MatchSelected[]> => {
+  try {
+    return (await prisma()).match.findMany({
       cacheStrategy,
       select: {
         schedule: {
@@ -202,13 +204,13 @@ const matches = async (): Promise<MatchSelect[]> => {
   }
 }
 
-const matchesByDate = async (date: string): Promise<MatchSelect[]> => {
+const matchesByDate = async (date: string): Promise<MatchSelected[]> => {
   const yesterday: Date = new Date(date)
   const tomorrow: Date = new Date(date)
   yesterday.setDate(yesterday.getDate())
   tomorrow.setDate(tomorrow.getDate() + 1)
   try {
-    return prisma().match.findMany({
+    return (await prisma()).match.findMany({
       cacheStrategy,
       where: {
         schedule: {
@@ -250,7 +252,7 @@ const matchesByDate = async (date: string): Promise<MatchSelect[]> => {
 
 // const schedules = async () => {
 //   try {
-//     return prisma().schedule.findMany({
+//     return (await prisma()).schedule.findMany({
 //       cacheStrategy,
 //       select: {
 //         city: true,
@@ -277,11 +279,11 @@ const matchesByDate = async (date: string): Promise<MatchSelect[]> => {
 // }
 
 export default {
-  teams: () => teams(),
-  teamsByName: (name: string) => teamsByName(name),
-  players: () => players(),
-  playersByName: (name: string) => playersByName(name),
-  playersByTeam: (name: string) => playersByTeam(name),
-  matches: () => matches(),
-  matchesByDate: (date: string) => matchesByDate(date),
+  players: async (): Promise<PlayerSelected[]> => await players(),
+  playersByName: async (name: string): Promise<PlayerSelected[]> => await playersByName(name),
+  playersByTeam: async (name: string): Promise<PlayerSelected[]> => await playersByTeam(name),
+  teams: async (): Promise<TeamSelected[]> => await teams(),
+  teamsByName: async (name: string): Promise<TeamSelected[]> => await teamsByName(name),
+  matches: async (): Promise<MatchSelected[]> => await matches(),
+  matchesByDate: async (date: string): Promise<MatchSelected[]> => await matchesByDate(date),
 }

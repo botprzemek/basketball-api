@@ -1,7 +1,7 @@
 import config from 'config'
 import { Server } from 'socket.io'
-import * as http from 'http'
-import Game from '../public/game'
+import type * as http from 'http'
+import type Game from '../public/game'
 
 let server: http.Server
 

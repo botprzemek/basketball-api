@@ -1,7 +1,7 @@
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 import storage from 'services/storage.service'
-import sendData from 'utils/reponse.util'
-import { PlayerFiltered } from 'models/query.model'
+import sendData from 'utils/send.util'
+import { type PlayerFiltered } from 'models/query.model'
 
 export async function players(req: Request, res: Response): Promise<void> {
   const data: PlayerFiltered[] = await storage.players()

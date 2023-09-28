@@ -13,7 +13,5 @@ router.use(secret)
 router.use('/teams', team)
 router.use('/players', player)
 router.use('/matches', match)
-// router.use('/schedules', schedule)
-// router.use('/web', web)
 
 export default router

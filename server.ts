@@ -38,6 +38,5 @@ server.use(express.static(path.join(__dirname, '/public')))
 http.listen(port, (): void => {
   console.log(`${new Date().toLocaleTimeString('pl-PL')} [server] listening on http://localhost:${port}`)
   setupSocket(http)
-  setupStorage()
-  setupMail()
+  setupStorage().then(() => setupMail())
 })

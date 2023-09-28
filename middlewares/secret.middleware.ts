@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 import config from 'config'
 
 export default function (req: Request, res: Response, next: NextFunction): void {
@@ -7,7 +7,7 @@ export default function (req: Request, res: Response, next: NextFunction): void 
     next()
     return
   }
-  if (config.useSecret && req.headers['secret'] !== process.env.SECRET) {
+  if (config.useSecret && req.headers.secret !== process.env.SECRET) {
     console.log(`${new Date().toLocaleTimeString('pl-PL')} [server] unauthorized access (${req.ip})`)
     res.sendStatus(401)
     return

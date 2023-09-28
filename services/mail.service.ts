@@ -1,4 +1,7 @@
-import { createTransport, Transporter } from 'nodemailer'
+import { createTransport, type Transporter } from 'nodemailer'
+import sendMail from 'services/mail/send.mail'
+import config from 'config'
+import { type MailOptions } from 'nodemailer/lib/sendmail-transport'
 
 let transport: Transporter
 
@@ -14,13 +17,20 @@ export default (): Transporter => {
       pass: process.env.MAIL_PASSWORD,
     },
   }
-
-  try {
-    transport = createTransport(config)
-    console.log(`${new Date().toLocaleTimeString('pl-PL')} [mail] connected to mail`)
-  } catch (error) {
-    console.log(`${new Date().toLocaleTimeString('pl-PL')} [mail] unable to connect to mail (check your configuration) ${error}`)
-    process.exit(0)
+  const mailOptions: MailOptions = {
+    from: 'test <test>',
+    to: 'test@test.test',
+    subject: 'test',
+    html: '<h1>test</h1>',
   }
+  transport = createTransport(config)
+  transport.sendMail(mailOptions, (error: Error): void => {
+    if (!error) {
+      console.log(`${new Date().toLocaleTimeString('pl-PL')} [mail] connected to mail`)
+      return
+    }
+    console.log(`${new Date().toLocaleTimeString('pl-PL')} [mail] unable to connect to mail (check your configuration)`)
+    process.exit(0)
+  })
   return transport
 }
