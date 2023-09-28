@@ -1,5 +1,5 @@
-import { MatchFiltered, MatchSelect, PlayerFiltered, PlayerSelect, TeamFiltered, TeamSelect } from 'models/Query.model'
-import { Methods } from 'models/Methods.model'
+import { MatchFiltered, MatchSelect, PlayerFiltered, PlayerSelect, TeamFiltered, TeamSelect } from 'models/query.model'
+import { Methods } from 'models/methods.model'
 
 const playerFilter = (data: PlayerSelect[], method?: string, value?: any): PlayerFiltered[] => {
   const filtered: PlayerFiltered[] = []

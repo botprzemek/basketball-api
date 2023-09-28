@@ -1,7 +1,7 @@
 import * as NodeCache from 'node-cache'
-import config from '../../../configs/Default.config'
+import config from 'config'
 
-let cache = null
+let cache: NodeCache
 
 export default (): NodeCache => {
   if (cache) return cache

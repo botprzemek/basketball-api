@@ -1,4 +1,4 @@
-import cache from './Initialize'
+import cache from './storage/cache/initialize.cache'
 
 const setData = (key: string, value: any): any => {
   cache().set(key, value)

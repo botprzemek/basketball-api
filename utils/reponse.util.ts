@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-export default (req: Request, res: Response, data: any[]): void => {
+export default function (req: Request, res: Response, data: any[]): void {
   if (!Array.isArray(data) || data.length === 0) {
     res.sendStatus(404)
     return

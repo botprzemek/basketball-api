@@ -6,9 +6,10 @@
     "module": "commonjs",
     "target": "es5",
     "sourceMap": true,
+    "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "Config": ["./configs/Default.config.ts"],
+      "config": ["./configs/default.config.ts"],
       "controllers/*": ["./controllers/*"],
       "middleware/*": ["./middleware/*"],
       "models/*": ["./models/*"],
@@ -17,5 +18,5 @@
       "utils/*": ["./utils/*"]
     }
   },
-  "exclude": ["node_modules"]
+  "exclude": ["./node_modules"]
 }

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import config from '../configs/Default.config'
+import config from 'config'
 
 export default function (req: Request, res: Response, next: NextFunction): void {
   if (req.ip === '::ffff:127.0.0.1' || req.ip === '::1') {

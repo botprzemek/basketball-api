@@ -1,9 +1,9 @@
-import config from '../../configs/Default.config'
+import config from 'config'
 import { Server } from 'socket.io'
 import * as http from 'http'
-import Game from '../../public/Game'
+import Game from '../public/game'
 
-let server = null
+let server: http.Server
 
 const game: Game = {
   status: false,

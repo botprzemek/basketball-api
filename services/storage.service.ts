@@ -1,7 +1,7 @@
-import query from './storage/ActiveSource'
-import { MatchFiltered, MatchSelect, PlayerFiltered, PlayerSelect, TeamFiltered, TeamSelect } from 'models/Query.model'
-import cache from 'services/storage/cache/Cache'
-import responseFilter from 'utils/Filter.util'
+import query from './storage/active.storage'
+import { MatchFiltered, MatchSelect, PlayerFiltered, PlayerSelect, TeamFiltered, TeamSelect } from 'models/query.model'
+import cache from 'services/cache.service'
+import responseFilter from 'utils/filter.util'
 
 const teams = async (): Promise<TeamFiltered[]> => {
   const cached: TeamFiltered[] = await cache.getData('teams')
@@ -52,31 +52,6 @@ const matchesByDate = async (date: string): Promise<MatchFiltered[]> => {
   return responseFilter.matchFilter(await query().matchesByDate(date))
 }
 
-// const playersByValue = async (key: string, value: string | number, limit: number) => {
-//     if (!key || !value) return { data: null, error: null }
-//
-//     // TODO
-//
-//     const data = await query().playersByTeam('Knury Knurów')
-//
-//     if (data.error) return data
-//
-//     let filteredPlayers = data.data.filter((player: object) => { return player[key] === value })
-//     filteredPlayers.filter((_: null, index: number) => { return index === limit })
-//
-//     if (filteredPlayers.length !== 0) data.data = (filteredPlayers.length === 1)
-//         ? filteredPlayers.at(0)
-//         : filteredPlayers
-//     else data.error = {
-//         code: 404,
-//         message: `No players found matching value '${value}'`,
-//         hint: null,
-//         details: null,
-//     }
-//
-//     return data
-// }
-
 export default {
   teams: () => teams(),
   teamsByName: (name: string) => teamsByName(name),
@@ -85,8 +60,4 @@ export default {
   playersByTeam: (name: string) => playersByTeam(name),
   matches: () => matches(),
   matchesByDate: (date: string) => matchesByDate(date),
-  schedules: () => {
-    return null
-  },
-  // playersByValue: (key: string, value: string | number, limit: number) => playersByValue(key, value, limit),
 }

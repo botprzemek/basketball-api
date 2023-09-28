@@ -1,6 +1,6 @@
-import prisma from './Initialize'
-import { MatchSelect, PlayerSelect, TeamSelect } from 'models/Query.model'
-import config from '../../../configs/Default.config'
+import prisma from './prisma/initialize.prisma'
+import { MatchSelect, PlayerSelect, TeamSelect } from 'models/query.model'
+import config from 'config'
 
 const cacheStrategy: { swr: number; ttl: number } = {
   swr: config.cacheTime * 2,
@@ -36,7 +36,7 @@ const teams = async (): Promise<TeamSelect[]> => {
       },
     })
   } catch (error) {
-    return null
+    return []
   }
 }
 
@@ -66,7 +66,7 @@ const teamsByName = async (name: string): Promise<TeamSelect[]> => {
       },
     })
   } catch (error) {
-    return null
+    return []
   }
 }
 
@@ -94,7 +94,7 @@ const players = async (): Promise<PlayerSelect[]> => {
       },
     })
   } catch (error) {
-    return null
+    return []
   }
 }
 
@@ -128,7 +128,7 @@ const playersByName = async (name: string): Promise<PlayerSelect[]> => {
       },
     })
   } catch (error) {
-    return null
+    return []
   }
 }
 
@@ -164,7 +164,7 @@ const playersByTeam = async (team: string): Promise<PlayerSelect[]> => {
       },
     })
   } catch (error) {
-    return null
+    return []
   }
 }
 
@@ -198,7 +198,7 @@ const matches = async (): Promise<MatchSelect[]> => {
       },
     })
   } catch (error) {
-    return null
+    return []
   }
 }
 
@@ -244,37 +244,37 @@ const matchesByDate = async (date: string): Promise<MatchSelect[]> => {
       },
     })
   } catch (error) {
-    return null
+    return []
   }
 }
 
-const schedules = async () => {
-  try {
-    return prisma().schedule.findMany({
-      cacheStrategy,
-      select: {
-        city: true,
-        datetime: true,
-        match: {
-          select: {
-            host: {
-              select: {
-                name: true,
-              },
-            },
-            opponent: {
-              select: {
-                name: true,
-              },
-            },
-          },
-        },
-      },
-    })
-  } catch (error) {
-    return null
-  }
-}
+// const schedules = async () => {
+//   try {
+//     return prisma().schedule.findMany({
+//       cacheStrategy,
+//       select: {
+//         city: true,
+//         datetime: true,
+//         match: {
+//           select: {
+//             host: {
+//               select: {
+//                 name: true,
+//               },
+//             },
+//             opponent: {
+//               select: {
+//                 name: true,
+//               },
+//             },
+//           },
+//         },
+//       },
+//     })
+//   } catch (error) {
+//     return []
+//   }
+// }
 
 export default {
   teams: () => teams(),
@@ -284,5 +284,4 @@ export default {
   playersByTeam: (name: string) => playersByTeam(name),
   matches: () => matches(),
   matchesByDate: (date: string) => matchesByDate(date),
-  schedules: () => schedules(),
 }

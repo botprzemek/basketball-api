@@ -1,6 +1,6 @@
 import { MailOptions } from 'nodemailer/lib/sendmail-transport'
-import mail from './Mail'
-import config from '../../configs/Default.config'
+import mail from '../mail.service'
+import config from 'config'
 
 export default function (receiver: string): void {
   const mailOptions: MailOptions = {

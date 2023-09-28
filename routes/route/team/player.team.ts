@@ -1,24 +1,22 @@
 import { Request, Response, Router, RouterOptions } from 'express'
-import storage from 'services/Storage'
-import { PlayerFiltered } from 'models/Query.model'
 
 const router: Router = Router({ mergeParams: true } as RouterOptions)
 
-router.get('/players', async (req: Request, res: Response): Promise<Response> => {
-  const data: PlayerFiltered[] = await storage.playersByTeam(req.params.team)
-
-  if (!Array.isArray(data) || data.length === 0) {
-    console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] requested players are null`)
-    return res.sendStatus(404)
-  }
-
-  res.send(data)
-  console.log(
-    `${new Date().toLocaleTimeString('pl-PL')} [request] GET ${decodeURI(req.baseUrl + req.path)} - requested players from ${req.params.team} (${(
-      (performance.now() - res.locals.start) /
-      1000
-    ).toFixed(2)}s)`,
-  )
+router.get('/players', (req: Request, res: Response): void => {
+  // const data: PlayerFiltered[] = await storage.playersByTeam(req.params.team)
+  //
+  // if (!Array.isArray(data) || data.length === 0) {
+  //   console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] requested players are null`)
+  //   return res.sendStatus(404)
+  // }
+  //
+  // res.send(data)
+  // console.log(
+  //   `${new Date().toLocaleTimeString('pl-PL')} [request] GET ${decodeURI(req.baseUrl + req.path)} - requested players from ${req.params.team} (${(
+  //     (performance.now() - res.locals.start) /
+  //     1000
+  //   ).toFixed(2)}s)`,
+  // )
 })
 
 export default router

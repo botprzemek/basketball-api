@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import storage from 'services/Storage'
-import sendData from 'utils/Data.util'
-import { TeamFiltered } from 'models/Query.model'
+import storage from 'services/storage.service'
+import sendData from 'utils/reponse.util'
+import { TeamFiltered } from 'models/query.model'
 
 export async function teams(req: Request, res: Response): Promise<void> {
   const data: TeamFiltered[] = await storage.teams()
@@ -9,6 +9,6 @@ export async function teams(req: Request, res: Response): Promise<void> {
 }
 
 export async function teamsByName(req: Request, res: Response): Promise<void> {
-  const data: TeamFiltered[] = await storage.teamsByName(req.params.team)
+  const data: TeamFiltered[] = await storage.teamsByName(req.params.name)
   sendData(req, res, data)
 }

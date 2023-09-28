@@ -1,4 +1,4 @@
-import { MatchFiltered, PlayerFiltered, TeamFiltered } from 'models/Query.model'
+import { MatchFiltered, PlayerFiltered, TeamFiltered } from 'models/query.model'
 
 export type Methods = {
   playerByName: (data: PlayerFiltered[], name: string) => PlayerFiltered[]
