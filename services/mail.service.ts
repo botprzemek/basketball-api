@@ -1,6 +1,4 @@
 import { createTransport, type Transporter } from 'nodemailer'
-import sendMail from 'services/mail/send.mail'
-import config from 'config'
 import { type MailOptions } from 'nodemailer/lib/sendmail-transport'
 
 let transport: Transporter
@@ -18,8 +16,8 @@ export default (): Transporter => {
     },
   }
   const mailOptions: MailOptions = {
-    from: 'test <test>',
-    to: 'test@test.test',
+    from: 'Knury Knurów <system@knuryknurow.pl>',
+    to: 'testing@knuryknurow.pl',
     subject: 'test',
     html: '<h1>test</h1>',
   }

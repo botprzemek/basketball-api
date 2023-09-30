@@ -1,5 +1,5 @@
 import { type Request, type Response } from 'express'
-import { type MatchFiltered } from 'models/query.model'
+import { type MatchFiltered } from 'models/data.model'
 import storage from 'services/storage.service'
 import sendUtil from 'utils/send.util'
 

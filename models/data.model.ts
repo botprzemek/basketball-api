@@ -69,3 +69,7 @@ export interface MatchFiltered {
   host: string
   opponent: string
 }
+
+export interface ScheduleSelected {}
+
+export interface ScheduleFiltered {}

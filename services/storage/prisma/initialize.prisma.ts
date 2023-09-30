@@ -14,7 +14,6 @@ export default async (): Promise<any> => {
   try {
     await prisma.$queryRaw`SELECT * FROM leagues WHERE 1 = 0`
   } catch (error) {
-    console.log(error)
     console.log(`${new Date().toLocaleTimeString('pl-PL')} [storage] unable to connect to database (check your configuration)`)
     process.exit(0)
   } finally {

@@ -5,14 +5,15 @@ import {
   type PlayerSelected,
   type TeamFiltered,
   type TeamSelected,
-} from 'models/query.model'
-import filterUtil from 'utils/filter.util'
-import builderUtil from 'utils/builder.util'
+} from 'models/data.model'
+import filterUtil from 'utils/storage/filter.storage'
+import builderUtil from 'utils/storage/builder.storage'
 
 const typeFilter = (key: string, data: any, method?: string, value?: any): any[] => {
   if (!data) return []
-  data = method ? filterUtil[method](data, value) : data
+
   const filtered: any[] = []
+  data = method ? filterUtil[method](data, value) : data
 
   data.forEach((record: any): void => {
     filtered.push(builderUtil[key](record))

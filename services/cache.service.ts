@@ -1,6 +1,7 @@
 import cache from './storage/cache/initialize.cache'
 
 const setData = (key: string, value: any): any => {
+  if (!value) return []
   cache().set(key, value)
   return value
 }

@@ -5,8 +5,8 @@ import {
   type PlayerSelected,
   type TeamFiltered,
   type TeamSelected,
-} from 'models/query.model'
-import processUtil from 'utils/process.util'
+} from 'models/data.model'
+import processUtil from 'utils/storage/process.storage'
 
 export default {
   players: (record: PlayerSelected): PlayerFiltered => ({
@@ -17,12 +17,14 @@ export default {
     position: record.position,
     age: record.age,
   }),
-  teams: (record: TeamSelected): TeamFiltered => ({
-    name: record.name,
-    city: record.city.name,
-    league: record.league.name,
-    players: processUtil.typeFilter('players', record.players),
-  }),
+  teams: (record: TeamSelected): TeamFiltered => {
+    return {
+      name: record.name,
+      city: record.city.name,
+      league: record.league.name,
+      players: processUtil.typeFilter('players', record.players),
+    }
+  },
   matches: (record: MatchSelected): MatchFiltered => ({
     schedule: {
       city: record.schedule.city.name,

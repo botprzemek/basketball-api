@@ -1,289 +1,60 @@
-import prisma from './prisma/initialize.prisma.storage'
-import { type MatchSelected, type PlayerSelected, type TeamSelected } from 'models/query.model'
+import prisma from './initialize.prisma'
+import { type MatchSelected, type PlayerSelected, ScheduleSelected, type TeamSelected } from 'models/data.model'
 import config from 'config'
+import playerQuery from './query/player.query'
+import playerByNameQuery from './query/playerByName.query'
+import teamsQuery from './query/team.query'
+import teamsByNameQuery from './query/team.query'
+import matchByDateQuery from './query/matchByDate.query'
+import matchQuery from './query/match.query'
+import scheduleQuery from 'services/storage/prisma/query/schedule.query'
 
 const cacheStrategy: { swr: number; ttl: number } = {
   swr: config.cacheTime * 2,
   ttl: config.cacheTime,
 }
 
-const players = async (): Promise<PlayerSelected[]> => {
+const query = async <TypeQueried>(prismaKey: string, queryKey: string, values?: any[]): Promise<TypeQueried[]> => {
   try {
-    return (await prisma()).player.findMany({
+    const query = queryList[queryKey](values)
+    return (await prisma())[prismaKey].findMany({
       cacheStrategy,
-      select: {
-        name: true,
-        lastname: true,
-        number: true,
-        height: true,
-        position: true,
-        age: true,
-        team: {
-          select: {
-            league: {
-              select: {
-                name: true,
-              },
-            },
-            name: true,
-          },
-        },
-      },
+      where: query.where,
+      select: query.select,
     })
   } catch (error) {
     return []
   }
 }
 
-const playersByName = async (name: string): Promise<PlayerSelected[]> => {
-  try {
-    return (await prisma()).player.findMany({
-      cacheStrategy,
-      where: {
-        name: {
-          startsWith: name,
-          mode: 'insensitive',
-        },
-      },
-      select: {
-        name: true,
-        lastname: true,
-        number: true,
-        height: true,
-        position: true,
-        age: true,
-        team: {
-          select: {
-            league: {
-              select: {
-                name: true,
-              },
-            },
-            name: true,
-          },
-        },
-      },
-    })
-  } catch (error) {
-    return []
-  }
+const queryList = {
+  players: (values: any[]) => playerQuery(values),
+  playersByName: (values: any[]) => playerByNameQuery(values),
+  teams: (values: any[]) => teamsQuery(values),
+  teamsByName: (values: any[]) => teamsByNameQuery(values),
+  matches: (values: any[]) => matchQuery(values),
+  matchesByDate: (values: any[]) => matchByDateQuery(values),
+  schedules: (values: any[]) => scheduleQuery(values),
+  schedulesAtDate: (values: any[]) => scheduleQuery(values),
+  schedulesBeforeDate: (values: any[]) => scheduleQuery(values),
+  schedulesAfterDate: (values: any[]) => scheduleQuery(values),
 }
-
-const playersByTeam = async (team: string): Promise<PlayerSelected[]> => {
-  try {
-    return (await prisma()).player.findMany({
-      cacheStrategy,
-      where: {
-        team: {
-          name: {
-            equals: team,
-            mode: 'insensitive',
-          },
-        },
-      },
-      select: {
-        name: true,
-        lastname: true,
-        number: true,
-        height: true,
-        position: true,
-        age: true,
-        team: {
-          select: {
-            league: {
-              select: {
-                name: true,
-              },
-            },
-            name: true,
-          },
-        },
-      },
-    })
-  } catch (error) {
-    return []
-  }
-}
-
-const teams = async (): Promise<TeamSelected[]> => {
-  try {
-    return (await prisma()).team.findMany({
-      cacheStrategy,
-      select: {
-        name: true,
-        city: {
-          select: {
-            name: true,
-          },
-        },
-        league: {
-          select: {
-            name: true,
-          },
-        },
-        players: {
-          select: {
-            name: true,
-            lastname: true,
-            number: true,
-            height: true,
-            position: true,
-            age: true,
-          },
-        },
-      },
-    })
-  } catch (error) {
-    return []
-  }
-}
-
-const teamsByName = async (name: string): Promise<TeamSelected[]> => {
-  try {
-    return await (
-      await prisma()
-    ).team.findFirst({
-      cacheStrategy,
-      where: {
-        name: {
-          equals: name,
-          mode: 'insensitive',
-        },
-      },
-      select: {
-        name: true,
-        city: true,
-        players: {
-          select: {
-            name: true,
-            lastname: true,
-            number: true,
-            height: true,
-            position: true,
-            age: true,
-          },
-        },
-      },
-    })
-  } catch (error) {
-    return []
-  }
-}
-
-const matches = async (): Promise<MatchSelected[]> => {
-  try {
-    return (await prisma()).match.findMany({
-      cacheStrategy,
-      select: {
-        schedule: {
-          select: {
-            city: true,
-            datetime: true,
-          },
-        },
-        score: {
-          select: {
-            host: true,
-            opponent: true,
-          },
-        },
-        host: {
-          select: {
-            name: true,
-          },
-        },
-        opponent: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    })
-  } catch (error) {
-    return []
-  }
-}
-
-const matchesByDate = async (date: string): Promise<MatchSelected[]> => {
-  const yesterday: Date = new Date(date)
-  const tomorrow: Date = new Date(date)
-  yesterday.setDate(yesterday.getDate())
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  try {
-    return (await prisma()).match.findMany({
-      cacheStrategy,
-      where: {
-        schedule: {
-          datetime: {
-            gt: yesterday,
-            lt: tomorrow,
-          },
-        },
-      },
-      select: {
-        schedule: {
-          select: {
-            city: true,
-            datetime: true,
-          },
-        },
-        score: {
-          select: {
-            host: true,
-            opponent: true,
-          },
-        },
-        host: {
-          select: {
-            name: true,
-          },
-        },
-        opponent: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    })
-  } catch (error) {
-    return []
-  }
-}
-
-// const schedules = async () => {
-//   try {
-//     return (await prisma()).schedule.findMany({
-//       cacheStrategy,
-//       select: {
-//         city: true,
-//         datetime: true,
-//         match: {
-//           select: {
-//             host: {
-//               select: {
-//                 name: true,
-//               },
-//             },
-//             opponent: {
-//               select: {
-//                 name: true,
-//               },
-//             },
-//           },
-//         },
-//       },
-//     })
-//   } catch (error) {
-//     return []
-//   }
-// }
 
 export default {
-  players: async (): Promise<PlayerSelected[]> => await players(),
-  playersByName: async (name: string): Promise<PlayerSelected[]> => await playersByName(name),
-  playersByTeam: async (name: string): Promise<PlayerSelected[]> => await playersByTeam(name),
-  teams: async (): Promise<TeamSelected[]> => await teams(),
-  teamsByName: async (name: string): Promise<TeamSelected[]> => await teamsByName(name),
-  matches: async (): Promise<MatchSelected[]> => await matches(),
-  matchesByDate: async (date: string): Promise<MatchSelected[]> => await matchesByDate(date),
+  players: async (): Promise<PlayerSelected[]> => query('player', 'players'),
+  playersByName: async (name: string): Promise<PlayerSelected[]> => query('player', 'playersByName', [name]),
+  teams: async (): Promise<TeamSelected[]> => query('team', 'teams'),
+  teamsByName: async (name: string): Promise<TeamSelected[]> => query('team', 'teamsByName', [name]),
+  matches: async (): Promise<MatchSelected[]> => query('match', 'matches'),
+  matchesByDate: async (date: string): Promise<MatchSelected[]> => {
+    const yesterday: Date = new Date(date)
+    const tomorrow: Date = new Date(date)
+    yesterday.setDate(yesterday.getDate())
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    return query('match', 'matchesByDate', [yesterday, tomorrow])
+  },
+  schedules: async (): Promise<ScheduleSelected[]> => await query('schedule', 'schedules'),
+  schedulesAtDate: async (date: string): Promise<ScheduleSelected[]> => await query('schedule', 'schedulesOnDate'),
+  schedulesBeforeDate: async (date: string): Promise<ScheduleSelected[]> => await query('schedule', 'schedulesBeforeDate'),
+  schedulesAfterDate: async (date: string): Promise<ScheduleSelected[]> => await query('schedule', 'schedulesAfterDate'),
 }
