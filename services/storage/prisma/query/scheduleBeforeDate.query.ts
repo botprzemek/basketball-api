@@ -1,45 +1,38 @@
-interface ScheduleQuery {
-    where: {}
-    select: {
-        city: boolean
-        datetime: boolean
-        match: {
-            select: {
-                host: {
-                    select: {
-                        name: boolean
-                    }
-                }
-                opponent: {
-                    select: {
-                        name: boolean
-                    }
-                }
-            }
-        }
-    }
-}
+import { ScheduleBeforeDateQuery } from 'models/query/scheduleBeforeDate.query'
 
-export default (_values?: any[]): ScheduleQuery => {
-    return {
-        where: {},
-        select: {
-            city: true,
-            datetime: true,
-            match: {
-                select: {
-                    host: {
-                        select: {
-                            name: true,
-                        },
-                    },
-                    opponent: {
-                        select: {
-                            name: true,
-                        },
-                    },
-                },
-            },
+export default (values: any[]): ScheduleBeforeDateQuery => {
+  return {
+    where: {
+      OR: [
+        {
+          datetime: {
+            equals: values[0],
+          },
         },
-    }
+        {
+          datetime: {
+            lt: values[0],
+          },
+        },
+      ],
+    },
+    select: {
+      city: true,
+      datetime: true,
+      match: {
+        select: {
+          host: {
+            select: {
+              name: true,
+            },
+          },
+          opponent: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  }
 }

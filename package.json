@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx prettier . --write --print-width 150 --no-semi --single-quote  && nodemon server.ts"
   },
+  "prisma": {
+    "seed": "ts-node --transpile-only prisma/seed.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/botprzemek/basketball-api.git"

@@ -1,4 +1,6 @@
-export default (values: any[]) => {
+import { MatchByDateQuery } from 'models/query/matchByDate.query'
+
+export default (values: any[]): MatchByDateQuery => {
   return {
     where: {
       schedule: {

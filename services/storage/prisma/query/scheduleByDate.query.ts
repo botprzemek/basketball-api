@@ -1,8 +1,13 @@
-import { ScheduleQuery } from 'models/query/schedule.query'
+import { ScheduleByDateQuery } from 'models/query/scheduleByDate.query'
 
-export default (_values?: any[]): ScheduleQuery => {
+export default (values: any[]): ScheduleByDateQuery => {
   return {
-    where: {},
+    where: {
+      datetime: {
+        gt: values[0],
+        lt: values[1],
+      },
+    },
     select: {
       city: true,
       datetime: true,

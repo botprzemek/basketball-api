@@ -70,6 +70,44 @@ export interface MatchFiltered {
   opponent: string
 }
 
-export interface ScheduleSelected {}
+export interface ScheduleSelected {
+  city: {
+    id: number
+    name: string
+    state: string
+  }
+  datetime: Date
+  match: {
+    host: {
+      name: string
+    }
+    opponent: {
+      name: string
+    }
+  }
+}
 
-export interface ScheduleFiltered {}
+export interface ScheduleFiltered {
+  city: string
+  datetime: Date
+  match: {
+    host: string
+    opponent: string
+  }
+}
+
+export interface LeagueSelected {
+  name: string
+  city: {
+    id: number
+    name: string
+    state: string
+  }
+  teams: TeamSelected[]
+}
+
+export interface LeagueFiltered {
+  name: string
+  city: string
+  teams: TeamFiltered[]
+}

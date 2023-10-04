@@ -1,4 +1,6 @@
-export default (_values?: any[]) => {
+import { MatchQuery } from 'models/query/match.query'
+
+export default (_values?: any[]): MatchQuery => {
   return {
     where: {},
     select: {

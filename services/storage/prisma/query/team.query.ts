@@ -1,4 +1,6 @@
-export default (_values?: any[]) => {
+import { TeamQuery } from 'models/query/team.query'
+
+export default (_values?: any[]): TeamQuery => {
   return {
     where: {},
     select: {

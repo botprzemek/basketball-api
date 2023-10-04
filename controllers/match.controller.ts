@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import { type MatchFiltered } from 'models/data.model'
 import storage from 'services/storage.service'
-import sendUtil from 'utils/send.util'
+import sendUtil from 'utils/sendData.util'
 
 export async function matches(req: Request, res: Response): Promise<void> {
   const data: MatchFiltered[] = await storage.matches()

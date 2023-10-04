@@ -1,24 +1,4 @@
-interface PlayerQuery {
-  where: {}
-  select: {
-    name: boolean
-    lastname: boolean
-    number: boolean
-    height: boolean
-    position: boolean
-    age: boolean
-    team: {
-      select: {
-        league: {
-          select: {
-            name: boolean
-          }
-        }
-        name: boolean
-      }
-    }
-  }
-}
+import { PlayerQuery } from 'models/query/player.query'
 
 export default (_values?: any[]): PlayerQuery => {
   return {

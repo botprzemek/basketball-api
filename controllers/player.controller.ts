@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
 import storage from 'services/storage.service'
-import sendData from 'utils/send.util'
+import sendData from 'utils/sendData.util'
 import { type PlayerFiltered } from 'models/data.model'
 
 export async function players(req: Request, res: Response): Promise<void> {

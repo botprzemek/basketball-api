@@ -1,5 +1,5 @@
 import prisma from './initialize.prisma'
-import { type MatchSelected, type PlayerSelected, ScheduleSelected, type TeamSelected } from 'models/data.model'
+import { type LeagueSelected, type MatchSelected, type PlayerSelected, type ScheduleSelected, type TeamSelected } from 'models/data.model'
 import config from 'config'
 import playerQuery from './query/player.query'
 import playerByNameQuery from './query/playerByName.query'
@@ -8,6 +8,10 @@ import teamsByNameQuery from './query/team.query'
 import matchByDateQuery from './query/matchByDate.query'
 import matchQuery from './query/match.query'
 import scheduleQuery from 'services/storage/prisma/query/schedule.query'
+import scheduleByDateQuery from 'services/storage/prisma/query/scheduleByDate.query'
+import scheduleBeforeDateQuery from 'services/storage/prisma/query/scheduleBeforeDate.query'
+import scheduleAfterDateQuery from 'services/storage/prisma/query/scheduleAfterDate.query'
+import leagueQuery from 'services/storage/prisma/query/league.query'
 
 const cacheStrategy: { swr: number; ttl: number } = {
   swr: config.cacheTime * 2,
@@ -35,9 +39,10 @@ const queryList = {
   matches: (values: any[]) => matchQuery(values),
   matchesByDate: (values: any[]) => matchByDateQuery(values),
   schedules: (values: any[]) => scheduleQuery(values),
-  schedulesAtDate: (values: any[]) => scheduleQuery(values),
-  schedulesBeforeDate: (values: any[]) => scheduleQuery(values),
-  schedulesAfterDate: (values: any[]) => scheduleQuery(values),
+  schedulesByDate: (values: any[]) => scheduleByDateQuery(values),
+  schedulesAfterDate: (values: any[]) => scheduleAfterDateQuery(values),
+  schedulesBeforeDate: (values: any[]) => scheduleBeforeDateQuery(values),
+  leagues: (values: any[]) => leagueQuery(values),
 }
 
 export default {
@@ -54,7 +59,22 @@ export default {
     return query('match', 'matchesByDate', [yesterday, tomorrow])
   },
   schedules: async (): Promise<ScheduleSelected[]> => await query('schedule', 'schedules'),
-  schedulesAtDate: async (date: string): Promise<ScheduleSelected[]> => await query('schedule', 'schedulesOnDate'),
-  schedulesBeforeDate: async (date: string): Promise<ScheduleSelected[]> => await query('schedule', 'schedulesBeforeDate'),
-  schedulesAfterDate: async (date: string): Promise<ScheduleSelected[]> => await query('schedule', 'schedulesAfterDate'),
+  schedulesByDate: async (date: string): Promise<ScheduleSelected[]> => {
+    const yesterday: Date = new Date(date)
+    const tomorrow: Date = new Date(date)
+    yesterday.setDate(yesterday.getDate())
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    return query('schedule', 'schedulesByDate', [yesterday, tomorrow])
+  },
+  schedulesAfterDate: async (date: string): Promise<ScheduleSelected[]> => {
+    const day: Date = new Date(date)
+    day.setDate(day.getDate() + 1)
+    return query('schedule', 'schedulesAfterDate', [day])
+  },
+  schedulesBeforeDate: async (date: string): Promise<ScheduleSelected[]> => {
+    const day: Date = new Date(date)
+    day.setDate(day.getDate())
+    return query('schedule', 'schedulesBeforeDate', [day])
+  },
+  leagues: async (): Promise<LeagueSelected[]> => query('league', 'leagues'),
 }

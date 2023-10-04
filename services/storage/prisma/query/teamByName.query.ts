@@ -1,4 +1,6 @@
-export default (values: any[]) => {
+import { TeamByNameQuery } from 'models/query/teamByName.query'
+
+export default (values: any[]): TeamByNameQuery => {
   return {
     where: {
       name: {
@@ -8,7 +10,16 @@ export default (values: any[]) => {
     },
     select: {
       name: true,
-      city: true,
+      city: {
+        select: {
+          name: true,
+        },
+      },
+      league: {
+        select: {
+          name: true,
+        },
+      },
       players: {
         select: {
           name: true,

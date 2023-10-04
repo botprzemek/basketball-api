@@ -21,7 +21,7 @@ export default function setupSocket(httpServer: http.Server): void {
 
   const io: Server = new Server(server, {
     cors: {
-      origin: ['http://localhost:3000'],
+      origin: ['http://localhost:3001'],
     },
   })
 
