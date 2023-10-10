@@ -3,6 +3,8 @@ import { playersByTeam } from 'controllers/team/player.team'
 
 const router: Router = Router({ mergeParams: true } as RouterOptions)
 
-router.get('/players', playersByTeam)
+router.get('/', playersByTeam)
+
+// router.get('/statistics', playersStatistics)
 
 export default router

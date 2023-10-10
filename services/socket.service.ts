@@ -1,7 +1,7 @@
-import config from 'config'
+import gameConfig from 'gameConfig'
 import { Server } from 'socket.io'
 import type * as http from 'http'
-import type Game from '../public/game'
+import type Game from 'models/game.model'
 
 let server: http.Server
 
@@ -10,7 +10,7 @@ const game: Game = {
   paused: true,
   scoreHost: 0,
   scoreOpponent: 0,
-  time: config.gameTime,
+  time: gameConfig.time,
   quarter: 1,
 }
 
@@ -21,7 +21,7 @@ export default function setupSocket(httpServer: http.Server): void {
 
   const io: Server = new Server(server, {
     cors: {
-      origin: ['http://localhost:3001'],
+      origin: ['http://localhost:3000'],
     },
   })
 
@@ -54,7 +54,7 @@ export default function setupSocket(httpServer: http.Server): void {
           return
         }
         if (game.quarter !== 4) {
-          game.time = config.gameTime
+          game.time = gameConfig.time
           game.quarter++
           io.emit('updateTimer', game)
           return
@@ -70,7 +70,7 @@ export default function setupSocket(httpServer: http.Server): void {
       game.paused = true
       game.scoreHost = 0
       game.scoreOpponent = 0
-      game.time = config.gameTime
+      game.time = gameConfig.time
       game.quarter = 1
       if (!game.paused && timers.length === 0) createTimer()
       io.emit('updateData', game)
@@ -93,7 +93,7 @@ export default function setupSocket(httpServer: http.Server): void {
       game.paused = true
       game.scoreHost = 0
       game.scoreOpponent = 0
-      game.time = config.gameTime
+      game.time = gameConfig.time
       game.quarter = 1
       io.emit('updateData', game)
       if (timers.length === 0) return

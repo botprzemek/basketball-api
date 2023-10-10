@@ -1,4 +1,4 @@
-import {LeagueQuery} from 'models/query/league.query'
+import { LeagueQuery } from 'models/query/league.model'
 
 export default (_values?: any[]): LeagueQuery => {
   return {
@@ -14,23 +14,10 @@ export default (_values?: any[]): LeagueQuery => {
               name: true,
             },
           },
-          league: {
-            select: {
-              name: true,
-            },
-          },
-          players: {
-            select: {
-              name: true,
-              lastname: true,
-              number: true,
-              height: true,
-              position: true,
-              age: true,
-            },
-          },
+          won: true,
+          lost: true,
         },
-      }
+      },
     },
   }
 }

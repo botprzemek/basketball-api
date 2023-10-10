@@ -1,6 +1,4 @@
 import {
-  type LeagueFiltered,
-  type LeagueSelected,
   type MatchFiltered,
   type MatchSelected,
   type PlayerFiltered,
@@ -11,6 +9,7 @@ import {
   type TeamSelected,
 } from 'models/data.model'
 import processUtil from 'utils/storage/process.storage'
+import { LeagueFiltered, LeagueSelected } from 'models/query/league.model'
 
 export default {
   players: (record: PlayerSelected): PlayerFiltered => ({
@@ -23,9 +22,17 @@ export default {
   }),
   teams: (record: TeamSelected): TeamFiltered => ({
     name: record.name,
+    won: record.won,
+    lost: record.lost,
     city: record.city.name,
     league: record.league.name,
     players: processUtil.typeFilter('players', record.players),
+  }),
+  teamsInLeague: (record: TeamSelected) => ({
+    name: record.name,
+    won: record.won,
+    lost: record.lost,
+    city: record.city.name,
   }),
   matches: (record: MatchSelected): MatchFiltered => ({
     schedule: {
@@ -57,6 +64,6 @@ export default {
   leagues: (record: LeagueSelected): LeagueFiltered => ({
     name: record.name,
     city: record.city.name,
-    teams: processUtil.typeFilter('teams', record.teams),
+    teams: processUtil.typeFilter('teamsInLeague', record.teams),
   }),
 }

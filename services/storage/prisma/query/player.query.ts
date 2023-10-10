@@ -20,6 +20,7 @@ export default (_values?: any[]): PlayerQuery => {
           name: true,
         },
       },
+      statistics: true,
     },
   }
 }

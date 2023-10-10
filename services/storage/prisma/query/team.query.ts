@@ -5,6 +5,8 @@ export default (_values?: any[]): TeamQuery => {
     where: {},
     select: {
       name: true,
+      won: true,
+      lost: true,
       city: {
         select: {
           name: true,

@@ -17,5 +17,6 @@ export interface PlayerQuery {
         name: boolean
       }
     }
+    statistics: boolean
   }
 }

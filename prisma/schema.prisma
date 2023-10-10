@@ -57,8 +57,8 @@ model Team {
   name            String   @unique
   won             Int      @default(0)
   lost            Int      @default(0)
-  hostMatches     Match?   @relation("hostTeam")
-  opponentMatches Match?   @relation("opponentTeam")
+  hostMatches     Match[]  @relation("hostTeam")
+  opponentMatches Match[]  @relation("opponentTeam")
   players         Player[]
   city            City     @relation(fields: [cityId], references: [id])
   cityId          Int
@@ -72,14 +72,16 @@ model Team {
 
 model Match {
   id         Int          @id @unique @default(autoincrement())
+  league     League       @relation(fields: [leagueId], references: [id])
+  leagueId   Int
   host       Team         @relation("hostTeam", fields: [hostId], references: [id])
-  hostId     Int          @unique
+  hostId     Int
   opponent   Team         @relation("opponentTeam", fields: [opponentId], references: [id])
-  opponentId Int          @unique
+  opponentId Int
   schedule   Schedule?
   score      Score?
-  statistics Statistics[]
   rosters    Roster[]
+  statistics Statistics[]
   backlogs   Backlog[]
 
   @@index([id, hostId, opponentId])
@@ -109,23 +111,23 @@ model Score {
 }
 
 model Backlog {
-  match    Match @relation(fields: [matchId], references: [id])
-  matchId  Int   @unique
+  id       Int      @id @unique @default(autoincrement())
+  match    Match    @relation(fields: [matchId], references: [id])
+  matchId  Int
   data     String
   datetime DateTime
 
-  @@index([matchId])
   @@map("backlog")
 }
 
 model Schedule {
   matchId  Int      @unique
   datetime DateTime
-  city     City     @relation(fields: [cityId], references: [id])
-  cityId   Int      @unique
+  arena    Arena    @relation(fields: [arenaId], references: [id])
+  arenaId  Int
   match    Match    @relation(fields: [matchId], references: [id])
 
-  @@index([matchId, cityId])
+  @@index([matchId, arenaId])
   @@map("schedules")
 }
 
@@ -134,19 +136,35 @@ model City {
   name      String
   state     String
   leagues   League[]
-  schedules Schedule[]
   teams     Team[]
+  arenas    Arena[]
 
   @@index([id, name])
   @@map("cities")
 }
 
+model Arena {
+  id        Int    @id @unique @default(autoincrement())
+  name      String
+  location  String
+  city      City   @relation(fields: [cityId], references: [id])
+  cityId    Int
+  schedules Schedule[]
+  leagues   League[]
+
+  @@index([id, name])
+  @@map("arenas")
+}
+
 model League {
-  id     Int    @id @unique @default(autoincrement())
-  name   String
-  city   City   @relation(fields: [cityId], references: [id])
-  cityId Int
-  teams  Team[]
+  id      Int    @id @unique @default(autoincrement())
+  name    String
+  city    City   @relation(fields: [cityId], references: [id])
+  cityId  Int
+  teams   Team[]
+  matches Match[]
+  arena   Arena  @relation(fields: [arenaId], references: [id])
+  arenaId Int
 
   @@index([id, name])
   @@map("leagues")

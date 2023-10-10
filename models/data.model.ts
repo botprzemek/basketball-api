@@ -18,6 +18,8 @@ export interface PlayerFiltered {
 
 export interface TeamSelected {
   name: string
+  won: number
+  lost: number
   city: {
     name: string
   }
@@ -29,6 +31,8 @@ export interface TeamSelected {
 
 export interface TeamFiltered {
   name: string
+  won: number
+  lost: number
   city: string
   league: string
   players: PlayerFiltered[]
@@ -94,20 +98,4 @@ export interface ScheduleFiltered {
     host: string
     opponent: string
   }
-}
-
-export interface LeagueSelected {
-  name: string
-  city: {
-    id: number
-    name: string
-    state: string
-  }
-  teams: TeamSelected[]
-}
-
-export interface LeagueFiltered {
-  name: string
-  city: string
-  teams: TeamFiltered[]
 }

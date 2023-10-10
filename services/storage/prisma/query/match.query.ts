@@ -18,12 +18,25 @@ export default (_values?: any[]): MatchQuery => {
       },
       host: {
         select: {
+          id: true,
           name: true,
         },
       },
       opponent: {
         select: {
+          id: true,
           name: true,
+        },
+      },
+      rosters: {
+        include: {
+          players: {
+            select: {
+              name: true,
+              lastname: true,
+              number: true,
+            },
+          },
         },
       },
     },

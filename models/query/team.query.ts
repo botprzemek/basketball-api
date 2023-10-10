@@ -2,6 +2,8 @@ export interface TeamQuery {
   where: {}
   select: {
     name: boolean
+    won: boolean
+    lost: boolean
     city: {
       select: {
         name: boolean

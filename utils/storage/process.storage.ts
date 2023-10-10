@@ -1,6 +1,4 @@
 import {
-  type LeagueFiltered,
-  type LeagueSelected,
   type MatchFiltered,
   type MatchSelected,
   type PlayerFiltered,
@@ -12,6 +10,7 @@ import {
 } from 'models/data.model'
 import filterUtil from 'utils/storage/filter.storage'
 import builderUtil from 'utils/storage/builder.storage'
+import { LeagueFiltered, LeagueSelected } from 'models/query/league.model'
 
 const typeFilter = (key: string, data: any, method?: string, value?: any): any[] => {
   if (!data) return []

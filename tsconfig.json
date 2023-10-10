@@ -10,6 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "config": ["./configs/default.config.ts"],
+      "gameConfig": ["./configs/game.config.ts"],
       "controllers/*": ["./controllers/*"],
       "middleware/*": ["./middleware/*"],
       "models/*": ["./models/*"],

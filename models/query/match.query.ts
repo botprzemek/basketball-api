@@ -15,13 +15,29 @@ export interface MatchQuery {
     }
     host: {
       select: {
+        id: boolean
         name: boolean
       }
     }
     opponent: {
       select: {
+        id: boolean
         name: boolean
       }
     }
+    rosters: {
+      include: {
+        players: {
+          select: {
+            name: boolean
+            lastname: boolean
+            number: boolean
+          }
+        }
+      }
+    }
+    // rosters: {
+    //   select: {
+    // }
   }
 }

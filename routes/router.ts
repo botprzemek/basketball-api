@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import auth from './route/auth.route'
 import player from './route/player.route'
 import team from './route/team.route'
 import match from './route/match.route'
@@ -12,6 +13,7 @@ const router: Router = Router()
 router.use(error)
 router.use(secret)
 
+router.use('/auth', auth)
 router.use('/teams', team)
 router.use('/players', player)
 router.use('/matches', match)

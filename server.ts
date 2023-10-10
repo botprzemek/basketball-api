@@ -9,6 +9,7 @@ import setupSocket from 'services/socket.service'
 import * as cors from 'cors'
 import { type CorsOptions } from 'cors'
 import * as path from 'path'
+import initializeSqlite from 'services/storage/sqlite/initialize.sqlite'
 
 const server: Express = express()
 const http: Server = createServer(server)
@@ -19,6 +20,8 @@ const options: CorsOptions = {
 const helmetOptions: HelmetOptions = {
   contentSecurityPolicy: false,
 }
+
+global.__basedir = __dirname
 
 server.disable('x-powered-by')
 server.set('trust proxy', 1)
@@ -38,5 +41,5 @@ server.use(express.static(path.join(__dirname, '/public')))
 http.listen(port, (): void => {
   console.log(`${new Date().toLocaleTimeString('pl-PL')} [server] listening on http://localhost:${port}`)
   setupSocket(http)
-  setupStorage().then(() => setupMail())
+  initializeSqlite().then(() => setupStorage().then(() => setupMail()))
 })
