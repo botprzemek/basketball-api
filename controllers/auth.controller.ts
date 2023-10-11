@@ -1,9 +1,9 @@
-import {NextFunction, Request, Response} from 'express'
+import { NextFunction, Request, Response } from 'express'
 import initializeSqlite from 'services/storage/sqlite/initialize.sqlite'
-import {compare, hash} from 'bcrypt'
-import {sign, verify as verifyToken} from 'jsonwebtoken'
+import { compare, hash } from 'bcrypt'
+import { sign, verify as verifyToken } from 'jsonwebtoken'
 import sendMail from 'services/mail/send.mail'
-import {randomBytes} from 'crypto'
+import { randomBytes } from 'crypto'
 import defaultConfig from 'config'
 
 export async function register(req: Request, res: Response): Promise<void> {
@@ -29,15 +29,14 @@ export async function register(req: Request, res: Response): Promise<void> {
       email: email,
       token: '',
     }
+    const response = await database.run(
+      `INSERT INTO users(first_name, last_name, email, password, verified, verification_code, address) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [first_name.toLowerCase(), last_name.toLowerCase(), email.toLowerCase(), encryptedPassword, 0, verificationCode, req.ip],
+    )
 
     user.token = sign(
       {
-        user_id: (
-          await database.run(
-            `INSERT INTO users(first_name, last_name, email, password, verified, verification_code, address) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [first_name.toLowerCase(), last_name.toLowerCase(), email.toLowerCase(), encryptedPassword, 0, verificationCode, req.ip],
-          )
-        ).lastID,
+        user_id: response.id,
         email,
       },
       process.env.TOKEN_KEY as string,
@@ -48,7 +47,7 @@ export async function register(req: Request, res: Response): Promise<void> {
 
     sendMail(email, {
       title: 'Verify your account',
-      body: `<h1>${first_name}, verify your Knury Knurów account! 🐷</h1><a href="http://localhost:3001/auth/verify?verification-code=${verificationCode}">[Click here]</a>`,
+      body: `<h1>${first_name}, verify your Knury Knurów account! 🐷</h1><a href="http://192.168.0.73:3000/admin/verify?verification-code=${verificationCode}">[Click here]</a>`,
     })
 
     res.json(user)
@@ -79,7 +78,7 @@ export async function verify(req: Request, res: Response): Promise<void> {
 
     await database.get(`UPDATE users SET verified = ? WHERE id = ?`, [1, id])
 
-    res.sendStatus(201)
+    res.sendStatus(200)
   } catch (error) {
     res.sendStatus(404)
   }
@@ -87,7 +86,6 @@ export async function verify(req: Request, res: Response): Promise<void> {
 
 export async function login(req: Request, res: Response): Promise<void> {
   try {
-
     const { email, password } = req.body
 
     if (!(email && password)) {
@@ -104,37 +102,24 @@ export async function login(req: Request, res: Response): Promise<void> {
     }
 
     const token: string = sign(
-        {
-          user_id: user.id,
-          email,
-        },
-        process.env.TOKEN_KEY as string,
-        {
-          expiresIn: defaultConfig.expireTime,
-        },
+      {
+        user_id: user.id,
+        email,
+      },
+      process.env.TOKEN_KEY as string,
+      {
+        expiresIn: defaultConfig.expireTime,
+      },
     )
 
     console.log(`${new Date().toLocaleTimeString('pl-PL')} [auth] user logged in (${email})`)
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: true,
-      domain: '',
-      maxAge: 3600 * 1000,
+    res.json({
+      email: email,
+      token: token,
     })
-
-    res.cookie('email', email, {
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: true,
-      domain: '',
-      maxAge: 3600 * 1000,
-    })
-
-    res.sendStatus(200)
   } catch (error) {
-    res.sendStatus(404)
+    res.sendStatus(401)
   }
 }
 
