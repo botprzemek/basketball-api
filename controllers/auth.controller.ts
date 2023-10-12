@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 import initializeSqlite from 'services/storage/sqlite/initialize.sqlite'
 import { compare, hash } from 'bcrypt'
 import { sign, verify as verifyToken } from 'jsonwebtoken'
@@ -41,7 +41,7 @@ export async function register(req: Request, res: Response): Promise<void> {
       },
       process.env.TOKEN_KEY as string,
       {
-        expiresIn: '2h',
+        expiresIn: defaultConfig.expireTime,
       },
     )
 
@@ -112,7 +112,7 @@ export async function login(req: Request, res: Response): Promise<void> {
       },
     )
 
-    console.log(`${new Date().toLocaleTimeString('pl-PL')} [auth] user logged in (${email})`)
+    console.log(`${new Date().toLocaleTimeString('pl-PL')} [auth] ${email} logged in`)
 
     res.json({
       email: email,
@@ -123,7 +123,7 @@ export async function login(req: Request, res: Response): Promise<void> {
   }
 }
 
-export function authenticate(req: Request, res: Response, next: NextFunction): void {
+export function authenticate(req: Request, res: Response): void {
   try {
     const token = req.headers['x-access-token']
 
@@ -132,8 +132,11 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
       return
     }
 
-    res.locals.user = verifyToken(token, process.env.TOKEN_KEY as string)
-    next()
+    const verifiedToken = verifyToken(token, process.env.TOKEN_KEY as string)
+
+    res.json({
+      email: (<any>verifiedToken).email,
+    })
   } catch (error) {
     res.sendStatus(401)
   }
