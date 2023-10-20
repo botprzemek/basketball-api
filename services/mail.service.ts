@@ -1,28 +1,12 @@
 import { createTransport, type Transporter } from 'nodemailer'
-import { type MailOptions } from 'nodemailer/lib/sendmail-transport'
+import mailConfig from '../configs/mail.config'
 
 let transport: Transporter
 
 export default (): Transporter => {
   if (transport) return transport
-  const config = {
-    pool: true,
-    host: process.env.MAIL_URL,
-    port: parseInt(process.env.MAIL_PORT as string),
-    secure: false,
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASSWORD,
-    },
-  }
-  const mailOptions: MailOptions = {
-    from: 'Knury Knurów <system@knuryknurow.pl>',
-    to: 'testing@knuryknurow.pl',
-    subject: 'test',
-    html: '<h1>test</h1>',
-  }
-  transport = createTransport(config)
-  transport.sendMail(mailOptions, (error: Error): void => {
+  transport = createTransport(mailConfig.auth)
+  transport.sendMail(mailConfig.options, (error: Error): void => {
     if (!error) {
       console.log(`${new Date().toLocaleTimeString('pl-PL')} [mail] connected to mail`)
       return

@@ -14,7 +14,7 @@ model Player {
   lastname   String
   number     Int
   height     Int
-  position   Int
+  position   Position
   age        DateTime
   team       Team        @relation(fields: [teamId], references: [id])
   teamId     Int
@@ -23,6 +23,26 @@ model Player {
 
   @@index([id, lastname, teamId])
   @@map("players")
+}
+
+model Staff {
+  id       Int         @id @unique @default(autoincrement())
+  name     String
+  lastname String
+  role     Role
+}
+
+enum Position {
+  PG
+  SG
+  SF
+  PF
+  C
+}
+
+enum Role {
+  COACH
+  TRAINER
 }
 
 model Statistics {
@@ -121,11 +141,11 @@ model Backlog {
 }
 
 model Schedule {
+  match    Match    @relation(fields: [matchId], references: [id])
   matchId  Int      @unique
   datetime DateTime
   arena    Arena    @relation(fields: [arenaId], references: [id])
   arenaId  Int
-  match    Match    @relation(fields: [matchId], references: [id])
 
   @@index([matchId, arenaId])
   @@map("schedules")

@@ -1,12 +1,15 @@
 import { Router } from 'express'
-import { authenticate, login, register, verify } from 'controllers/auth.controller'
+import registerAuthorization from 'controllers/authorization/register.authorization'
+import loginAuthorization from 'controllers/authorization/login.authorization'
+import authenticateAuthorization from 'controllers/authorization/authenticate.authorization'
+import verifyAuthorization from 'controllers/authorization/verify.authorization'
 
 const router: Router = Router()
 
-router.post('/register', register)
-router.post('/login', login)
+router.post('/register', registerAuthorization)
+router.post('/login', loginAuthorization)
 
-router.get('/', authenticate)
-router.get('/verify', verify)
+router.get('/', authenticateAuthorization)
+router.get('/verify', verifyAuthorization)
 
 export default router
