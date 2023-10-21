@@ -27,7 +27,7 @@ export default async (req: Request, res: Response): Promise<void> => {
     const verificationCode: string = randomBytes(8).toString('hex')
     const response = await database.run(
       `INSERT INTO users(first_name, last_name, email, password, verified, verification_code, address) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [first_name.toLowerCase(), last_name.toLowerCase(), email.toLowerCase(), encryptedPassword, 0, verificationCode, req.ip],
+      [first_name.toLowerCase(), last_name.toLowerCase(), email.toLowerCase(), encryptedPassword, 1, verificationCode, req.ip],
     )
     const user: { token: string } = {
       token: '',
@@ -44,10 +44,10 @@ export default async (req: Request, res: Response): Promise<void> => {
       },
     )
 
-    sendMail(email, {
-      title: 'Verify your account',
-      body: `<h1>${first_name}, verify your Knury Knurów account! 🐷</h1><a href="http://192.168.0.73:3000/admin/verify?verification-code=${verificationCode}">[Click here]</a>`,
-    })
+    // sendMail(email, {
+    //   title: 'Verify your account',
+    //   body: `<h1>${first_name}, verify your Knury Knurów account! 🐷</h1><a href="http://192.168.0.73:3000/admin/verify?verification-code=${verificationCode}">[Click here]</a>`,
+    // })
 
     res.json(user)
   } catch (error) {
