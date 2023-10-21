@@ -1,5 +1,5 @@
-import {Request, Response} from 'express'
-import {verify} from "jsonwebtoken";
+import { Request, Response } from 'express'
+import { verify } from 'jsonwebtoken'
 
 export default (req: Request, res: Response): void => {
   const token = req.headers['x-access-token']

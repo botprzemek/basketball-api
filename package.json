@@ -5,7 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx prettier . --write --print-width 150 --no-semi --single-quote  && nodemon server.ts"
+    "dev": "npx prettier . --write --print-width 150 --no-semi --single-quote  && nodemon server.ts",
+    "server": ""
   },
   "prisma": {
     "seed": "ts-node --transpile-only prisma/seed.ts"
@@ -32,7 +33,7 @@
   },
   "homepage": "https://github.com/botprzemek/basketball-api#readme",
   "dependencies": {
-    "@prisma/client": "^5.4.1",
+    "@prisma/client": "^5.4.2",
     "@prisma/extension-accelerate": "^0.6.0",
     "@supabase/supabase-js": "^2.32.0",
     "@types/sqlite3": "^3.1.9",
@@ -64,7 +65,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^3.0.1",
     "prettier": "3.0.3",
-    "prisma": "^5.4.1",
+    "prisma": "^5.4.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
   }

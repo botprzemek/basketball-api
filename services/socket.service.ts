@@ -1,4 +1,4 @@
-import {Socket} from 'socket.io'
+import { Socket } from 'socket.io'
 import type * as http from 'http'
 import setupSocket from 'services/socket/setup.socket'
 import Game from 'models/game.model'

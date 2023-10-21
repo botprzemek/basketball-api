@@ -1,5 +1,5 @@
-import {Namespace, Socket} from 'socket.io'
-import {verify} from 'jsonwebtoken'
+import { Namespace, Socket } from 'socket.io'
+import { verify } from 'jsonwebtoken'
 
 export default (namespaces: Namespace[]): void => {
   try {
