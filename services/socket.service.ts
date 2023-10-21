@@ -3,7 +3,7 @@ import type * as http from 'http'
 import setupSocket from 'services/socket/setup.socket'
 import Game from 'models/game.model'
 
-export const initializeSocket = (httpServer: http.Server): void => {
+export default (httpServer: http.Server): void => {
   try {
     const { admin, client } = setupSocket(httpServer)
     const game: Game = new Game()

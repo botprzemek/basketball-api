@@ -14,10 +14,10 @@ router.use(error)
 router.use(secret)
 
 router.use('/auth', auth)
-router.use('/teams', team)
-router.use('/players', player)
-router.use('/matches', match)
-router.use('/schedules', schedule)
-router.use('/leagues', league)
+// router.use('/teams', team)
+// router.use('/players', player)
+// router.use('/matches', match)
+// router.use('/schedules', schedule)
+// router.use('/leagues', league)
 
 export default router
