@@ -3,15 +3,14 @@ import { open } from 'sqlite'
 
 let database: any
 
-export default function initializeSqlite(): void {
+export default async function initializeSqlite(): Promise<void> {
   if (!database) {
-    database = open({
+    database = await open({
       filename: global.__basedir + '/database.db',
       driver: Database,
-    }).then((database) =>
-      database.run(
-        'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, first_name VARCHAR, last_name VARCHAR, email VARCHAR UNIQUE, password VARCHAR, verified INTEGER, verification_code VARCHAR, address VARCHAR)',
-      ),
+    })
+    await database.run(
+      'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, first_name VARCHAR, last_name VARCHAR, email VARCHAR UNIQUE, password VARCHAR, verified INTEGER, verification_code VARCHAR, address VARCHAR)',
     )
   }
   return database
