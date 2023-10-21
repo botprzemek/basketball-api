@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "REST API for my own local basketball team",
   "main": "server.ts",
+  "engines": {
+    "node": ">=v20.2.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx prettier . --write --print-width 150 --no-semi --single-quote  && nodemon server.ts",
