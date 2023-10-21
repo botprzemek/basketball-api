@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx prettier . --write --print-width 150 --no-semi --single-quote  && nodemon server.ts",
-    "server": ""
+    "server": "pm2 start server.ts"
   },
   "prisma": {
     "seed": "ts-node --transpile-only prisma/seed.ts"
