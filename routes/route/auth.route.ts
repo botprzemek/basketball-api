@@ -1,8 +1,8 @@
-import { Router } from 'express'
-import registerAuthorization from 'controllers/authorization/register.authorization'
-import loginAuthorization from 'controllers/authorization/login.authorization'
-import authenticateAuthorization from 'controllers/authorization/authenticate.authorization'
-import verifyAuthorization from 'controllers/authorization/verify.authorization'
+import {Router} from 'express'
+import registerAuthorization from 'controllers/auth/register.controller'
+import loginAuthorization from 'controllers/auth/login.controller'
+import authenticateAuthorization from 'controllers/auth/authenticate.controller'
+import verifyAuthorization from 'controllers/auth/verify.controller'
 
 const router: Router = Router()
 

@@ -1,6 +1,11 @@
-import { Request, Response } from 'express'
-import sendData from 'utils/sendData.util'
-import storage from 'services/storage.service'
+import {type Request, type Response} from 'express'
+import storage from "services/storage.service";
+import sendData from "utils/sendData.util";
+
+export async function schedules(req: Request, res: Response): Promise<void> {
+  const data: any = await storage.schedules()
+  sendData(req, res, data)
+}
 
 export async function schedulesByDate(req: Request, res: Response): Promise<void> {
   const data: any = await storage.schedulesByDate(req.params.date)

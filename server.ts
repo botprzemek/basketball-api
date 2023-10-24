@@ -1,10 +1,10 @@
 import * as express from 'express'
+import {type Express} from 'express'
 import * as cors from 'cors'
+import {type CorsOptions} from 'cors'
 import * as dotenv from 'dotenv'
-import { type Express } from 'express'
-import { type CorsOptions } from 'cors'
-import { createServer, type Server } from 'http'
-import helmet, { type HelmetOptions } from 'helmet'
+import {createServer, type Server} from 'http'
+import helmet, {type HelmetOptions} from 'helmet'
 import initializeSqlite from 'services/storage/sqlite/initialize.sqlite'
 import initializeSocket from 'services/socket.service'
 import router from 'routes/router'
@@ -36,7 +36,6 @@ server.use(router)
 
 http.listen(port, (): void => {
   console.log(`${new Date().toLocaleTimeString('pl-PL')} [server] listening on http://localhost:${port}`)
-  initializeSocket(http)
-  initializeSqlite()
+  initializeSqlite().then(() => initializeSocket(http))
   // setupStorage().then(() => setupMail())
 })

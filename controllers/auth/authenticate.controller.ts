@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { verify } from 'jsonwebtoken'
+import { verify, VerifyErrors } from 'jsonwebtoken'
 
 export default (req: Request, res: Response): void => {
   const token = req.headers['x-access-token']
@@ -9,7 +9,7 @@ export default (req: Request, res: Response): void => {
     return
   }
 
-  verify(token, process.env.TOKEN_KEY as string, (error, verifiedToken): void => {
+  verify(token, process.env.TOKEN_KEY as string, (error: VerifyErrors, verifiedToken: { exp: number }): void => {
     if (error) {
       res.sendStatus(401)
       return

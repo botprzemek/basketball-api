@@ -1,5 +1,5 @@
-import { Router, RouterOptions } from 'express'
-import { schedulesAfterDate, schedulesBeforeDate, schedulesByDate } from 'controllers/schedule/match.schedule'
+import {Router, RouterOptions} from 'express'
+import {schedulesAfterDate, schedulesBeforeDate, schedulesByDate} from 'controllers/api/matchSchedule.controller'
 
 const router: Router = Router({ mergeParams: true } as RouterOptions)
 

@@ -1,18 +1,36 @@
 import gameConfig from 'gameConfig'
-import GameData from 'models/gameData.model'
-import { Namespace } from 'socket.io'
+import {Namespace} from 'socket.io'
 
-export default class Game {
+interface GameData {
   status: boolean
   paused: boolean
   time: number
   quarter: number
   scoreHost: number
   scoreOpponent: number
-  timers: NodeJS.Timeout[]
+}
+
+export default class Game implements GameData {
+  status: boolean
+  paused: boolean
+  time: number
+  quarter: number
+  scoreHost: number
+  scoreOpponent: number
+  private timers: NodeJS.Timeout[]
 
   constructor() {
     this.setToDefault()
+  }
+
+  setToDefault = (): void => {
+    this.status = gameConfig.status
+    this.paused = gameConfig.paused
+    this.time = gameConfig.time
+    this.quarter = gameConfig.quarter
+    this.scoreHost = gameConfig.scoreHost
+    this.scoreOpponent = gameConfig.scoreOpponent
+    this.timers = []
   }
 
   getData = (): GameData => {
@@ -49,16 +67,6 @@ export default class Game {
     }, 1000)
     this.timers.push(timer)
     return timer
-  }
-
-  setToDefault = (): void => {
-    this.status = gameConfig.status
-    this.paused = gameConfig.paused
-    this.time = gameConfig.time
-    this.quarter = gameConfig.quarter
-    this.scoreHost = gameConfig.scoreHost
-    this.scoreOpponent = gameConfig.scoreOpponent
-    this.timers = []
   }
 
   startGame = (client: Namespace): void => {

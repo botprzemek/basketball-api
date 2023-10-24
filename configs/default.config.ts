@@ -5,5 +5,5 @@ export default {
   useSupabase: false,
   cacheTime: 300,
   routeList: ['teams', 'players', 'matches', 'schedules', 'leagues'],
-  expireTime: '1s',
+  expireTime: '1h',
 }

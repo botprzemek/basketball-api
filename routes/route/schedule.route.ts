@@ -1,5 +1,5 @@
-import { Router } from 'express'
-import { schedules } from 'controllers/schedule.controller'
+import {Router} from 'express'
+import {schedules} from 'controllers/api/schedule.controller'
 import schedulesBy from './schedule/match.schedule'
 
 const router: Router = Router()
