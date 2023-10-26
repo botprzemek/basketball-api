@@ -1,5 +1,5 @@
-import {Router, RouterOptions} from 'express'
-import {playersByTeam} from 'controllers/api/playerTeam.controller'
+import { Router, RouterOptions } from 'express'
+import { playersByTeam } from 'controllers/api/playerTeam.controller'
 
 const router: Router = Router({ mergeParams: true } as RouterOptions)
 

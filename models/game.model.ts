@@ -1,5 +1,5 @@
 import gameConfig from 'gameConfig'
-import {Namespace} from 'socket.io'
+import { Namespace } from 'socket.io'
 
 interface GameData {
   status: boolean
