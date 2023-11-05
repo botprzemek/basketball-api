@@ -1,4 +1,5 @@
 enum State {
+  STARTING = 'STARTING',
   WARMING_UP = 'WARMING_UP',
   TIMEOUT = 'TIMEOUT',
   PAUSED = 'PAUSED',
@@ -11,7 +12,11 @@ export default class GameState {
   private state: State
 
   constructor() {
-    this.state = State.WARMING_UP
+    this.setStarting()
+  }
+
+  public isStarting(): boolean {
+    return this.state === State.STARTING
   }
 
   public isWarmingUp(): boolean {
@@ -36,6 +41,11 @@ export default class GameState {
 
   public isEnded(): boolean {
     return this.state === State.ENDED
+  }
+
+  public setStarting(): GameState {
+    this.state = State.STARTING
+    return this
   }
 
   public setWarmingUp(): GameState {
@@ -69,8 +79,6 @@ export default class GameState {
   }
 
   public getData() {
-    return {
-      state: this.state
-    }
+    return this.state
   }
 }

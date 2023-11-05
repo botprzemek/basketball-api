@@ -1,21 +1,25 @@
 import Statistics from 'models/game/statistics/statistics.model'
 
 export default class PlayerStatistics extends Statistics {
-  private minutes: number
+  private seconds: number
 
   constructor() {
     super()
-    this.minutes = 0
+    this.seconds = 0
   }
 
-  public addMinutes(): PlayerStatistics {
-    this.minutes++
+  public addSeconds(): PlayerStatistics {
+    this.seconds++
     return this
+  }
+
+  private getMinutes(): number {
+    return Math.ceil(this.seconds / 60)
   }
 
   public getData() {
     return {
-      minutes: this.minutes | 0,
+      minutes: this.getMinutes() | 0,
       rebounds: {
         defensive: this.rebounds.defensive | 0,
         offensive: this.rebounds.offensive | 0,

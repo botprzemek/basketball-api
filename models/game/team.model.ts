@@ -1,19 +1,15 @@
 import Player from 'models/game/player.model'
-import TeamStatistics from 'models/game/statistics/teamStatistics.model'
 import Game from 'models/game/game.model'
-import ScoreTable from 'models/game/scoreTable.model'
+import StatisticsManager from 'models/game/statistics.manager'
 
-export default class Team{
+export default class Team {
   private readonly name: string
   private readonly players: Player[]
-  private readonly statistics: TeamStatistics
-  private readonly scoreTable: ScoreTable
+  private statistics: StatisticsManager
 
-  constructor(name: string, game: () => Game) {
+  constructor(name: string) {
     this.name = name
     this.players = []
-    this.statistics = new TeamStatistics()
-    this.scoreTable = new ScoreTable(() => this, game)
   }
 
   public addPlayer(player: Player): Team {
@@ -21,10 +17,14 @@ export default class Team{
     return this
   }
 
-  public setStartingFive(...players: Player[]): void {
-    this.players
-      .filter((player: Player): boolean => players.includes(player))
-      .map((player: Player) => player.setPlaying())
+  public setStartingFive(...numbers: number[]): void {
+    this.players.map((player: Player) => player.getState().setBenched())
+    numbers.map((number: number) => this.getPlayer(number).getState().setPlaying())
+  }
+
+  public setStatistics(game: Game): Team {
+    this.statistics = new StatisticsManager(this, game)
+    return this
   }
 
   public getPlayer(number: number): Player {
@@ -32,19 +32,19 @@ export default class Team{
       .filter((player: Player): boolean => player.getNumber() === number)[0]
   }
 
-  public getStatistics(): TeamStatistics {
-    return this.statistics
+  public getPlayers(): Player[] {
+    return this.players
   }
 
-  public getScore(): ScoreTable {
-    return this.scoreTable
+  public getStatistics(): StatisticsManager {
+    return this.statistics
   }
 
   public getData() {
     return {
       name: this.name,
       players: this.players.map((player: Player) => player.getData()),
-      statistics: this.statistics.getData(),
+      // statistics: this.getStatistics().getData()
     }
   }
 }

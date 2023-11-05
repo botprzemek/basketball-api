@@ -111,6 +111,10 @@ export default class Statistics {
     return this.fieldGoal.inside.made + this.fieldGoal.outside.made
   }
 
+  public getFouls(): number {
+    return this.fouls
+  }
+
   public getEvaluation(): number {
     const reboundsSum: number = this.rebounds.defensive + this.rebounds.offensive
     const missedFG: number = (this.getAttempedFG() + this.freethrow.attempted) - (this.getMadeFG() + this.freethrow.made)

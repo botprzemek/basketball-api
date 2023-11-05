@@ -1,55 +1,64 @@
 import Team from 'models/game/team.model'
 import Player from 'models/game/player.model'
-import Position from 'models/game/position.model'
+import PositionType from 'models/game/type/position.model'
 import Game from 'models/game/game.model'
+import FoulType from 'models/game/type/foul.model'
+
+const data = {
+  host: {
+    name: 'Golden State Warriors',
+    players: [
+      {
+        name: 'Stephen',
+        lastname: 'Curry',
+        number: 30,
+        position: PositionType.PG,
+        starting: true,
+      },
+    ],
+  },
+  opponent: {
+    name: 'Los Angeles Lakers',
+    players: [
+      {
+        name: 'LeBron',
+        lastname: 'James',
+        number: 23,
+        position: PositionType.SF,
+        starting: true,
+      },
+    ],
+  },
+}
 
 const game: Game = new Game()
 
-const team1: Team = new Team('Golden State Warriors', () => game)
-const team2: Team = new Team('Los Angeles Lakers', () => game)
-
-const player1: Player = new Player('Stephen', 'Curry', 30, Position.PG)
-const player2: Player = new Player('LeBron', 'James', 23, Position.SF)
+game
+  .addHost(new Team('Golden State Warriors'))
+  .addPlayer(new Player('Stephen', 'Curry', 30, PositionType.PG))
 
 game
-  .addTeam(team1)
-  .addTeam(team2)
+  .addOpponent(new Team('Los Angeles Lakers'))
+  .addPlayer(new Player('LeBron', 'James', 23, PositionType.SF))
 
 game
-  .getState()
-  .setWarmingUp()
-
-team1
-  .addPlayer(player1)
-
-team2
-  .addPlayer(player2)
+  .getState().setWarmingUp()
 
 game
-  .setQuarter(1)
-  .getState()
-  .setPlaying()
+  .start()
 
-team1
-  .setStartingFive(player1)
+game.getHost().setStartingFive(30)
+game.getOpponent().setStartingFive(23)
 
-game
-  .nextQuarter()
-  .nextQuarter()
-  .nextQuarter()
+setTimeout(() => {
+  game.getHost().getStatistics()
+    .addFoul(30, 23, FoulType.INSIDE_AND)
+    .addFreethrow(true)
 
-team1
-  .getScore()
-  .addFreethrow(player1, true)
-  .addFreethrow(player1, false)
-  .addFreethrow(player1, true)
+  game.getOpponent().getStatistics()
+    .addInsideFG(23, true)
 
-game
-  .nextQuarter()
-  .nextQuarter()
-  .nextQuarter()
+  console.dir(game.getData(), { depth: null })
 
-game
-  .getQuarter()
-
-console.dir(game.getData(), { depth: null })
+  game.end()
+}, 1)

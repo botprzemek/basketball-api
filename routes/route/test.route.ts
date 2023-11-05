@@ -1,27 +1,31 @@
 import {Request, Response, Router} from 'express'
-import {Position} from '@prisma/client'
+import PositionType from 'models/game/type/position.model'
 
 const router: Router = Router()
 
 router.get('/', (_req: Request, res: Response): void => {
   res.send({
     host: {
+      name: 'Golden State Warriors',
       players: [
         {
-          name: 'Kornel',
-          lastname: 'Suchocki',
-          number: 1,
-          position: Position.PG,
+          name: 'Stephen',
+          lastname: 'Curry',
+          number: 30,
+          position: PositionType.PG,
+          starting: true,
         },
       ],
     },
     opponent: {
+      name: 'Los Angeles Lakers',
       players: [
         {
           name: 'LeBron',
           lastname: 'James',
           number: 23,
-          position: Position.SF,
+          position: PositionType.SF,
+          starting: true,
         },
       ],
     },

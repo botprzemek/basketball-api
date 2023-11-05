@@ -1,4 +1,4 @@
-enum Position {
+enum PositionType {
   PG = 'POINT_GUARD',
   SG = 'SHOOTING_GUARD',
   SF = 'SMALL_FORWARD',
@@ -6,4 +6,4 @@ enum Position {
   C = 'CENTER',
 }
 
-export default Position
+export default PositionType

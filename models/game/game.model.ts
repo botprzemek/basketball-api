@@ -4,28 +4,27 @@ import GameState from 'models/game/state/gameState.model'
 
 export default class Game {
   private readonly state: GameState
-  private readonly teams: Team[]
   private readonly quarters: Quarter[]
+  private host: Team
+  private opponent: Team
 
   constructor() {
     this.state = new GameState()
-    this.teams = []
-    this.quarters = [
-      new Quarter(),
-      new Quarter(),
-      new Quarter(),
-      new Quarter(),
-    ]
+    this.quarters = []
   }
 
-  public addTeam(team: Team): Game {
-    this.teams.push(team)
-    return this
+  public addHost(host: Team): Team {
+    this.host = host.setStatistics(this)
+    return this.host
   }
 
-  setQuarter(number: number): Game {
-    this.quarters[number - 1]
-      .changeActive()
+  public addOpponent(opponent: Team): Team {
+    this.opponent = opponent.setStatistics(this)
+    return this.opponent
+  }
+
+  private setQuarter(number: number): Game {
+    this.quarters[number - 1].changeActive()
     return this
   }
 
@@ -38,39 +37,71 @@ export default class Game {
       .filter((quarter: Quarter) => quarter.isActive())[0]
   }
 
+  public getQuarters(): Quarter[] {
+    return this.quarters
+  }
+
+  public getHost(): Team {
+    return this.host
+  }
+
+  public getOpponent(): Team {
+    return this.opponent
+  }
+
+  public getOpposingTeam(team: Team): Team {
+    return (team !== this.host) ? this.host : this.opponent
+  }
+
   public getTeams(): Team[] {
-    return this.teams
+    return [
+      this.host,
+      this.opponent
+    ]
   }
 
   public nextQuarter(): Game {
     if (this.state.isEnded()) return this
+
+    if (this.quarters.indexOf(this.getQuarter()) === 3) {
+      this.end()
+      return this
+    }
+
     this.quarters
-      .filter((quarter: Quarter, index: number) => {
-        if (index === this.quarters.length - 1) return this.end()
-        quarter.isActive()
-      })
-      .map((quarter: Quarter, index: number): void => {
-        this.quarters[index + 1]
-          .changeActive()
-        quarter
-          .changeActive()
+      .filter((quarter: Quarter) => quarter.isActive())
+      .map((quarter: Quarter): void => {
+        quarter.changeActive()
+        this.quarters[this.quarters.indexOf(quarter) + 1].changeActive()
       })
 
     return this
   }
 
+  public start(): Game {
+    this.state.setPlaying()
+    for (let i: number = 0; i < 4; i++) {
+      this.quarters[i] = new Quarter(this.getHost(), this.getOpponent())
+    }
+    this.setQuarter(1)
+    this.getQuarter().getTimer().start(this)
+    return this
+  }
+
   public end(): void {
-    this.state
-      .setEnd()
-    this.getQuarter()
-      .changeActive()
+    this.state.setEnd()
+    this.getQuarters().map((quarter: Quarter) => quarter.getTimer().stop())
+    this.getQuarter().changeActive()
   }
 
   public getData() {
     return {
       state: this.state.getData(),
-      teams: this.teams.map((team: Team) => team.getData()),
-      quarters: this.quarters.map((quarter: Quarter) => quarter.getData())
+      teams: {
+        host: this.host.getData(),
+        opponent:  this.opponent.getData(),
+      },
+      // quarters: this.quarters.map((quarter: Quarter) => quarter.getData())
     }
   }
 }
