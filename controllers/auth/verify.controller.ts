@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import initializeSqlite from 'services/storage/sqlite/initialize.sqlite'
+import { sqliteStorage } from 'services/storage/sqlite.storage'
 
 export default async (req: Request, res: Response): Promise<void> => {
   try {
@@ -10,7 +10,7 @@ export default async (req: Request, res: Response): Promise<void> => {
       return
     }
 
-    const database: any = await initializeSqlite()
+    const database: any = sqliteStorage()
     const { id, verification_code } = await database.get(`SELECT id, verification_code FROM users WHERE verification_code = ? AND verified = ?`, [
       code,
       0,

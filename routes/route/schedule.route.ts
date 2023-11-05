@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { schedules } from 'controllers/api/schedule.controller'
-import schedulesBy from './schedule/match.schedule'
+import schedulesBy from './matchBySchedule.route'
 
 const router: Router = Router()
 

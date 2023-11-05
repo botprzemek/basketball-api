@@ -1,7 +1,8 @@
-// import config from 'config'
-// import cache from 'services/cache.service'
-// import storage from 'services/storage.service'
+import cache from 'services/storage/cache.storage'
+import storage from 'services/storage.service'
+import cacheConfig from 'configs/cache.config'
 
 export default async (): Promise<void> => {
-  // for (const route of config.routeList) cache.setData(route, await storage[route]())
+  if (!cacheConfig.enabled) return
+  for (const route of cacheConfig.routes) cache().set(route, await storage[route]())
 }

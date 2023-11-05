@@ -1,9 +1,9 @@
-import { type MatchSelected, type PlayerSelected, ScheduleSelected, type TeamSelected } from 'models/data.model'
+import {type MatchSelected, type PlayerSelected, ScheduleSelected, type TeamSelected} from 'models/query/data.model'
 
 export default {
   playersByName: (data: PlayerSelected[], name: string): PlayerSelected[] => {
     return data.filter((player: PlayerSelected): boolean => {
-      return `${player.name.toLowerCase()} ${player.lastname.toLowerCase()}`.includes(name.toLowerCase())
+      return `${player.name} ${player.lastname}`.toLowerCase().includes(name.toLowerCase())
     })
   },
   teamsByName: (data: TeamSelected[], name: string): TeamSelected[] => {

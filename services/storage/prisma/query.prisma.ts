@@ -1,6 +1,10 @@
-import prisma from './initialize.prisma'
-import { type MatchSelected, type PlayerSelected, type ScheduleSelected, type TeamSelected } from 'models/data.model'
-import config from 'config'
+import prisma from '../prisma.storage'
+import {
+  type MatchSelected,
+  type PlayerSelected,
+  type ScheduleSelected,
+  type TeamSelected
+} from 'models/query/data.model'
 import playerQuery from './query/player.query'
 import playerByNameQuery from './query/playerByName.query'
 import teamsQuery from './query/team.query'
@@ -12,17 +16,18 @@ import scheduleByDateQuery from 'services/storage/prisma/query/scheduleByDate.qu
 import scheduleBeforeDateQuery from 'services/storage/prisma/query/scheduleBeforeDate.query'
 import scheduleAfterDateQuery from 'services/storage/prisma/query/scheduleAfterDate.query'
 import leagueQuery from 'services/storage/prisma/query/league.query'
-import { type LeagueSelected } from 'models/query/league.model'
+import {type LeagueSelected} from 'models/query/league.model'
+import cacheConfig from 'configs/cache.config'
 
 const cacheStrategy: { swr: number; ttl: number } = {
-  swr: config.cacheTime * 2,
-  ttl: config.cacheTime,
+  swr: cacheConfig.time * 2,
+  ttl: cacheConfig.time,
 }
 
 const query = async <TypeQueried>(prismaKey: string, queryKey: string, values?: any[]): Promise<TypeQueried[]> => {
   try {
     const query = queryList[queryKey](values)
-    return (await prisma())[prismaKey].findMany({
+    return prisma()[prismaKey].findMany({
       cacheStrategy,
       where: query.where,
       select: query.select,

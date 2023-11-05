@@ -1,14 +1,24 @@
-import query from './storage/active.storage'
-import { type MatchFiltered, type PlayerFiltered, type ScheduleFiltered, type TeamFiltered } from 'models/data.model'
-import cache from 'services/cache.service'
-import responseFilter from 'utils/storage/process.storage'
-import { type LeagueFiltered } from 'models/query/league.model'
+import getPrisma from 'services/storage/prisma.storage'
+import getCache from 'services/storage/cache.storage'
+import responseFilter from 'services/storage/method/processData.method'
+import {MatchFiltered, PlayerFiltered, ScheduleFiltered, TeamFiltered} from 'models/query/data.model'
+import {LeagueFiltered} from 'models/query/league.model'
+
+const set = (key: string, value: any): any => {
+  if (!value) return []
+  getCache().set(key, value)
+  return value
+}
+
+const get = (key: string): any => {
+  return getCache().get(key)
+}
 
 const getData = async <TypeSelected>(key: string, method?: string, value?: any): Promise<TypeSelected[]> => {
-  const cachedData: TypeSelected[] = await cache.getData(key)
+  const cachedData: TypeSelected[] = get(key)
   if (cachedData) return responseFilter[key](cachedData, method, value)
-  const data: TypeSelected[] = method ? await query()[method](value) : await query()[key]()
-  return responseFilter[key](cache.setData(key, data), method, value)
+  const data: TypeSelected[] = method ? await getPrisma()[method](value) : await getPrisma()[key]()
+  return responseFilter[key](set(key, data), method, value)
 }
 
 export default {

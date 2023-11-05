@@ -1,10 +1,12 @@
 import { type MailOptions } from 'nodemailer/lib/sendmail-transport'
-import mail from '../mail.service'
-import config from 'config'
+import defaultConfig from 'configs/default.config'
+import mailConfig from 'configs/mail.config'
+import mail from 'services/mail.service'
 
 export default function (receiver: string, data: { title: string; body: string }): void {
+  if (!mailConfig.enabled) return
   const mailOptions: MailOptions = {
-    from: `${config.name} <${config.email}>`,
+    from: `${defaultConfig.name} <${defaultConfig.email}>`,
     to: receiver,
     subject: data.title,
     html: data.body,

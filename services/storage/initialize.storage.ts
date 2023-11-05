@@ -1,6 +1,9 @@
-import prisma from './prisma/initialize.prisma'
-import cache from './cache/initialize.cache'
+import initializeSqlite from 'services/storage/sqlite/initialize.sqlite'
+import initializePrisma from './prisma/initialize.prisma'
+import initializeCache from './cache/initialize.cache'
 
-export default async (): Promise<void> => {
-  prisma().then(() => cache())
+export default (): void => {
+  void initializeSqlite()
+  void initializePrisma()
+  void initializeCache()
 }

@@ -7,19 +7,19 @@ import {
   type ScheduleSelected,
   type TeamFiltered,
   type TeamSelected,
-} from 'models/data.model'
-import filterUtil from 'utils/storage/filter.storage'
-import builderUtil from 'utils/storage/builder.storage'
-import { LeagueFiltered, LeagueSelected } from 'models/query/league.model'
+} from 'models/query/data.model'
+import filterData from 'services/storage/method/filterData.method'
+import buildData from 'services/storage/method/buildData.method'
+import {LeagueFiltered, LeagueSelected} from 'models/query/league.model'
 
 const typeFilter = (key: string, data: any, method?: string, value?: any): any[] => {
   if (!data) return []
 
   const filtered: any[] = []
-  data = method ? filterUtil[method](data, value) : data
+  data = method ? filterData[method](data, value) : data
 
   data.forEach((record: any): void => {
-    filtered.push(builderUtil[key](record))
+    filtered.push(buildData[key](record))
   })
 
   return filtered

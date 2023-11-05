@@ -9,8 +9,7 @@
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "config": ["./configs/default.config.ts"],
-      "gameConfig": ["./configs/game.config.ts"],
+      "configs/*": ["./configs/*"],
       "controllers/*": ["./controllers/*"],
       "middleware/*": ["./middleware/*"],
       "models/*": ["./models/*"],

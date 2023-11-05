@@ -1,4 +1,7 @@
+import defaultConfig from './default.config'
+
 export default {
+  enabled: true,
   auth: {
     pool: true,
     host: process.env.MAIL_URL,
@@ -10,9 +13,9 @@ export default {
     },
   },
   options: {
-    from: 'Knury Knurów <system@knuryknurow.pl>',
-    to: 'testing@knuryknurow.pl',
-    subject: 'test',
-    html: '<h1>test</h1>',
+    from: `${defaultConfig.name} <${defaultConfig.email}>`,
+    to: defaultConfig.email.replace('info', 'test'),
+    subject: 'Test',
+    html: '<h1>Test</h1>',
   },
 }

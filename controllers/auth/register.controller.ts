@@ -1,10 +1,9 @@
 import { Request, Response } from 'express'
-import initializeSqlite from 'services/storage/sqlite/initialize.sqlite'
 import { hash } from 'bcrypt'
 import { randomBytes } from 'crypto'
 import { sign } from 'jsonwebtoken'
-import defaultConfig from 'config'
-import sendMail from 'services/mail/send.mail'
+import { sqliteStorage } from 'services/storage/sqlite.storage'
+import settingsConfig from 'configs/settings.config'
 
 export default async (req: Request, res: Response): Promise<void> => {
   try {
@@ -15,7 +14,7 @@ export default async (req: Request, res: Response): Promise<void> => {
       return
     }
 
-    const database: any = await initializeSqlite()
+    const database: any = sqliteStorage()
     const isUserCreated: boolean = !!(await database.get(`SELECT * FROM users WHERE email = ?`, [email.toLowerCase()]))
 
     if (isUserCreated) {
@@ -40,7 +39,7 @@ export default async (req: Request, res: Response): Promise<void> => {
       },
       process.env.TOKEN_KEY as string,
       {
-        expiresIn: defaultConfig.expireTime,
+        expiresIn: settingsConfig.expireTime,
       },
     )
 

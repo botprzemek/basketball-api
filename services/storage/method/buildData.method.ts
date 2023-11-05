@@ -7,9 +7,9 @@ import {
   type ScheduleSelected,
   type TeamFiltered,
   type TeamSelected,
-} from 'models/data.model'
-import processUtil from 'utils/storage/process.storage'
-import { LeagueFiltered, LeagueSelected } from 'models/query/league.model'
+} from 'models/query/data.model'
+import processUtil from 'services/storage/method/processData.method'
+import {LeagueFiltered, LeagueSelected} from 'models/query/league.model'
 
 export default {
   players: (record: PlayerSelected): PlayerFiltered => ({
@@ -43,7 +43,7 @@ export default {
       host: record.score !== null ? record.score.host : [],
       opponent: record.score !== null ? record.score.opponent : [],
       final:
-        record.score !== null
+        record.score.host !== null || record.score.opponent !== null
           ? [
               record.score.host.reduce((partialSum: number, a: number) => partialSum + a, 0),
               record.score.opponent.reduce((partialSum: number, a: number) => partialSum + a, 0),

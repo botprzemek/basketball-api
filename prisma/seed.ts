@@ -1,470 +1,55 @@
 import { PrismaClient } from '@prisma/client'
+import citySeedling from 'services/storage/prisma/seedlings/city.seedling'
+import arenaSeedling from 'services/storage/prisma/seedlings/arena.seedling'
+import leagueSeedling from 'services/storage/prisma/seedlings/league.seedling'
 
 const prisma = new PrismaClient()
 
-async function main() {
+async function main(): Promise<void> {
   await prisma.city.createMany({
-    data: [
-      {
-        id: 1,
-        name: 'Knurów',
-        state: 'Silesia',
-      },
-      {
-        id: 2,
-        name: 'Katowice',
-        state: 'Silesia',
-      },
-      {
-        id: 3,
-        name: 'Jaworzno',
-        state: 'Silesia',
-      },
-    ],
+    data: citySeedling,
     skipDuplicates: true,
   })
   await prisma.arena.createMany({
-    data: [
-      {
-        id: 1,
-        name: 'MOSiR Knurów',
-        location: `50°14'00.9"N 18°39'14.4"E`,
-        cityId: 1,
-      },
-      {
-        id: 2,
-        name: 'Ośrodek Sportowy Szopienice',
-        location: `50°15'38.4"N 19°05'23.8"E`,
-        cityId: 2,
-      },
-      {
-        id: 3,
-        name: 'Spodek Katowice',
-        location: `50°15'38.4"N 19°05'23.8"E`,
-        cityId: 2,
-      },
-    ],
+    data: arenaSeedling,
     skipDuplicates: true,
   })
-  await prisma.league.createMany({
-    data: [
-      {
-        id: 1,
-        name: 'ŚLK',
-        cityId: 2,
-        arenaId: 3,
-      },
-    ],
-    skipDuplicates: true,
-  })
-  await prisma.team.createMany({
-    data: [
-      {
-        id: 1,
-        name: 'Knury Knurów I',
-        won: 0,
-        lost: 0,
-        leagueId: 1,
-        cityId: 1,
-      },
-      {
-        id: 2,
-        name: 'Knury Knurów II',
-        won: 0,
-        lost: 0,
-        leagueId: 1,
-        cityId: 1,
-      },
-      {
-        id: 3,
-        name: 'Paderewa',
-        won: 0,
-        lost: 0,
-        leagueId: 1,
-        cityId: 2,
-      },
-      {
-        id: 4,
-        name: 'Jaworzno Squad',
-        won: 0,
-        lost: 0,
-        leagueId: 1,
-        cityId: 3,
-      },
-    ],
-    skipDuplicates: true,
-  })
-  await prisma.player.createMany({
-    data: [
-      {
-        id: 1,
-        name: 'Kornel',
-        lastname: 'Suchocki',
-        number: 1,
-        height: 186,
-        position: 1,
-        age: new Date('2007-10-09'),
-        teamId: 1,
-      },
-      {
-        id: 2,
-        name: 'Tomasz',
-        lastname: 'Knast',
-        number: 45,
-        height: 183,
-        position: 2,
-        age: new Date('2004-06-01'),
-        teamId: 1,
-      },
-      {
-        id: 3,
-        name: 'Tomasz',
-        lastname: 'Gontarewicz',
-        number: 4,
-        height: 180,
-        position: 1,
-        age: new Date('2002-10-03'),
-        teamId: 1,
-      },
-      {
-        id: 4,
-        name: 'Przemysław',
-        lastname: 'Szymański',
-        number: 13,
-        height: 183,
-        position: 3,
-        age: new Date('2003-12-26'),
-        teamId: 1,
-      },
-      {
-        id: 5,
-        name: 'Igor',
-        lastname: 'Szkodny',
-        number: 70,
-        height: 191,
-        position: 5,
-        age: new Date('2003-07-07'),
-        teamId: 1,
-      },
-      {
-        id: 6,
-        name: 'Krzysztof',
-        lastname: 'Żuber',
-        number: 18,
-        height: 200,
-        position: 1,
-        age: new Date('2008-06-23'),
-        teamId: 1,
-      },
-      {
-        id: 7,
-        name: 'Kajetan',
-        lastname: 'Kozłowski',
-        number: 7,
-        height: 183,
-        position: 2,
-        age: new Date('2007-04-14'),
-        teamId: 1,
-      },
-      {
-        id: 8,
-        name: 'Patryk',
-        lastname: 'Pępek',
-        number: 12,
-        height: 183,
-        position: 3,
-        age: new Date('2003-01-11'),
-        teamId: 1,
-      },
-      {
-        id: 9,
-        name: 'Bartosz',
-        lastname: 'Kobiołka',
-        number: 28,
-        height: 187,
-        position: 4,
-        age: new Date('2007-03-16'),
-        teamId: 1,
-      },
-      {
-        id: 10,
-        name: 'Dawid',
-        lastname: 'Kocięba',
-        number: 0,
-        height: 190,
-        position: 5,
-        age: new Date('2001-12-06'),
-        teamId: 1,
-      },
-      {
-        id: 11,
-        name: 'Filip',
-        lastname: 'Kułach',
-        number: 22,
-        height: 183,
-        position: 4,
-        age: new Date('2001-07-13'),
-        teamId: 1,
-      },
-      {
-        id: 12,
-        name: 'Igor',
-        lastname: 'Orlef',
-        number: 24,
-        height: 183,
-        position: 4,
-        age: new Date('2005-02-23'),
-        teamId: 1,
-      },
-      {
-        id: 13,
-        name: 'Tomasz',
-        lastname: 'Dubiel',
-        number: 32,
-        height: 179,
-        position: 2,
-        age: new Date('2008-05-06'),
-        teamId: 1,
-      },
-      {
-        id: 16,
-        name: 'Grzegorz',
-        lastname: 'Odrzywalek',
-        number: 44,
-        height: 183,
-        position: 3,
-        age: new Date('2000-01-01'),
-        teamId: 1,
-      },
-      {
-        id: 17,
-        name: 'Karol',
-        lastname: 'Karpiński',
-        number: 5,
-        height: 183,
-        position: 2,
-        age: new Date('2007-11-07'),
-        teamId: 2,
-      },
-      {
-        id: 18,
-        name: 'Dominik',
-        lastname: 'Girgiel',
-        number: 34,
-        height: 183,
-        position: 3,
-        age: new Date('2007-06-14'),
-        teamId: 2,
-      },
-      {
-        id: 19,
-        name: 'Franek',
-        lastname: 'Borkowski',
-        number: 43,
-        height: 190,
-        position: 4,
-        age: new Date('2007-08-02'),
-        teamId: 2,
-      },
-      {
-        id: 20,
-        name: 'Mateusz',
-        lastname: 'Augustyn',
-        number: 17,
-        height: 200,
-        position: 5,
-        age: new Date('2005-09-18'),
-        teamId: 2,
-      },
-      {
-        id: 21,
-        name: 'Michał',
-        lastname: 'Pilc',
-        number: 23,
-        height: 179,
-        position: 1,
-        age: new Date('2008-05-23'),
-        teamId: 2,
-      },
-      {
-        id: 22,
-        name: 'Patryk',
-        lastname: 'Kubacki',
-        number: 27,
-        height: 190,
-        position: 5,
-        age: new Date('2007-02-01'),
-        teamId: 2,
-      },
-      {
-        id: 23,
-        name: 'Piotr',
-        lastname: 'Oleksy',
-        number: 97,
-        height: 179,
-        position: 1,
-        age: new Date('2009-01-13'),
-        teamId: 2,
-      },
-      {
-        id: 24,
-        name: 'Aleksander',
-        lastname: 'Szafarz',
-        number: 91,
-        height: 183,
-        position: 2,
-        age: new Date('2009-06-22'),
-        teamId: 2,
-      },
-      {
-        id: 25,
-        name: 'Mateusz',
-        lastname: 'Nizar',
-        number: 20,
-        height: 183,
-        position: 3,
-        age: new Date('2003-07-23'),
-        teamId: 2,
-      },
-      {
-        id: 26,
-        name: 'Dominik',
-        lastname: 'Karaś',
-        number: 25,
-        height: 179,
-        position: 2,
-        age: new Date('2008-11-26'),
-        teamId: 2,
-      },
-      {
-        id: 27,
-        name: 'Igor',
-        lastname: 'Wnuk',
-        number: 77,
-        height: 183,
-        position: 3,
-        age: new Date('2007-02-06'),
-        teamId: 2,
-      },
-      {
-        id: 28,
-        name: 'Maksymilian',
-        lastname: 'Lipka',
-        number: 33,
-        height: 179,
-        position: 2,
-        age: new Date('2008-10-04'),
-        teamId: 2,
-      },
-      {
-        id: 29,
-        name: 'Kuba',
-        lastname: 'Zieliński',
-        number: 36,
-        height: 183,
-        position: 3,
-        age: new Date('2000-01-01'),
-        teamId: 2,
-      },
-      {
-        id: 30,
-        name: 'Dominik',
-        lastname: 'Gogolin',
-        number: 99,
-        height: 183,
-        position: 3,
-        age: new Date('2000-01-01'),
-        teamId: 2,
-      },
-    ],
-    skipDuplicates: true,
-  })
-  await prisma.match.createMany({
-    data: [
-      {
-        id: 1,
-        leagueId: 1,
-        hostId: 1,
-        opponentId: 3,
-      },
-      {
-        id: 2,
-        leagueId: 1,
-        hostId: 2,
-        opponentId: 4,
-      },
-    ],
-    skipDuplicates: true,
-  })
-  await prisma.schedule.createMany({
-    data: [
-      {
-        matchId: 1,
-        datetime: new Date('2023-10-08T09:00:00.000Z'),
-        arenaId: 2,
-      },
-      {
-        matchId: 2,
-        datetime: new Date('2023-10-08T11:30:00.000Z'),
-        arenaId: 2,
-      },
-    ],
-    skipDuplicates: true,
-  })
-  await prisma.roster.create({
-    data: {
-      matchId: 1,
-      teamId: 1,
-      players: {
-        connect: [
-          { id: 1 },
-          { id: 2 },
-          { id: 3 },
-          { id: 4 },
-          { id: 5 },
-          { id: 6 },
-          { id: 7 },
-          { id: 8 },
-          { id: 9 },
-          { id: 10 },
-          { id: 11 },
-          { id: 12 },
-          { id: 13 },
-        ],
-      },
-    },
-  })
-  await prisma.roster.create({
-    data: {
-      matchId: 2,
-      teamId: 2,
-      players: {
-        connect: [
-          { id: 16 },
-          { id: 17 },
-          { id: 18 },
-          { id: 19 },
-          { id: 20 },
-          { id: 21 },
-          { id: 22 },
-          { id: 23 },
-          { id: 24 },
-          { id: 25 },
-          { id: 26 },
-          { id: 27 },
-          { id: 28 },
-          { id: 29 },
-          { id: 30 },
-        ],
-      },
-    },
+  await prisma.league.create({
+    data: leagueSeedling,
   })
 }
 
+//   await prisma.roster.create({
+//     data: {
+//       matchId: 2,
+//       teamId: 2,
+//       players: {
+//         connect: [
+//           { id: 16 },
+//           { id: 17 },
+//           { id: 18 },
+//           { id: 19 },
+//           { id: 20 },
+//           { id: 21 },
+//           { id: 22 },
+//           { id: 23 },
+//           { id: 24 },
+//           { id: 25 },
+//           { id: 26 },
+//           { id: 27 },
+//           { id: 28 },
+//           { id: 29 },
+//           { id: 30 },
+//         ],
+//       },
+//     },
+//   })
+// }
+
 main()
-  .then(async () => await prisma.$disconnect())
-  .catch(async (e) => {
-    console.error(e)
+  .then(async (): Promise<void> => await prisma.$disconnect())
+  .catch(async (error): Promise<void> => {
     await prisma.$disconnect()
+    console.error(error)
     process.exit(1)
   })

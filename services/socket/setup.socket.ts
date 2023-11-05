@@ -10,7 +10,9 @@ export default (server: http.Server): { admin: Namespace; client: Namespace } =>
   })
   const admin: Namespace = websocket.of('admin')
   const client: Namespace = websocket.of('/')
+
   authorizeSocket([admin])
+
   return {
     admin: admin,
     client: client,

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import initializeSqlite from 'services/storage/sqlite/initialize.sqlite'
 import { compare } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
-import defaultConfig from 'config'
+import { sqliteStorage } from 'services/storage/sqlite.storage'
+import settingsConfig from 'configs/settings.config'
 
 export default async (req: Request, res: Response): Promise<void> => {
   try {
@@ -13,8 +13,7 @@ export default async (req: Request, res: Response): Promise<void> => {
       return
     }
 
-    const database: any = await initializeSqlite()
-    const user = await database.get(`SELECT id, verified, password FROM users WHERE email = ?`, [email])
+    const user = await sqliteStorage().get(`SELECT id, verified, password FROM users WHERE email = ?`, [email])
 
     if (!(user && user.verified && (await compare(password, user.password)))) {
       res.sendStatus(404)
@@ -28,7 +27,7 @@ export default async (req: Request, res: Response): Promise<void> => {
       },
       process.env.TOKEN_KEY as string,
       {
-        expiresIn: defaultConfig.expireTime,
+        expiresIn: settingsConfig.expireTime,
       },
     )
 

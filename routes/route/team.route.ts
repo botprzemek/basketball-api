@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { teams, teamsByName } from 'controllers/api/team.controller'
-import playersByTeam from './team/player.team'
+import playersByTeam from './playerByTeam.route'
 
 const router: Router = Router()
 

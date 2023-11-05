@@ -5,8 +5,7 @@ export default function (req: Request, res: Response, data: any[]): void {
     res.sendStatus(404)
     return
   }
-
-  res.send(data)
+  res.json(data)
   console.log(
     `${new Date().toLocaleTimeString('pl-PL')} [request] GET ${decodeURI(req.baseUrl + req.path)} (${(
       (performance.now() - res.locals.start) /

@@ -21,8 +21,36 @@ model Player {
   statistics Statistics[]
   rosters    Roster[]
 
-  @@index([id, lastname, teamId])
+  @@index([id, name, lastname, teamId])
   @@map("players")
+}
+
+model Statistics {
+  id            BigInt @id @unique @default(autoincrement())
+  playerId      BigInt
+  matchId       BigInt
+  minutes       Int?
+  points        Int?
+  insideFgm     Int?
+  outsideFgm    Int?
+  freethrowsFgm Int?
+  insideFga     Int?
+  outsideFga    Int?
+  freethrowsFga Int?
+  assists       Int?
+  reboundsSum   Int?
+  reboundsOff   Int?
+  reboundsDef   Int?
+  blocks        Int?
+  steals        Int?
+  turnovers     Int?
+  fouls         Int?
+  eval          Int?
+  player        Player @relation(fields: [playerId], references: [id])
+  match         Match  @relation(fields: [matchId], references: [id])
+
+  @@index([id, playerId, matchId])
+  @@map("statistics")
 }
 
 enum Position {
@@ -41,40 +69,13 @@ model Staff {
   role     Role
   team     Team @relation(fields: [teamId], references: [id])
 
-  @@index([id, lastname, role])
+  @@index([id, name, lastname, role, teamId])
   @@map("staff")
 }
 
 enum Role {
   COACH
   TRAINER
-}
-
-model Statistics {
-  id            BigInt @id @unique @default(autoincrement())
-  playerId      BigInt
-  matchId       BigInt
-  minutes       Int    @default(0)
-  points        Int?
-  insideFga     Int?
-  outsideFga    Int?
-  freethrowsFga Int?
-  insideFgm     Int?
-  outsideFgm    Int?
-  freethrowsFgm Int?
-  assists       Int?
-  reboundsSum   Int?
-  reboundsOff   Int?
-  reboundsDef   Int?
-  blocks        Int?
-  steals        Int?
-  turnovers     Int?
-  fouls         Int?
-  player        Player @relation(fields: [playerId], references: [id])
-  match         Match  @relation(fields: [matchId], references: [id])
-
-  @@index([id, playerId, matchId])
-  @@map("statistics")
 }
 
 model Team {
@@ -92,7 +93,7 @@ model Team {
   hostMatches     Match[]  @relation("hostTeam")
   opponentMatches Match[]  @relation("opponentTeam")
 
-  @@index([id, name])
+  @@index([id, name, cityId, leagueId])
   @@map("teams")
 }
 
@@ -114,6 +115,17 @@ model Match {
   @@map("matches")
 }
 
+model Schedule {
+  match    Match    @relation(fields: [matchId], references: [id])
+  matchId  BigInt   @unique
+  arenaId  BigInt
+  datetime DateTime
+  arena    Arena    @relation(fields: [arenaId], references: [id])
+
+  @@index([matchId, arenaId])
+  @@map("schedules")
+}
+
 model Roster {
   id      BigInt   @id @default(autoincrement())
   teamId  BigInt
@@ -127,34 +139,13 @@ model Roster {
 }
 
 model Score {
-  match    Match  @relation(fields: [matchId], references: [id])
   matchId  BigInt @unique
+  match    Match  @relation(fields: [matchId], references: [id])
   host     Int[]
   opponent Int[]
 
   @@index([matchId])
   @@map("score")
-}
-
-model Backlog {
-  id       BigInt   @id @unique @default(autoincrement())
-  matchId  BigInt
-  data     String
-  datetime DateTime
-  match    Match    @relation(fields: [matchId], references: [id])
-
-  @@map("backlog")
-}
-
-model Schedule {
-  match    Match    @relation(fields: [matchId], references: [id])
-  matchId  BigInt   @unique
-  arenaId  BigInt
-  datetime DateTime
-  arena    Arena    @relation(fields: [arenaId], references: [id])
-
-  @@index([matchId, arenaId])
-  @@map("schedules")
 }
 
 model City {
@@ -178,7 +169,7 @@ model Arena {
   schedules Schedule[]
   leagues   League[]
 
-  @@index([id, name])
+  @@index([id, name, cityId])
   @@map("arenas")
 }
 
@@ -192,6 +183,16 @@ model League {
   teams   Team[]
   matches Match[]
 
-  @@index([id, name])
+  @@index([id, name, cityId, arenaId])
   @@map("leagues")
+}
+
+model Backlog {
+  id       BigInt   @id @unique @default(autoincrement())
+  matchId  BigInt
+  data     String
+  datetime DateTime
+  match    Match    @relation(fields: [matchId], references: [id])
+
+  @@map("backlog")
 }
