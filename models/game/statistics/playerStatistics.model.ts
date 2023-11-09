@@ -13,13 +13,13 @@ export default class PlayerStatistics extends Statistics {
     return this
   }
 
-  private getMinutes(): number {
-    return Math.ceil(this.seconds / 60)
+  public getSeconds(): number {
+    return this.seconds
   }
 
   public getData() {
     return {
-      minutes: this.getMinutes() | 0,
+      seconds: this.getSeconds() | 0,
       rebounds: {
         defensive: this.rebounds.defensive | 0,
         offensive: this.rebounds.offensive | 0,

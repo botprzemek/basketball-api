@@ -1,8 +1,8 @@
 import getPrisma from 'services/storage/prisma.storage'
 import getCache from 'services/storage/cache.storage'
 import responseFilter from 'services/storage/method/processData.method'
-import {MatchFiltered, PlayerFiltered, ScheduleFiltered, TeamFiltered} from 'models/query/data.model'
-import {LeagueFiltered} from 'models/query/league.model'
+import { MatchFiltered, PlayerFiltered, ScheduleFiltered, TeamFiltered } from 'models/query/data.model'
+import { LeagueFiltered } from 'models/query/league.model'
 
 const set = (key: string, value: any): any => {
   if (!value) return []

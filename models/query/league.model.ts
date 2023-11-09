@@ -1,4 +1,4 @@
-import {TeamFiltered, TeamSelected} from 'models/query/data.model'
+import { TeamFiltered, TeamSelected } from 'models/query/data.model'
 
 export interface LeagueQuery {
   where: {}

@@ -1,10 +1,5 @@
 import prisma from '../prisma.storage'
-import {
-  type MatchSelected,
-  type PlayerSelected,
-  type ScheduleSelected,
-  type TeamSelected
-} from 'models/query/data.model'
+import { type MatchSelected, type PlayerSelected, type ScheduleSelected, type TeamSelected } from 'models/query/data.model'
 import playerQuery from './query/player.query'
 import playerByNameQuery from './query/playerByName.query'
 import teamsQuery from './query/team.query'
@@ -16,7 +11,7 @@ import scheduleByDateQuery from 'services/storage/prisma/query/scheduleByDate.qu
 import scheduleBeforeDateQuery from 'services/storage/prisma/query/scheduleBeforeDate.query'
 import scheduleAfterDateQuery from 'services/storage/prisma/query/scheduleAfterDate.query'
 import leagueQuery from 'services/storage/prisma/query/league.query'
-import {type LeagueSelected} from 'models/query/league.model'
+import { type LeagueSelected } from 'models/query/league.model'
 import cacheConfig from 'configs/cache.config'
 
 const cacheStrategy: { swr: number; ttl: number } = {

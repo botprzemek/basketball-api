@@ -37,7 +37,7 @@ export default class Statistics {
       outside: {
         attempted: 0,
         made: 0,
-      }
+      },
     }
     this.freethrow = {
       attempted: 0,
@@ -92,7 +92,7 @@ export default class Statistics {
   }
 
   private getPoints(): number {
-    return (this.fieldGoal.outside.made * 3) + (this.fieldGoal.inside.made * 2) + this.freethrow.made
+    return this.fieldGoal.outside.made * 3 + this.fieldGoal.inside.made * 2 + this.freethrow.made
   }
 
   public getRebounds(): number {
@@ -117,12 +117,12 @@ export default class Statistics {
 
   public getEvaluation(): number {
     const reboundsSum: number = this.rebounds.defensive + this.rebounds.offensive
-    const missedFG: number = (this.getAttempedFG() + this.freethrow.attempted) - (this.getMadeFG() + this.freethrow.made)
-    return (this.getPoints() + reboundsSum + this.assists + this.steals + this.blocks) - (missedFG + this.turnovers)
+    const missedFG: number = this.getAttempedFG() + this.freethrow.attempted - (this.getMadeFG() + this.freethrow.made)
+    return this.getPoints() + reboundsSum + this.assists + this.steals + this.blocks - (missedFG + this.turnovers)
   }
 
   public getTrueShooting(): number {
-    return Math.ceil(this.getPoints() / (2 * (this.getAttempedFG() + (0.44 * this.freethrow.attempted))) * 100)
+    return Math.ceil((this.getPoints() / (2 * (this.getAttempedFG() + 0.44 * this.freethrow.attempted))) * 100)
   }
 
   public getData() {

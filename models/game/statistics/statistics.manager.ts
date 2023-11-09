@@ -64,6 +64,7 @@ export default class StatisticsManager {
 
     if (opponent.getState().isFouledOn()) opponent.getState().setPlaying()
     this.game.getState().setPlaying()
+    this.game.getQuarter().getTimer().start(this.game)
 
     return this
   }
@@ -100,8 +101,6 @@ export default class StatisticsManager {
   }
 
   public getData() {
-    return {
-      team: this.teamStatistics.getData(),
-    }
+    return this.teamStatistics.getData()
   }
 }

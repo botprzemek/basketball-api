@@ -1,5 +1,7 @@
 # basketball-api
 
+SENN - SurrealDB, Express, Nuxt, NodeJS
+
 This documentation provides an overview of the REST API project developed for the Knury Knurów basketball team. The API is built using JavaScript + TypeScript :milky_way: with Express framework (Node.js), and it integrates technologies such as Supabase :sparkle:, Prisma :gem:, Socket.IO :loudspeaker:, and Node-Cache :eight_pointed_black_star: package for caching.
 
 > [!WARNING] > <span id="status">Project is work in progress</span>

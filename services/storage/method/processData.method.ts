@@ -10,7 +10,7 @@ import {
 } from 'models/query/data.model'
 import filterData from 'services/storage/method/filterData.method'
 import buildData from 'services/storage/method/buildData.method'
-import {LeagueFiltered, LeagueSelected} from 'models/query/league.model'
+import { LeagueFiltered, LeagueSelected } from 'models/query/league.model'
 
 const typeFilter = (key: string, data: any, method?: string, value?: any): any[] => {
   if (!data) return []

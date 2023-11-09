@@ -9,7 +9,7 @@ import {
   type TeamSelected,
 } from 'models/query/data.model'
 import processUtil from 'services/storage/method/processData.method'
-import {LeagueFiltered, LeagueSelected} from 'models/query/league.model'
+import { LeagueFiltered, LeagueSelected } from 'models/query/league.model'
 
 export default {
   players: (record: PlayerSelected): PlayerFiltered => ({

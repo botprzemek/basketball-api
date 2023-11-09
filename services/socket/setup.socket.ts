@@ -1,6 +1,5 @@
 import http from 'http'
 import { Namespace, Server } from 'socket.io'
-import authorizeSocket from 'services/socket/authorize.socket'
 
 export default (server: http.Server): { admin: Namespace; client: Namespace } => {
   const websocket: Server = new Server(server, {
@@ -11,7 +10,7 @@ export default (server: http.Server): { admin: Namespace; client: Namespace } =>
   const admin: Namespace = websocket.of('admin')
   const client: Namespace = websocket.of('/')
 
-  authorizeSocket([admin])
+  // authorizeSocket([admin])
 
   return {
     admin: admin,

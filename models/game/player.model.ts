@@ -19,6 +19,14 @@ export default class Player {
     this.statistics = new PlayerStatistics()
   }
 
+  public getName(): string {
+    return this.name
+  }
+
+  public getLastname(): string {
+    return this.lastname
+  }
+
   public getNumber(): number {
     return this.number
   }

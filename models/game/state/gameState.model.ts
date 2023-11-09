@@ -5,15 +5,11 @@ enum State {
   PAUSED = 'PAUSED',
   CALL = 'CALL',
   PLAYING = 'PLAYING',
-  ENDED = 'ENDED'
+  ENDED = 'ENDED',
 }
 
 export default class GameState {
-  private state: State
-
-  constructor() {
-    this.setStarting()
-  }
+  private state: State = State.STARTING
 
   public isStarting(): boolean {
     return this.state === State.STARTING

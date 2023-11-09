@@ -3,6 +3,7 @@ import FoulType from 'models/game/type/foul.model'
 enum State {
   WARMING_UP = 'WARMING_UP',
   BENCHED = 'BENCHED',
+  STARTING = 'STARTING',
   PLAYING = 'PLAYING',
   FOULED = 'FOULED',
   FOULED_ON = 'FOULED_ON',
@@ -25,6 +26,10 @@ export default class PlayerState {
 
   public isBenched(): boolean {
     return this.state === State.BENCHED
+  }
+
+  public isStarting(): boolean {
+    return this.state === State.STARTING
   }
 
   public isPlaying(): boolean {
@@ -54,6 +59,11 @@ export default class PlayerState {
 
   public setBenched(): PlayerState {
     this.state = State.BENCHED
+    return this
+  }
+
+  public setStarting(): PlayerState {
+    this.state = State.STARTING
     return this
   }
 

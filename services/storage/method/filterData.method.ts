@@ -1,4 +1,4 @@
-import {type MatchSelected, type PlayerSelected, ScheduleSelected, type TeamSelected} from 'models/query/data.model'
+import { type MatchSelected, type PlayerSelected, ScheduleSelected, type TeamSelected } from 'models/query/data.model'
 
 export default {
   playersByName: (data: PlayerSelected[], name: string): PlayerSelected[] => {
