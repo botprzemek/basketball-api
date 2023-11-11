@@ -60,7 +60,11 @@ export default (httpServer: Server): void => {
             .getPlayers()
             .filter((player: Player) => player.getState().isStarting())
             .map((player: Player): void => {
-              player.getState().setPlaying()
+              socket.emit('update_player_state', {
+                team: team.getName(),
+                number: player.getNumber(),
+                state: player.getState().setPlaying()
+              })
             })
         })
 
