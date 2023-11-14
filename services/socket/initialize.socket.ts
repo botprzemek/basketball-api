@@ -1,47 +1,23 @@
 import {Server} from 'http'
 import setupSocket from 'services/socket/setup.socket'
 import Player from 'models/game/player.model'
-import PositionType from 'models/game/type/position.model'
 import Team from 'models/game/team.model'
 import Game from 'models/game/game.model'
 import {Namespace, Socket} from 'socket.io'
 import GameState from 'models/game/state/gameState.model'
 import Timer from 'models/game/timer.model'
-
-const game: Game = new Game()
-
-game
-  .addTeam(new Team('Golden State Warriors'))
-  .addPlayer(new Player('Stephen', 'Curry', 30, PositionType.PG))
-  .addPlayer(new Player('Klay', 'Thompson', 11, PositionType.SG))
-  .addPlayer(new Player('Andrew', 'Wiggins', 22, PositionType.SF))
-  .addPlayer(new Player('Draymond', 'Green', 23, PositionType.PF))
-  .addPlayer(new Player('Kevon', 'Looney', 5, PositionType.C))
-  .addPlayer(new Player('Chris', 'Paul', 3, PositionType.SG))
-game
-  .addTeam(new Team('Los Angeles Lakers'))
-  .addPlayer(new Player(`D'Angelo`, 'Russell', 1, PositionType.PG))
-  .addPlayer(new Player('Austin', 'Reaves', 15, PositionType.SG))
-  .addPlayer(new Player('LeBron', 'James', 23, PositionType.SF))
-  .addPlayer(new Player('Jarred', 'Vanderbilt', 2, PositionType.PF))
-  .addPlayer(new Player('Anthony', 'Davis', 3, PositionType.C))
-  .addPlayer(new Player('Rui', 'Hachimura', 28, PositionType.PF))
-
-game.getTeams()[0].setStartingFive(30, 11, 22, 23, 5)
-game.getTeams()[1].setStartingFive(1, 15, 23, 2, 3)
+import game from 'models/game/data.game'
 
 game.getState().setWarmingUp()
-game.start()
 
-export default (httpServer: Server): void => {
+const test = (httpServer: Server): void => {
   try {
     const { admin } = setupSocket(httpServer)
 
     admin.on('connection', (socket: Socket): void => {
       socket.on('initialize_game', (): void => {
         socket.emit('update_status', game.getState().getData())
-        socket.emit('update_quarter', game.getQuarter().getNumber())
-        socket.emit('update_time', game.getQuarter().getTimer().getTime())
+        socket.emit('update_time', game.getQuarter() ? game.getQuarter().getTimer().getTime() : 0)
         game.getTeams().map((team: Team): void => {
           socket.emit('update_team', team.getData())
         })
@@ -50,37 +26,36 @@ export default (httpServer: Server): void => {
       socket.on('start_game', (): void => {
         const gameState: GameState = game.getState()
 
-        if (!gameState.isWarmingUp() && !gameState.isStarting()) return
+        if (!gameState.isWarmingUp()) return
 
-        gameState.setPlaying()
-        game.getQuarter().getTimer().start(game)
+        game.start()
 
         game.getTeams().map((team: Team): void => {
-          team
-            .getPlayers()
-            .filter((player: Player) => player.getState().isStarting())
-            .map((player: Player): void => {
-              socket.emit('update_player_state', {
-                team: team.getName(),
-                number: player.getNumber(),
-                state: player.getState().setPlaying()
-              })
+          team.setStartingFive()
+          team.getPlayers().map((player: Player): void => {
+            socket.emit('update_player_state', {
+              team: team.getName(),
+              number: player.getNumber(),
+              state: player.getState().getData(),
             })
+          })
         })
 
         socket.emit('update_status', gameState.getData())
         socket.emit('update_quarter', game.getQuarter().getNumber())
-
-        updateTimer(game, admin)
       })
 
       socket.on('pause_game', (): void => {
         const gameState: GameState = game.getState()
-        const timer: Timer = game.getQuarter().getTimer()
 
         if (!gameState.isStarting() && !gameState.isPaused() && !gameState.isPlaying()) return
 
+        const timer: Timer = game.getQuarter().getTimer()
+
         if (gameState.isPlaying()) {
+          clearInterval(timers.minutes[0])
+          clearInterval(timers.seconds[0])
+
           timer.stop()
           gameState.setPaused()
 
@@ -96,7 +71,43 @@ export default (httpServer: Server): void => {
         socket.emit('update_time', timer.getTime())
         socket.emit('update_status', gameState.getData())
 
+        game.getTeams().map((team: Team): void => {
+          team.getPlayers().map((player: Player): void => {
+            if (player.getState().isStarting()) player.getState().setPlaying()
+            if (player.getState().isWarmingUp()) player.getState().setBenched()
+            socket.emit('update_player_state', {
+              team: team.getName(),
+              number: player.getNumber(),
+              state: player.getState().getData(),
+            })
+          })
+        })
+
         updateTimer(game, admin)
+      })
+
+      socket.on('substitution_team', (data): void => {
+        if (!data) return
+
+        const team: Team = game.getTeam(data.team)
+
+        if (!team) return
+
+        const substitute: Player = team.getPlayer(data.substitute)
+        const changer: Player = team.getPlayer(data.changer)
+
+        if (!substitute || !changer) return
+
+        if (!team.substitution(substitute, changer)) return
+
+        socket.emit('update_player', {
+          team: team.getName(),
+          player: substitute.getData(),
+        })
+        socket.emit('update_player', {
+          team: team.getName(),
+          player: changer.getData(),
+        })
       })
     })
   } catch (error) {
@@ -104,24 +115,24 @@ export default (httpServer: Server): void => {
   }
 }
 
-function updateTimer(game: Game, admin: Namespace): void {
-  admin.emit('update_time', game.getQuarter().getTimer().getTime())
+const timers: {
+  minutes: NodeJS.Timeout[],
+  seconds: NodeJS.Timeout[]
+} = {
+  minutes: [],
+  seconds: []
+}
 
-  if (game.getQuarter().getTimer().getTime() === 0) {
-    game.nextQuarter()
-    game.getState().setPaused()
-    return
-  }
+const updateTimer = (game: Game, namespace: Namespace): void => {
+  namespace.emit('update_time', game.getQuarter().getTimer().getTime())
 
-  const minutes: NodeJS.Timeout = setInterval((): void => {
-    if (!game.getState().isPlaying()) return clearInterval(minutes)
-
+  timers.minutes[0] = setInterval((): void => {
     game.getTeams().map((team: Team): void => {
       team
         .getPlayers()
         .filter((player: Player) => player.getState().isPlaying())
         .map((player: Player): void => {
-          admin.emit('update_player_statistics_seconds', {
+          namespace.emit('update_player_statistics_seconds', {
             team: team.getName(),
             number: player.getNumber(),
             seconds: player.getStatistics().getSeconds(),
@@ -130,14 +141,21 @@ function updateTimer(game: Game, admin: Namespace): void {
     })
   }, 30000)
 
-  const seconds: NodeJS.Timeout = setInterval((): void => {
-    if (!game.getState().isPlaying()) {
-      clearInterval(minutes)
-      clearInterval(seconds)
+  timers.seconds[0] = setInterval((): void => {
+    if (game.getQuarter().getTimer().getTime() === 0) {
+      game.nextQuarter()
+
+      namespace.emit('update_status', game.getState().getData())
+      namespace.emit('update_quarter', game.getQuarter().getNumber())
+      namespace.emit('update_time', game.getQuarter().getTimer().getTime())
+
+      clearInterval(timers.minutes[0])
+      clearInterval(timers.seconds[0])
+
       return
     }
 
-    admin.emit('update_time', game.getQuarter().getTimer().getTime())
+    namespace.emit('update_time', game.getQuarter().getTimer().getTime())
 
     game.getTeams().map((team: Team): void => {
       team
@@ -148,4 +166,8 @@ function updateTimer(game: Game, admin: Namespace): void {
         })
     })
   }, 1000)
+}
+
+export default (httpServer: Server): void => {
+  test(httpServer)
 }

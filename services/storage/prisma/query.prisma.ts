@@ -13,6 +13,8 @@ import scheduleAfterDateQuery from 'services/storage/prisma/query/scheduleAfterD
 import leagueQuery from 'services/storage/prisma/query/league.query'
 import { type LeagueSelected } from 'models/query/league.model'
 import cacheConfig from 'configs/cache.config'
+import { schedulesBeforeDate, schedulesByDate } from 'controllers/api/schedule.controller'
+import { leagues } from 'controllers/api/league.controller'
 
 const cacheStrategy: { swr: number; ttl: number } = {
   swr: cacheConfig.time * 2,
@@ -60,6 +62,7 @@ export default {
     return query('match', 'matchesByDate', [yesterday, tomorrow])
   },
   schedules: async (): Promise<ScheduleSelected[]> => await query('schedule', 'schedules'),
+  schedulesByClosest: async (): Promise<any> => {},
   schedulesByDate: async (date: string): Promise<ScheduleSelected[]> => {
     const yesterday: Date = new Date(date)
     const tomorrow: Date = new Date(date)

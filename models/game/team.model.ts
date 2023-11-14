@@ -12,19 +12,13 @@ export default class Team {
     this.players = []
   }
 
-  public substitution(substituteNumber: number, changerNumber: number) {
-    const substitute: Player = this.getPlayer(substituteNumber)
-    const changer: Player = this.getPlayer(changerNumber)
+  public substitution(substitute: Player, changer: Player): boolean {
+    if (!substitute.getState().isPlaying() || changer.getState().isPlaying()) return false
 
-    if (substitute.getState().isPlaying() && !changer.getState().isPlaying()) {
-      substitute.getState().setBenched()
-      changer.getState().setPlaying()
-    }
+    substitute.getState().setBenched()
+    changer.getState().setPlaying()
 
-    return {
-      substitute: substitute,
-      changer: changer,
-    }
+    return true
   }
 
   public addPlayer(player: Player): Team {
@@ -32,14 +26,14 @@ export default class Team {
     return this
   }
 
-  public setStartingFive(...numbers: number[]): void {
-    this.players.map((player: Player) => player.getState().setBenched())
-    numbers.map((number: number): void => {
-      const player: Player = this.getPlayer(number)
-
-      if (!player) return
-      player.getState().setStarting()
-    })
+  public setStartingFive(): void {
+    this.players
+      .map((player: Player) => {
+        player.getState().setWarmingUp()
+        return player
+      })
+      .filter((player: Player): boolean => player.isStarter())
+      .map((player: Player) => player.getState().setStarting())
   }
 
   public setStatistics(game: Game): Team {

@@ -11,7 +11,7 @@ export default class Timer {
 
   private createTimer(game: Game): Timer {
     this.timer = setInterval((): void => {
-      if (!this.time) return
+      if (this.time <= 0) return
       if (game.getState().isPlaying()) {
         this.addTime()
         return

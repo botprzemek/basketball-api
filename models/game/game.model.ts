@@ -1,6 +1,7 @@
 import Quarter from 'models/game/quarter.model'
 import Team from 'models/game/team.model'
 import GameState from 'models/game/state/gameState.model'
+import game from 'models/game/data.game'
 
 export default class Game {
   private readonly state: GameState
@@ -11,6 +12,11 @@ export default class Game {
     this.state = new GameState()
     this.quarters = []
     this.teams = []
+  }
+
+  addQuarter(quarter: Quarter): Game {
+    this.quarters.push(quarter)
+    return this
   }
 
   public addTeam(team: Team): Team {
@@ -28,19 +34,19 @@ export default class Game {
   }
 
   public getQuarter(): Quarter {
-    return this.quarters.filter((quarter: Quarter) => quarter.isActive())[0]
+    return this.quarters.filter((quarter: Quarter): boolean => quarter.isActive())[0]
   }
 
-  public getQuarters(): Quarter[] {
-    return this.quarters
-  }
-
-  public getOpposingTeam(team: Team): Team {
-    return this.teams.filter((filtering: Team) => team !== filtering)[0]
+  public getTeam(index: number): Team {
+    return this.teams[index]
   }
 
   public getTeams(): Team[] {
     return this.teams
+  }
+
+  public getOpposingTeam(team: Team): Team {
+    return this.teams.filter((filtering: Team): boolean => team !== filtering)[0]
   }
 
   public nextQuarter(): Game {
@@ -51,8 +57,10 @@ export default class Game {
       return this
     }
 
+    this.getState().setPaused()
+
     this.quarters
-      .filter((quarter: Quarter) => quarter.isActive())
+      .filter((quarter: Quarter): boolean => quarter.isActive())
       .map((quarter: Quarter): void => {
         quarter.changeActive()
         quarter.getTimer().stop()
@@ -61,18 +69,13 @@ export default class Game {
 
         nextQuarter.changeActive()
         nextQuarter.getTimer().start(this)
-
-        this.getState().setPaused()
       })
 
     return this
   }
 
   public start(): Game {
-    this.state.setWarmingUp()
-    for (let i: number = 0; i < 4; i++) {
-      this.quarters[i] = new Quarter(i + 1, this.teams[0], this.teams[1])
-    }
+    game.getState().setStarting()
     this.setQuarter(1)
     return this
   }

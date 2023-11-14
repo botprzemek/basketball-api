@@ -7,16 +7,22 @@ export default class Player {
   private readonly lastname: string
   private readonly number: number
   private readonly position: PositionType
+  private readonly starter: boolean
   private readonly state: PlayerState
   private readonly statistics: PlayerStatistics
 
-  constructor(name: string, lastname: string, number: number, position: PositionType) {
+  constructor(name: string, lastname: string, number: number, position: PositionType, starter?: boolean) {
     this.name = name
     this.lastname = lastname
     this.number = number
     this.position = position
+    this.starter = starter || false
     this.state = new PlayerState()
     this.statistics = new PlayerStatistics()
+  }
+
+  public isStarter(): boolean {
+    return this.starter
   }
 
   public getName(): string {
