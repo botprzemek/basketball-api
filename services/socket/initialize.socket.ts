@@ -1,9 +1,9 @@
-import {Server} from 'http'
+import { Server } from 'http'
 import setupSocket from 'services/socket/setup.socket'
 import Player from 'models/game/player.model'
 import Team from 'models/game/team.model'
 import Game from 'models/game/game.model'
-import {Namespace, Socket} from 'socket.io'
+import { Namespace, Socket } from 'socket.io'
 import GameState from 'models/game/state/gameState.model'
 import Timer from 'models/game/timer.model'
 import game from 'models/game/data.game'
@@ -16,7 +16,7 @@ const test = (httpServer: Server): void => {
 
     admin.on('connection', (socket: Socket): void => {
       socket.on('initialize_game', (): void => {
-        socket.emit('update_status', game.getState().getData())
+        socket.emit('update_state', game.getState().getData())
         socket.emit('update_time', game.getQuarter() ? game.getQuarter().getTimer().getTime() : 0)
         game.getTeams().map((team: Team): void => {
           socket.emit('update_team', team.getData())
@@ -41,7 +41,7 @@ const test = (httpServer: Server): void => {
           })
         })
 
-        socket.emit('update_status', gameState.getData())
+        socket.emit('update_state', gameState.getData())
         socket.emit('update_quarter', game.getQuarter().getNumber())
       })
 
@@ -60,7 +60,7 @@ const test = (httpServer: Server): void => {
           gameState.setPaused()
 
           socket.emit('update_time', timer.getTime())
-          socket.emit('update_status', gameState.getData())
+          socket.emit('update_state', gameState.getData())
 
           return
         }
@@ -68,8 +68,8 @@ const test = (httpServer: Server): void => {
         timer.start(game)
         gameState.setPlaying()
 
+        socket.emit('update_state', gameState.getData())
         socket.emit('update_time', timer.getTime())
-        socket.emit('update_status', gameState.getData())
 
         game.getTeams().map((team: Team): void => {
           team.getPlayers().map((player: Player): void => {
@@ -100,13 +100,15 @@ const test = (httpServer: Server): void => {
 
         if (!team.substitution(substitute, changer)) return
 
-        socket.emit('update_player', {
+        socket.emit('update_player_state', {
           team: team.getName(),
-          player: substitute.getData(),
+          number: substitute.getNumber(),
+          state: substitute.getState().getData(),
         })
-        socket.emit('update_player', {
+        socket.emit('update_player_state', {
           team: team.getName(),
-          player: changer.getData(),
+          number: changer.getNumber(),
+          state: changer.getState().getData(),
         })
       })
     })
@@ -116,11 +118,11 @@ const test = (httpServer: Server): void => {
 }
 
 const timers: {
-  minutes: NodeJS.Timeout[],
+  minutes: NodeJS.Timeout[]
   seconds: NodeJS.Timeout[]
 } = {
   minutes: [],
-  seconds: []
+  seconds: [],
 }
 
 const updateTimer = (game: Game, namespace: Namespace): void => {
@@ -145,7 +147,7 @@ const updateTimer = (game: Game, namespace: Namespace): void => {
     if (game.getQuarter().getTimer().getTime() === 0) {
       game.nextQuarter()
 
-      namespace.emit('update_status', game.getState().getData())
+      namespace.emit('update_state', game.getState().getData())
       namespace.emit('update_quarter', game.getQuarter().getNumber())
       namespace.emit('update_time', game.getQuarter().getTimer().getTime())
 

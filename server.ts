@@ -6,7 +6,6 @@ import { type CorsOptions } from 'cors'
 import helmet, { type HelmetOptions } from 'helmet'
 import { createServer, type Server } from 'http'
 import router from 'routes/router'
-import initializeSocket from 'services/socket/initialize.socket'
 import initializeStorage from 'services/storage/initialize.storage'
 
 dotenv.config()
@@ -14,14 +13,13 @@ dotenv.config()
 const server: Express = express()
 const http: Server = createServer(server)
 const port: number = parseInt(process.env.PORT as string)
+
 const options: CorsOptions = {
   origin: JSON.parse(process.env.ADDRESSES as string),
 }
 const helmetOptions: HelmetOptions = {
   contentSecurityPolicy: true,
 }
-
-global.__basedir = __dirname
 
 server.disable('x-powered-by')
 server.set('trust proxy', 1)
@@ -38,5 +36,5 @@ http.listen(port, (): void => {
   console.log(`${new Date().toLocaleTimeString('pl-PL')} [server] listening on http://localhost:${port}`)
   initializeStorage()
   // initializeMail()
-  initializeSocket(http)
+  // initializeSocket(http)
 })

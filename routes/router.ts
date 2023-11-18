@@ -1,8 +1,9 @@
-import { Router } from 'express'
+import {Router} from 'express'
 import error from '../middlewares/error.middleware'
 import secret from '../middlewares/secret.middleware'
 import auth from './route/auth.route'
 import player from './route/player.route'
+import staff from './route/staff.route'
 import team from './route/team.route'
 import schedule from './route/schedule.route'
 import league from './route/league.route'
@@ -14,6 +15,7 @@ router.use(secret)
 
 router.use('/auth', auth)
 router.use('/players', player)
+router.use('/staff', staff)
 router.use('/teams', team)
 router.use('/schedules', schedule)
 router.use('/leagues', league)

@@ -1,73 +1,99 @@
-import getPrisma from 'services/storage/prisma.storage'
-import getCache from 'services/storage/cache.storage'
+import * as cache from 'services/storage/cache.storage'
 import responseFilter from 'services/storage/method/processData.method'
-import { MatchFiltered, PlayerFiltered, ScheduleFiltered, TeamFiltered } from 'models/query/data.model'
-import { LeagueFiltered } from 'models/query/league.model'
-import { schedulesAfterDate, schedulesBeforeDate } from 'controllers/api/schedule.controller'
-import { leagues } from 'controllers/api/league.controller'
+import {MatchFiltered, PlayerFiltered, ScheduleFiltered, TeamFiltered} from 'models/query/data.model'
+import cockroachStorage from 'services/storage/cockroach.storage'
+import {QueryResult} from 'pg'
+import {LeagueFiltered} from 'models/query/league.model'
+import {schedules, schedulesAfterDate, schedulesBeforeDate, schedulesByDate} from 'controllers/api/schedule.controller'
 
-const set = (key: string, value: any): any => {
-  if (!value) return []
-  getCache().set(key, value)
-  return value
-}
-
-const get = (key: string): any => {
-  return getCache().get(key)
+const queries = {
+  players: 'SELECT player.* FROM player ORDER BY lastname ASC',
+  playersById: 'SELECT player.* FROM player WHERE id = $1',
+  playersByName: 'SELECT player.* FROM player WHERE CONCAT(name, \' \', lastname) LIKE $1 ORDER BY lastname ASC',
+  playersByTeamId: 'SELECT player.* FROM player WHERE team_id = $1 ORDER BY starter DESC, lastname ASC',
+  playersByTeamName: 'SELECT player.* FROM player, team WHERE player.team_id = team.id AND team.name = $1 ORDER BY player.starter DESC, player.lastname ASC',
+  staff: 'SELECT staff.* FROM staff ORDER BY lastname ASC',
+  staffByTeamId: 'SELECT staff.* FROM staff, team_staff WHERE staff.id = team_staff.staff_id AND team_staff.team_id = $1 ORDER BY staff.lastname ASC',
+  staffByTeamName: 'SELECT staff.* FROM staff, team_staff WHERE staff.id = team_staff.staff_id AND team_staff.team_name = $1 ORDER BY staff.lastname ASC',
+  teams: 'SELECT team.* FROM team',
+  teamsById: 'SELECT team.* FROM team WHERE id = $1',
+  teamsByName: 'SELECT team.* FROM team WHERE name = $1',
+  leagues: 'SELECT league.* FROM league',
 }
 
 const getData = async <TypeSelected>(key: string, method?: string, value?: any): Promise<TypeSelected[]> => {
-  const cachedData: TypeSelected[] = get(key)
+  const cachedData: TypeSelected[] = cache.getData(key)
   if (cachedData) return responseFilter[key](cachedData, method, value)
-  const data: TypeSelected[] = method ? await getPrisma()[method](value) : await getPrisma()[key]()
-  return responseFilter[key](set(key, data), method, value)
+  // const data: TypeSelected[] = method ? (await getPrisma())[key](method) : (await getPrisma())[key]()
+  return responseFilter[key](cache.setData(key, null), method, value)
 }
 
 export default {
-  players: async (): Promise<PlayerFiltered[]> => await getData('players'),
-  playersByName: async (name: string): Promise<PlayerFiltered[]> => await getData('players', 'playersByName', name),
-  playersByTeam: async (team: string): Promise<PlayerFiltered[]> => {
-    const data: TeamFiltered[] = await getData('teams', 'teamsByName', team)
-    return data.flatMap((team: TeamFiltered) => team.players)
+  players: (data: (response: PlayerFiltered[]) => void): void => {
+    cockroachStorage(queries.players, [], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
   },
-  teams: async (): Promise<TeamFiltered[]> => await getData('teams'),
-  teamsByName: async (name: string): Promise<TeamFiltered[]> => await getData('teams', 'teamsByName', name),
+  playersById: (id: bigint, data: (response: PlayerFiltered[]) => void): void => {
+    cockroachStorage(queries.playersById, [id], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
+  playersByName: (name: string, data: (response: PlayerFiltered[]) => void): void => {
+    cockroachStorage(queries.playersByName, [`%${name}%`], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
+  playersByTeamId: (id: bigint, data: (response: PlayerFiltered[]) => void): void => {
+    cockroachStorage(queries.playersByTeamId, [id], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
+  playersByTeamName: (name: string, data: (response: PlayerFiltered[]) => void): void => {
+    cockroachStorage(queries.playersByTeamName, [name], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
+  staff: (data: (response: any[]) => void): void => {
+    cockroachStorage(queries.staff, [], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
+  staffByTeamId: (id: bigint, data: (response: any[]) => void): void => {
+    cockroachStorage(queries.staffByTeamId, [id], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
+  staffByTeamName: (name: string, data: (response: any[]) => void): void => {
+    cockroachStorage(queries.staffByTeamName, [name], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
+  teams: (data: (response: TeamFiltered[]) => void): void => {
+    cockroachStorage(queries.teams, [], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
+  teamsById: (id: bigint, data: (response: TeamFiltered[]) => void): void => {
+    cockroachStorage(queries.teamsById, [id], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
+  teamsByName: (name: string, data: (response: TeamFiltered[]) => void): void => {
+    cockroachStorage(queries.teamsByName, [name], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
   matches: async (): Promise<MatchFiltered[]> => await getData('matches'),
   matchesByDate: async (date: string): Promise<MatchFiltered[]> => await getData('matches', 'matchesByDate', date),
   schedules: async (): Promise<ScheduleFiltered[]> => await getData('schedules'),
-  schedulesByClosest: (): any => {
-    return {
-      teams: [
-        {
-          name: 'Golden State Warriors',
-          players: [
-            { name: 'Stephen', lastname: 'Curry', number: 30, position: 'PG', starter: true },
-            { name: 'Klay', lastname: 'Thompson', number: 11, position: 'SG', starter: true },
-            { name: 'Andrew', lastname: 'Wiggins', number: 22, position: 'SF', starter: true },
-            { name: 'Draymond', lastname: 'Green', number: 23, position: 'PF', starter: true },
-            { name: 'Kevon', lastname: 'Looney', number: 5, position: 'C', starter: true },
-            { name: 'Chris', lastname: 'Paul', number: 3, position: 'SG' },
-            { name: 'Moses', lastname: 'Moody', number: 4, position: 'SG' },
-            { name: 'Jonathan', lastname: 'Kuminga', number: 0, position: 'PF' },
-          ],
-        },
-        {
-          name: 'Los Angeles Lakers',
-          players: [
-            { name: `D'Angelo`, lastname: 'Russell', number: 1, position: 'PG', starter: true },
-            { name: 'Austin', lastname: 'Reaves', number: 15, position: 'SG', starter: true },
-            { name: 'LeBron', lastname: 'James', number: 23, position: 'SF', starter: true },
-            { name: 'Jarred', lastname: 'Vanderbilt', number: 2, position: 'PF', starter: true },
-            { name: 'Anthony', lastname: 'Davis', number: 3, position: 'C', starter: true },
-            { name: 'Rui', lastname: 'Hachimura', number: 28, position: 'PF' },
-          ],
-          starting: [1, 15, 23, 2, 3],
-        },
-      ],
-    }
-  },
+  schedulesByClosest: (): any => {},
   schedulesByDate: async (date: string): Promise<ScheduleFiltered[]> => await getData('schedules', 'schedulesByDate', date),
   schedulesAfterDate: async (date: string): Promise<ScheduleFiltered[]> => await getData('schedules', 'schedulesAfterDate', date),
   schedulesBeforeDate: async (date: string): Promise<ScheduleFiltered[]> => await getData('schedules', 'schedulesBeforeDate', date),
-  leagues: async (): Promise<LeagueFiltered[]> => await getData('leagues'),
+  leagues: (data: (response: LeagueFiltered[]) => void): void => {
+    cockroachStorage(queries.leagues, [], (error: Error, response: QueryResult): void => {
+      return error ? data([]) : data(response.rows)
+    })
+  },
 }

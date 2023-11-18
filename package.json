@@ -17,7 +17,6 @@
     "jwt",
     "postgres",
     "cockroachdb",
-    "prisma",
     "cors",
     "helmet"
   ],
@@ -38,12 +37,8 @@
     "dev": "npx prettier . --write --print-width 150 --no-semi --single-quote  && nodemon server.ts",
     "server": "pm2 start server.ts"
   },
-  "prisma": {
-    "seed": "ts-node --transpile-only prisma/seed.ts"
-  },
   "dependencies": {
-    "@prisma/client": "^5.5.2",
-    "@prisma/extension-accelerate": "^0.6.0",
+    "@types/pg": "^8.10.9",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -52,6 +47,7 @@
     "jsonwebtoken": "^9.0.2",
     "node-cache": "^5.1.2",
     "nodemailer": "^6.9.4",
+    "pg": "^8.11.3",
     "socket.io": "^4.7.2",
     "sqlite": "^5.0.1",
     "sqlite3": "^5.1.6"
@@ -66,7 +62,6 @@
     "@types/sqlite3": "^3.1.10",
     "nodemon": "^3.0.1",
     "prettier": "3.0.3",
-    "prisma": "^5.5.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
   }

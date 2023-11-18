@@ -1,13 +1,14 @@
 import { Database } from 'sqlite3'
 import { open } from 'sqlite'
 import { assignSqlite, sqliteStorage } from '../sqlite.storage'
+import { resolve } from 'path'
 
 export default async function initializeSqlite(): Promise<void> {
   if (sqliteStorage()) return
 
   assignSqlite(
     await open({
-      filename: global.__basedir + '/database.db',
+      filename: resolve('database.db'),
       driver: Database,
     }),
   )
