@@ -1,4 +1,4 @@
-import {Router} from 'express'
+import { Router } from 'express'
 import error from '../middlewares/error.middleware'
 import secret from '../middlewares/secret.middleware'
 import auth from './route/auth.route'

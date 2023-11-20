@@ -48,6 +48,7 @@
     "node-cache": "^5.1.2",
     "nodemailer": "^6.9.4",
     "pg": "^8.11.3",
+    "postgres": "^3.4.3",
     "socket.io": "^4.7.2",
     "sqlite": "^5.0.1",
     "sqlite3": "^5.1.6"

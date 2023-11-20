@@ -18,9 +18,6 @@ DROP TABLE IF EXISTS roster;
 DROP TABLE IF EXISTS quarter_statistics;
 DROP TABLE IF EXISTS backlog;
 
-DROP TYPE IF EXISTS position;
-DROP TYPE IF EXISTS role;
-
 CREATE TABLE IF NOT EXISTS player (
     id INT8 NOT NULL PRIMARY KEY UNIQUE DEFAULT unique_rowid(),
     team_id INT8 NOT NULL,
@@ -253,9 +250,9 @@ INSERT INTO player (team_id, name, lastname, number, height, position, birthday,
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Aleksander', 'Szafarz', 91, 183, 'SF', '2009-06-22', false),
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Dominik', 'Karaś', 25, 179, 'PG', '2008-11-26', false),
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Dominik', 'Gogolin', 76, 185, 'PF', '2006-01-07', false),
-    ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Igor', 'Orlef', 24, 185, 'PF', '2005-02-23', false),
-    ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Igor', 'Wnuk', 77, 183, 'SF', '2007-02-06', false),
+    ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Igor', 'Orlef', 24, 185, 'PF', '2005-02-23', true),
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Karol', 'Gramala', 96, 179, 'SG', '2007-01-01', false),
+    ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Ksawery', 'Matuszek', 93, 185, 'SG', '2007-01-01', false),
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Kuba', 'Zieliński', 36, 183, 'SF', '2006-08-26', false),
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Maksymilian', 'Lipka', 33, 179, 'SG', '2008-10-04', false),
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Mateusz', 'Nizar', 20, 185, 'PF', '2003-07-23', true),
@@ -265,7 +262,7 @@ INSERT INTO player (team_id, name, lastname, number, height, position, birthday,
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Patryk', 'Kubacki', 27, 190, 'PF', '2007-02-01', false),
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Piotr', 'Oleksy', 97, 179, 'PG', '2009-01-13', false),
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Samuel', 'Ntuk', 94, 186, 'SF', '2008-01-01', false),
-    ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Tomasz', 'Dubiel', 32, 180, 'SG', '2008-05-06', false);
+    ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Tomasz', 'Dubiel', 32, 180, 'SG', '2008-05-06', true);
 
 INSERT INTO schedule (arena_id, timestamp) VALUES
     ((SELECT id FROM arena WHERE name = 'Spodek'), '2023-10-22 10:15:00');
