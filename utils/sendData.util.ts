@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 
 export default function (req: Request, res: Response, data: any[]): void {
-  if (!Array.isArray(data) || data.length === 0) {
+  if (!data) {
     res.sendStatus(404)
     return
   }

@@ -1,45 +1,49 @@
-import * as cacheStorage from 'services/storage/cache.storage'
-import queries from 'services/storage/query.storage'
+import getMethod from 'services/storage/method/get.method'
+import processMethod from 'services/storage/method/process.method'
 
-const getData = async <TypeSelected>(key: string, method?: string, parameters?: any[]): Promise<TypeSelected[]> => {
-  try {
-    const cacheKey: string = method && parameters ? `${key}.${method}.${parameters.toString()}` : key
-    const cachedData: TypeSelected[] = cacheStorage.getData(cacheKey)
-
-    if (cachedData) return cachedData
-
-    const queryData = method && parameters ? await queries[method](parameters) : await queries[key]()
-
-    return cacheStorage.setData(cacheKey, queryData)
-  }
-  catch {
-    return []
-  }
+const applyMethods = async (key: string, method?: string, parameters?: any[]): Promise<any[]> => {
+  const data: any[] = await getMethod(key, method, parameters)
+  return processMethod(key, data, method, parameters)
 }
 
 export default {
-  players: async (): Promise<any[]> => await getData('players'),
-  playersById: async (id: bigint): Promise<any[]> => await getData('players', 'playersById', [id]),
-  playersByName: async (name: string): Promise<any[]> => await getData('players', 'playersByName', [name]),
-  playersByTeamId: async (id: bigint): Promise<any[]> => await getData('players', 'playersByTeamId', [id]),
-  playersByTeamName: async (name: string): Promise<any[]> => await getData('players', 'playersByTeamName', [name]),
+  players: async (): Promise<any[]> => await applyMethods('players'),
+  playersById: async (id: bigint): Promise<any[]> => await applyMethods('players', 'playersById', [id]),
+  playersByName: async (name: string): Promise<any[]> => await applyMethods('players', 'playersByName', [name]),
+  playersByTeamId: async (id: bigint): Promise<any[]> => await applyMethods('players', 'playersByTeamId', [id]),
 
-  staff: async (): Promise<any[]> => await getData('staff'),
-  staffByTeamId: async (id: bigint): Promise<any[]> => await getData('staff', 'staffByTeamId', [id]),
-  staffByTeamName: async (name: string): Promise<any[]> => await getData('staff', 'staffByTeamName', [name]),
+  staff: async (): Promise<any[]> => await applyMethods('staff'),
+  staffByTeamId: async (id: bigint): Promise<any[]> => await applyMethods('staff', 'staffByTeamId', [id]),
 
-  teams: async (): Promise<any[]> => await getData('teams'),
-  teamsById: async (id: bigint): Promise<any[]> => await getData('teams', 'teamsById', [id]),
-  teamsByName: async (name: string): Promise<any[]> => await getData('teams', 'teamsByName', [name]),
+  teams: async (): Promise<any[]> => await applyMethods('teams'),
+  teamsById: async (id: bigint): Promise<any[]> => {
+    const teams: any[] = await applyMethods('teams', 'teamsById', [id])
 
-  leagues: async (): Promise<any[]> => await getData('leagues'),
+    for (let i: number = 0; i < teams.length; i++) teams[i].players = await applyMethods('players', 'playersByTeamId', [teams[i].id])
 
-  matches: async (): Promise<any[]> => await getData('matches'),
-  matchesByDate: async (date: string): Promise<any[]> => await getData('matches', 'matchesByDate', [date]),
+    return teams
+  },
+  teamsByName: async (name: string): Promise<any[]> => {
+    const teams: any[] = await applyMethods('teams', 'teamsByName', [name])
 
-  schedules: async (): Promise<any[]> => await getData('schedules'),
-  schedulesByClosest: async (): Promise<any[]> => await getData('schedules'),
-  schedulesByDate: async (date: string): Promise<any[]> => await getData('schedules', 'schedulesByDate', [date]),
-  schedulesAfterDate: async (date: string): Promise<any[]> => await getData('schedules', 'schedulesAfterDate', [date]),
-  schedulesBeforeDate: async (date: string): Promise<any[]> => await getData('schedules', 'schedulesBeforeDate', [date]),
+    for (let i: number = 0; i < teams.length; i++) {
+      teams[i].players = await applyMethods('players', 'playersByTeamId', [teams[i].id])
+      teams[i].staff = await applyMethods('staff', 'staffByTeamId', [teams[i].id])
+      teams[i].league = (await applyMethods('leagues', 'leaguesById', [teams[i].league_id]))[0]
+      teams[i].city = (await applyMethods('cities', 'citiesById', [teams[i].city_id]))[0]
+    }
+
+    return teams
+  },
+
+  leagues: async (): Promise<any[]> => await applyMethods('leagues'),
+
+  matches: async (): Promise<any[]> => await applyMethods('matches'),
+  matchesByDate: async (date: string): Promise<any[]> => await applyMethods('matches', 'matchesByDate', [date]),
+
+  schedules: async (): Promise<any[]> => await applyMethods('schedules'),
+  schedulesByClosest: async (): Promise<any[]> => await applyMethods('schedules'),
+  schedulesByDate: async (date: string): Promise<any[]> => await applyMethods('schedules', 'schedulesByDate', [date]),
+  schedulesAfterDate: async (date: string): Promise<any[]> => await applyMethods('schedules', 'schedulesAfterDate', [date]),
+  schedulesBeforeDate: async (date: string): Promise<any[]> => await applyMethods('schedules', 'schedulesBeforeDate', [date]),
 }

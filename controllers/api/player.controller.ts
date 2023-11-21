@@ -1,4 +1,4 @@
-import {type Request, type Response} from 'express'
+import { type Request, type Response } from 'express'
 import storage from 'services/storage.service'
 import sendData from 'utils/sendData.util'
 
@@ -19,10 +19,5 @@ export async function playersByName(req: Request, res: Response): Promise<void> 
 
 export async function playersByTeamId(req: Request, res: Response): Promise<void> {
   const data: any[] = await storage.playersByTeamId(BigInt(req.params.id))
-  sendData(req, res, data)
-}
-
-export async function playersByTeamName(req: Request, res: Response): Promise<void> {
-  const data: any[] = await storage.playersByTeamName(req.params.name)
   sendData(req, res, data)
 }
