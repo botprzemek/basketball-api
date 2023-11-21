@@ -14,6 +14,14 @@ export default {
       return player.team_id === `${id}`
     })
   },
+  playersStatisticsByTeamId: (data: any[], id: bigint): any[] => {
+    return data.filter((player: any): boolean => {
+      return player.team_id === `${id}`
+    })
+  },
+  playersStatisticsTopPoints: (data: any[], _id: bigint): any[] => {
+    return data
+  },
   staffByTeamId: (data: any[], id: bigint): any[] => {
     return data.filter((staff: any): boolean => {
       return staff.team_id === `${id}`

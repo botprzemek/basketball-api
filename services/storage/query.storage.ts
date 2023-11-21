@@ -8,6 +8,13 @@ export default {
   playersByTeamId: async (parameters: any): Promise<any> =>
     cockroachStorage()`SELECT player.* FROM player WHERE team_id = ${parameters[0]} ORDER BY starter DESC, lastname ASC`,
 
+  playersStatistics: async (): Promise<any> =>
+    cockroachStorage()`SELECT player_statistics.*, player.team_id FROM player_statistics, player WHERE player_statistics.player_id = player.id ORDER BY player.lastname ASC`,
+  playersStatisticsByTeamId: async (parameters: any): Promise<any> =>
+    cockroachStorage()`SELECT player_statistics.*, player.team_id FROM player_statistics, player WHERE player_statistics.player_id = player.id AND player.team_id = ${parameters[0]} ORDER BY player.lastname ASC`,
+  playersStatisticsTopPoints: async (): Promise<any> =>
+    cockroachStorage()`SELECT player.id, player.team_id, COUNT(player.id) AS games_played, player_statistics.* FROM player_statistics, player WHERE player_statistics.player_id = player.id ORDER BY player.lastname ASC`,
+
   staff: async (): Promise<any> =>
     cockroachStorage()`SELECT staff.*, team_staff.team_id FROM staff, team_staff WHERE staff.id = team_staff.staff_id ORDER BY staff.lastname ASC`,
   staffByTeamId: async (parameters: any): Promise<any> =>

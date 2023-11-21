@@ -265,12 +265,17 @@ INSERT INTO player (team_id, name, lastname, number, height, position, birthday,
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Tomasz', 'Dubiel', 32, 180, 'SG', '2008-05-06', true);
 
 INSERT INTO schedule (arena_id, timestamp) VALUES
-    ((SELECT id FROM arena WHERE name = 'Spodek'), '2023-10-22 10:15:00');
+    ((SELECT id FROM arena WHERE name = 'Spodek'), '2023-10-22 10:15:00'),
+    ((SELECT id FROM arena WHERE name = 'Spodek'), '2023-11-19 9:00:00');
 
 INSERT INTO match (league_id, schedule_id) VALUES
     (
         (SELECT id FROM league WHERE name = 'Śląska Liga Koszykówki'),
         (SELECT id FROM schedule WHERE timestamp = '2023-10-22 10:15:00')
+    ),
+    (
+        (SELECT id FROM league WHERE name = 'Śląska Liga Koszykówki'),
+        (SELECT id FROM schedule WHERE timestamp = '2023-11-19 9:00:00')
     );
 
 INSERT INTO roster (team_id, match_id) VALUES
@@ -281,15 +286,19 @@ INSERT INTO roster (team_id, match_id) VALUES
     (
         (SELECT id FROM team WHERE name = 'Batory Warriors'),
         (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-10-22 10:15:00')
+    ),
+    (
+        (SELECT id FROM team WHERE name = 'Knury Knurów I'),
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM team WHERE name = 'PIK Siemianowice'),
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00')
     );
 
 INSERT INTO player_roster (player_id, roster_id) VALUES
     (
         (SELECT id FROM player WHERE player.name = 'Dawid' AND player.lastname = 'Kocięba'),
-        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-10-22 10:15:00')
-    ),
-    (
-        (SELECT id FROM player WHERE player.name = 'Dominik' AND player.lastname = 'Girgiel'),
         (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-10-22 10:15:00')
     ),
     (
@@ -315,13 +324,62 @@ INSERT INTO player_roster (player_id, roster_id) VALUES
     (
         (SELECT id FROM player WHERE player.name = 'Tomasz' AND player.lastname = 'Gontarewicz'),
         (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-10-22 10:15:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Dawid' AND player.lastname = 'Kocięba'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Dominik' AND player.lastname = 'Girgiel'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Filip' AND player.lastname = 'Kułach'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Franek' AND player.lastname = 'Borkowski'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Grzegorz' AND player.lastname = 'Odrzywałek'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Kornel' AND player.lastname = 'Suchocki'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Przemysław' AND player.lastname = 'Szymański'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Kajetan' AND player.lastname = 'Kozłowski'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Karol' AND player.lastname = 'Karpiński'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Krzysztof' AND player.lastname = 'Żuber'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM player WHERE player.name = 'Tomasz' AND player.lastname = 'Gontarewicz'),
+        (SELECT DISTINCT roster.id FROM player, roster, match, schedule WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND schedule.id = match.schedule_id AND player.team_id = roster.team_id AND schedule.timestamp = '2023-11-19 9:00:00')
     );
 
 INSERT INTO team_statistics (match_id, team_id, assists, rebounds_off, rebounds_def, inside_fgm, inside_fga, outside_fgm, outside_fga, freethrows_fgm, freethrows_fga, blocks, steals, turnovers, fouls) VALUES
     (
         (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-10-22 10:15:00'),
-        (SELECT team.id FROM player, team WHERE player.team_id = team.id AND player.name = 'Dawid' AND player.lastname = 'Kocięba'),
+        (SELECT team.id FROM team WHERE team.name = 'Knury Knurów I'),
         6, 6, 30, 6, 33, 6, 20, 4, 5, 4, 9, 18, 20
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT team.id FROM team WHERE team.name = 'Knury Knurów I'),
+        7, 11, 25, 10, 36, 5, 22, 5, 6, 4, 8, 12, 14
     );
 
 INSERT INTO player_statistics (match_id, player_id, minutes, assists, rebounds_off, rebounds_def, inside_fgm, inside_fga, outside_fgm, outside_fga, freethrows_fgm, freethrows_fga, blocks, steals, turnovers, fouls) VALUES
@@ -359,4 +417,59 @@ INSERT INTO player_statistics (match_id, player_id, minutes, assists, rebounds_o
         (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-10-22 10:15:00'),
         (SELECT id FROM player WHERE player.name = 'Tomasz' AND player.lastname = 'Gontarewicz'),
         17, 0, 1, 2, 1, 3, 1, 1, 1, 2, 0, 1, 2, 2
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Dawid' AND player.lastname = 'Kocięba'),
+        19, 1, 1, 3, 0, 3, 0, 0, 0, 0, 1, 0, 1, 1
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Dominik' AND player.lastname = 'Girgiel'),
+        10, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Filip' AND player.lastname = 'Kułach'),
+        6, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Franek' AND player.lastname = 'Borkowski'),
+        17, 1, 1, 5, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Grzegorz' AND player.lastname = 'Odrzywałek'),
+        15, 2, 1, 2, 2, 3, 0, 0, 2, 2, 0, 2, 3, 2
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Kornel' AND player.lastname = 'Suchocki'),
+        40, 0, 3, 3, 4, 13, 3, 9, 2, 2, 0, 1, 3, 0
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Przemysław' AND player.lastname = 'Szymański'),
+        22, 1, 2, 2, 1, 4, 0, 1, 0, 0, 0, 1, 0, 2
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Kajetan' AND player.lastname = 'Kozłowski'),
+        6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Karol' AND player.lastname = 'Karpiński'),
+        5, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Krzysztof' AND player.lastname = 'Żuber'),
+        36, 0, 1, 8, 2, 7, 2, 11, 0, 0, 3, 2, 2, 4
+    ),
+    (
+        (SELECT match.id FROM match, schedule WHERE schedule.id = match.schedule_id AND schedule.timestamp = '2023-11-19 9:00:00'),
+        (SELECT id FROM player WHERE player.name = 'Tomasz' AND player.lastname = 'Gontarewicz'),
+        20, 1, 0, 1, 1, 3, 0, 0, 1, 2, 0, 1, 2, 1
     );
