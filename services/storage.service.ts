@@ -1,5 +1,6 @@
 import getMethod from 'services/storage/method/get.method'
 import processMethod from 'services/storage/method/process.method'
+import {playersStatistics} from "controllers/api/playerStatistics.controller";
 
 const applyMethods = async (key: string, method?: string, parameters?: any[]): Promise<any[]> => {
   const data: any[] = await getMethod(key, method, parameters)
@@ -24,9 +25,13 @@ export default {
   playersByName: async (name: string): Promise<any[]> => await applyMethods('players', 'playersByName', [name]),
   playersByTeamId: async (id: bigint): Promise<any[]> => await applyMethods('players', 'playersByTeamId', [id]),
 
-  playersStatistics: async (): Promise<any[]> => await applyMethods('playersStatistics'),
-  playersStatisticsByTeamId: async (id: bigint): Promise<any[]> => await applyMethods('playersStatistics', 'playersStatisticsByTeamId', [id]),
+  playersStatistics: async (): Promise<any[]> => {
+    const playersStatistics: any[] = await applyMethods('playersStatistics')
 
+    return addPlayers(playersStatistics)
+  },
+  playersStatisticsById: async (id: bigint): Promise<any[]> => await applyMethods('playersStatistics', 'playersStatisticsById', [id]),
+  playersStatisticsByTeamId: async (id: bigint): Promise<any[]> => await applyMethods('playersStatistics', 'playersStatisticsByTeamId', [id]),
   playersStatisticsAvg: async (): Promise<any[]> => {
     const playersStatistics: any[] = await applyMethods('playersStatisticsAvg', 'playersStatisticsAvg', [])
 
@@ -70,7 +75,6 @@ export default {
       teams[i].league = (await applyMethods('leagues', 'leaguesById', [teams[i].league_id]))[0]
       teams[i].city = (await applyMethods('cities', 'citiesById', [teams[i].city_id]))[0]
       teams[i].staff = await applyMethods('staff', 'staffByTeamId', [teams[i].id])
-      teams[i].players = await applyMethods('players', 'playersByTeamId', [teams[i].id])
     }
 
     return teams

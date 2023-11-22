@@ -9,10 +9,6 @@ const config = {
   database: process.env.COCKROACH_NAME,
   username: process.env.COCKROACH_USER,
   password: process.env.COCKROACH_PASSWORD,
-  // ssl: {
-  //   rejectUnauthorized: true,
-  //   ca: readFileSync(resolve('root.crt')).toString(),
-  // },
   max: 20,
   idle_timeout: 30000,
   connection_timeout: 2000,

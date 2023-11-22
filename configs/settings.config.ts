@@ -1,4 +1,4 @@
 export default {
   useSecret: false,
-  expireTime: '1h',
+  expireTime: '1w',
 }
