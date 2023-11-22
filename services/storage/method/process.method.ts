@@ -4,10 +4,7 @@ import buildMethod from 'services/storage/method/build.method'
 export default (key: string, data: any, method?: string, parameters?: any[]): any[] => {
   if (!data) return []
 
-  data = method && parameters ? filterMethod[method](data, parameters[0]) : data
+  data = method && parameters && filterMethod[method] ? filterMethod[method](data, parameters) : data
 
-  return data.map((record: any): any[] => {
-    if (method && buildMethod[method]) return buildMethod[method](record)
-    return buildMethod[key](record)
-  })
+  return data.map((record: any): any[] => (method && buildMethod[method] ? buildMethod[method](record) : buildMethod[key](record)))
 }

@@ -19,7 +19,21 @@ export default {
       return player.team_id === `${id}`
     })
   },
-  playersStatisticsTopPoints: (data: any[], _id: bigint): any[] => {
+  playersStatisticsAvg: (data: any[]): any[] => {
+    return data
+  },
+  playersStatisticsAvgById: (data: any[], id: bigint): any[] => {
+    return data.filter((playerStatistics: any): boolean => {
+      return playerStatistics.player_id === `${id}`
+    })
+  },
+  playersStatisticsAvgPoints: (data: any[]): any[] => {
+    return data
+  },
+  playersStatisticsAvgRebounds: (data: any[]): any[] => {
+    return data
+  },
+  playersStatisticsAvgAssists: (data: any[]): any[] => {
     return data
   },
   staffByTeamId: (data: any[], id: bigint): any[] => {

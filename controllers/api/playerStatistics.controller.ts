@@ -12,7 +12,27 @@ export async function playersStatisticsByTeamId(req: Request, res: Response): Pr
   sendData(req, res, data)
 }
 
-export async function playersStatisticsTopPoints(req: Request, res: Response): Promise<void> {
-  const data: any[] = await storage.playersStatisticsTopPoints()
+export async function playersStatisticsAvg(req: Request, res: Response): Promise<void> {
+  const data: any[] = await storage.playersStatisticsAvg()
+  sendData(req, res, data)
+}
+
+export async function playersStatisticsAvgPoints(req: Request, res: Response): Promise<void> {
+  const data: any[] = await storage.playersStatisticsAvgPoints()
+  sendData(req, res, data)
+}
+
+export async function playersStatisticsAvgRebounds(req: Request, res: Response): Promise<void> {
+  const data: any[] = await storage.playersStatisticsAvgRebounds()
+  sendData(req, res, data)
+}
+
+export async function playersStatisticsAvgAssists(req: Request, res: Response): Promise<void> {
+  const data: any[] = await storage.playersStatisticsAvgAssists()
+  sendData(req, res, data)
+}
+
+export async function playersStatisticsAvgById(req: Request, res: Response): Promise<void> {
+  const data: any[] = await storage.playersStatisticsAvgById(BigInt(req.params.id))
   sendData(req, res, data)
 }

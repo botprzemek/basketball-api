@@ -1,20 +1,18 @@
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
 import * as dotenv from 'dotenv'
 import * as postgres from 'postgres'
 
 dotenv.config()
 
 const config = {
-  host: process.env.DATABASE_HOST,
-  port: parseInt(process.env.DATABASE_PORT as string),
-  database: process.env.DATABASE_NAME,
-  username: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  ssl: {
-    rejectUnauthorized: false,
-    ca: readFileSync(resolve('root.crt')).toString(),
-  },
+  host: process.env.COCKROACH_HOST,
+  port: parseInt(process.env.COCKROACH_PORT as string),
+  database: process.env.COCKROACH_NAME,
+  username: process.env.COCKROACH_USER,
+  password: process.env.COCKROACH_PASSWORD,
+  // ssl: {
+  //   rejectUnauthorized: true,
+  //   ca: readFileSync(resolve('root.crt')).toString(),
+  // },
   max: 20,
   idle_timeout: 30000,
   connection_timeout: 2000,
