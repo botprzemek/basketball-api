@@ -1,9 +1,9 @@
-import { Request, Response } from 'express'
-import { hash } from 'bcrypt'
-import { randomBytes } from 'crypto'
-import { sign } from 'jsonwebtoken'
-import { sqliteStorage } from 'services/storage/sqlite.storage'
-import settingsConfig from 'configs/settings.config'
+import {Request, Response} from 'express'
+import {hash} from 'bcrypt'
+import {randomBytes} from 'crypto'
+import {sign} from 'jsonwebtoken'
+import {sqliteStorage} from 'services/storage/sqlite.storage'
+import settingsConfig from 'configs/default.config'
 
 export default async (req: Request, res: Response): Promise<void> => {
   try {
