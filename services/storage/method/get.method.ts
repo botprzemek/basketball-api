@@ -9,12 +9,12 @@ export default async <TypeSelected>(key: string, method?: string, parameters?: a
 
     const queryData: any[] = await queries[key]()
 
+    if (queryData.length > 0) cacheStorage.setData(key, queryData)
+
     if (!method || !parameters) return queryData
 
-    cacheStorage.setData(key, queryData)
-
     return queries[method](parameters)
-  } catch {
+  } catch (error) {
     return []
   }
 }

@@ -12,8 +12,10 @@ import {
 const router: Router = Router()
 
 router.get('/', players)
+
 router.get('/id/:id', playersById)
 router.get('/id/:id/statistics/avg', playersStatisticsAvgById)
+
 router.get('/name/:name', playersByName)
 
 router.get('/statistics', playersStatistics)

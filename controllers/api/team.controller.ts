@@ -16,3 +16,8 @@ export async function teamsByName(req: Request, res: Response): Promise<void> {
   const data: any[] = await storage.teamsByName(req.params.name)
   sendData(req, res, data)
 }
+
+export async function teamsByCityId(req: Request, res: Response): Promise<void> {
+  const data: any[] = await storage.teamsByCityId(BigInt(req.params.id))
+  sendData(req, res, data)
+}

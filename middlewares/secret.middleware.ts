@@ -1,4 +1,4 @@
-import {type NextFunction, type Request, type Response} from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 import settingsConfig from 'configs/default.config'
 
 export default function (req: Request, res: Response, next: NextFunction): void {

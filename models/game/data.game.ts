@@ -2,12 +2,12 @@ import Game from 'models/game/game.model'
 import Team from 'models/game/team.model'
 import Player from 'models/game/player.model'
 import PositionType from 'models/game/type/position.model'
-import storageService from 'services/storage.service'
+import storage from 'services/storage.service'
 import Quarter from 'models/game/quarter.model'
 
 const game: Game = new Game()
 
-const data: any = storageService.schedulesByClosest()
+const data: any = storage.matchesByClosest()
 
 data['teams'].forEach((teamData): void => {
   const team: Team = new Team(teamData.name)

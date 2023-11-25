@@ -1,5 +1,5 @@
-import getCache from 'services/storage/cache.storage'
+import * as cacheStorage from 'services/storage/cache.storage'
 
 export default (): void => {
-  getCache()
+  cacheStorage.initialize()
 }

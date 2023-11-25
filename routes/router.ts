@@ -1,43 +1,31 @@
 import { Router } from 'express'
 import error from '../middlewares/error.middleware'
 import secret from '../middlewares/secret.middleware'
-import auth from './route/auth.route'
-import fund from 'routes/route/fund.route'
-import player from './route/player.route'
-import staff from './route/staff.route'
-import team from './route/team.route'
-import schedule from './route/schedule.route'
-import league from './route/league.route'
+import authRoute from './route/auth.route'
+import arenaRoute from 'routes/route/arena.route'
+import cityRoute from 'routes/route/city.route'
+import fundRoute from 'routes/route/fund.route'
+import leagueRoute from 'routes/route/league.route'
+import matchRoute from 'routes/route/match.route'
+import playerRoute from 'routes/route/player.route'
+import rosterRoute from 'routes/route/roster.route'
+import staffRoute from 'routes/route/staff.route'
+import teamRoute from 'routes/route/team.route'
 
 const router: Router = Router()
 
 router.use(error)
 router.use(secret)
 
-router.use('/auth', auth)
-router.use('/fund', fund)
-router.use('/players', player)
-router.use('/staff', staff)
-router.use('/teams', team)
-router.use('/schedules', schedule)
-router.use('/leagues', league)
+router.use('/auth', authRoute)
+router.use('/arenas', arenaRoute)
+router.use('/cities', cityRoute)
+router.use('/fund', fundRoute)
+router.use('/leagues', leagueRoute)
+router.use('/matches', matchRoute)
+router.use('/players', playerRoute)
+router.use('/rosters', rosterRoute)
+router.use('/staff', staffRoute)
+router.use('/teams', teamRoute)
 
 export default router
-
-// TODO
-//
-// player
-//
-// staff
-//
-// statistics
-//
-// team
-//
-// match
-//
-// schedule
-//
-// roster
-//
-// league

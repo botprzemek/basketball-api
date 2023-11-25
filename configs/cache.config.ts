@@ -1,5 +1,5 @@
 export default {
   enabled: false,
   time: 300,
-  routes: ['players', 'teams', 'matches', 'schedules', 'leagues'],
+  routes: ['arenas', 'cities', 'fund', 'leagues', 'matches', 'players', 'rosters', 'staff', 'teams'],
 }
