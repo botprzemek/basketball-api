@@ -15,10 +15,10 @@ const http: Server = createServer(server)
 const port: number = parseInt(process.env.PORT as string)
 
 const options: CorsOptions = {
-  origin: JSON.parse(process.env.ADDRESSES as string),
+	origin: JSON.parse(process.env.ADDRESSES as string)
 }
 const helmetOptions: HelmetOptions = {
-  contentSecurityPolicy: true,
+	contentSecurityPolicy: true
 }
 
 server.disable('x-powered-by')
@@ -33,8 +33,10 @@ server.use(express.urlencoded({ limit: '100kb', parameterLimit: 100, extended: f
 server.use(router)
 
 http.listen(port, (): void => {
-  console.log(`${new Date().toLocaleTimeString('pl-PL')} [server] listening on http://localhost:${port}`)
-  initializeStorage()
-  // initializeMail()
-  // initializeSocket(http)
+	console.log(
+		`${new Date().toLocaleTimeString('pl-PL')} [server] listening on http://localhost:${port}`
+	)
+	initializeStorage()
+	// initializeMail()
+	// initializeSocket(http)
 })

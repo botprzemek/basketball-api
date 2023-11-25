@@ -7,21 +7,31 @@ import Quarter from 'models/game/quarter.model'
 
 const game: Game = new Game()
 
-const data: any = storage.matchesByClosest()
+const setup = async (): Promise<void> => {
+	const data: any = await storage('match', 'matchesByClosest', [])
 
-data['teams'].forEach((teamData): void => {
-  const team: Team = new Team(teamData.name)
+	data['teams'].forEach((teamData): void => {
+		const team: Team = new Team(teamData.name)
 
-  game.addTeam(team)
+		game.addTeam(team)
 
-  for (let i: number = 0; i < 4; i++) {
-    game.addQuarter(new Quarter(i + 1, game.getTeams()[0], game.getTeams()[1]))
-  }
+		for (let i: number = 0; i < 4; i++) {
+			game.addQuarter(new Quarter(i + 1, game.getTeams()[0], game.getTeams()[1]))
+		}
 
-  teamData.players.forEach((playerData): void => {
-    const player: Player = new Player(playerData.name, playerData.lastname, playerData.number, PositionType[playerData.position], playerData.starter)
-    team.addPlayer(player)
-  })
-})
+		teamData.players.forEach((playerData): void => {
+			const player: Player = new Player(
+				playerData.name,
+				playerData.lastname,
+				playerData.number,
+				PositionType[playerData.position],
+				playerData.starter
+			)
+			team.addPlayer(player)
+		})
+	})
+}
+
+void setup()
 
 export default game

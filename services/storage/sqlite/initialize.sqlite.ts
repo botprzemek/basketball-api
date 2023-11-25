@@ -4,16 +4,16 @@ import { assignSqlite, sqliteStorage } from '../sqlite.storage'
 import { resolve } from 'path'
 
 export default async function initializeSqlite(): Promise<void> {
-  if (sqliteStorage()) return
+	if (sqliteStorage()) return
 
-  assignSqlite(
-    await open({
-      filename: resolve('database.db'),
-      driver: Database,
-    }),
-  )
+	assignSqlite(
+		await open({
+			filename: resolve('database.db'),
+			driver: Database
+		})
+	)
 
-  await sqliteStorage().run(
-    'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, first_name VARCHAR, last_name VARCHAR, email VARCHAR UNIQUE, password VARCHAR, verified INTEGER, verification_code VARCHAR, address VARCHAR)',
-  )
+	await sqliteStorage().run(
+		'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, first_name VARCHAR, last_name VARCHAR, email VARCHAR UNIQUE, password VARCHAR, verified INTEGER, verification_code VARCHAR, address VARCHAR)'
+	)
 }

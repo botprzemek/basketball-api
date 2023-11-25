@@ -1,22 +1,22 @@
 {
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
-  },
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "sourceMap": true,
-    "strictNullChecks": true,
-    "allowSyntheticDefaultImports": true,
-    "paths": {
-      "configs/*": ["./configs/*"],
-      "controllers/*": ["./controllers/*"],
-      "middleware/*": ["./middleware/*"],
-      "models/*": ["./models/*"],
-      "routes/*": ["./routes/*"],
-      "services/*": ["./services/*"],
-      "utils/*": ["./utils/*"]
-    }
-  },
-  "exclude": ["./node_modules"]
+	"ts-node": {
+		"require": ["tsconfig-paths/register"]
+	},
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es5",
+		"sourceMap": true,
+		"strictNullChecks": true,
+		"allowSyntheticDefaultImports": true,
+		"paths": {
+			"configs/*": ["./configs/*"],
+			"controllers/*": ["./controllers/*"],
+			"middleware/*": ["./middleware/*"],
+			"models/*": ["./models/*"],
+			"routes/*": ["./routes/*"],
+			"services/*": ["./services/*"],
+			"utils/*": ["./utils/*"]
+		}
+	},
+	"exclude": ["./node_modules"]
 }

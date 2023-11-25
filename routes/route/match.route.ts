@@ -1,5 +1,12 @@
 import { Router } from 'express'
-import { matches, matchesAfterDate, matchesBeforeDate, matchesByClosest, matchesByDate, matchesById } from 'controllers/api/match.controller'
+import {
+	matches,
+	matchesAfterDate,
+	matchesBeforeDate,
+	matchesByClosest,
+	matchesByDate,
+	matchesById
+} from 'controllers/api/match.controller'
 import { rostersByMatchId } from 'controllers/api/roster.controller'
 import { teamStatisticsByMatchId } from 'controllers/api/teamStatistics.controller'
 

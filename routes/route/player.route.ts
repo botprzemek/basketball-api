@@ -1,12 +1,13 @@
 import { Router } from 'express'
 import { players, playersById, playersByName } from 'controllers/api/player.controller'
 import {
-  playersStatistics,
-  playersStatisticsAvg,
-  playersStatisticsAvgAssists,
-  playersStatisticsAvgById,
-  playersStatisticsAvgPoints,
-  playersStatisticsAvgRebounds,
+	playersStatistics,
+	playersStatisticsAvg,
+	playersStatisticsAvgAssists,
+	playersStatisticsAvgByPlayerId,
+	playersStatisticsAvgPoints,
+	playersStatisticsAvgRebounds,
+	playersStatisticsByPlayerId
 } from 'controllers/api/playerStatistics.controller'
 
 const router: Router = Router()
@@ -14,7 +15,8 @@ const router: Router = Router()
 router.get('/', players)
 
 router.get('/id/:id', playersById)
-router.get('/id/:id/statistics/avg', playersStatisticsAvgById)
+router.get('/id/:id/statistics', playersStatisticsByPlayerId)
+router.get('/id/:id/statistics/avg', playersStatisticsAvgByPlayerId)
 
 router.get('/name/:name', playersByName)
 
