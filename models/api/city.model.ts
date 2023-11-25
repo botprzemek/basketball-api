@@ -1,1 +1,4 @@
-interface City {}
+interface City {
+	id: bigint
+	name: string
+}

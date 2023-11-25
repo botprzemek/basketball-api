@@ -1,1 +1,4 @@
-interface League {}
+interface League {
+	id: bigint
+	name: string
+}

@@ -1,9 +1,9 @@
-export const cities = (data: any): any => ({
+export const cities = (data: City): City => ({
 	id: data.id,
 	name: data.name
 })
 
-export const citiesByName = (data: any): any => ({
+export const citiesByName = (data: City): City => ({
 	id: data.id,
 	name: data.name
 })

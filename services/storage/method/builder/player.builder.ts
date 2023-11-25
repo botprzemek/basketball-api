@@ -1,4 +1,4 @@
-export const players = (data: any): any => ({
+export const players = (data: PlayerQuery): Player => ({
 	id: data.id,
 	team_id: data.team_id,
 	name: data.name,
@@ -10,7 +10,8 @@ export const players = (data: any): any => ({
 	starter: data.starter
 })
 
-export const playersById = (data: any): any => ({
+export const playersById = (data: PlayerQuery): Player => ({
+	id: data.id,
 	team_id: data.team_id,
 	name: data.name,
 	lastname: data.lastname,

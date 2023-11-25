@@ -1,0 +1,3 @@
+interface PlayerStatistics {
+	id: bigint
+}
