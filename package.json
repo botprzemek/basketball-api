@@ -35,6 +35,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "npx prettier . --write && nodemon server.ts",
+		"seed": "npx ts-node /services/storage/seed/start.seed.ts",
 		"server": "pm2 start server.ts"
 	},
 	"dependencies": {
