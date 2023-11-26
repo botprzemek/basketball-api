@@ -1,5 +1,7 @@
-export const citiesById = (data: any[], [id]): any[] =>
-	data.filter((city: any): boolean => city.id === `${id}`)
+import { CityQuery } from 'models/api/city.model'
 
-export const citiesByName = (data: any[], [name]): any[] =>
-	data.filter((city: any): boolean => city.name === `${name}`)
+export const citiesById = (data: CityQuery[], [id]): CityQuery[] =>
+	data.filter((city: CityQuery): boolean => city.id === id)
+
+export const citiesByName = (data: CityQuery[], [name]): CityQuery[] =>
+	data.filter((city: CityQuery): boolean => city.name === name)

@@ -8,8 +8,10 @@ export default {
 		'leagues',
 		'matches',
 		'players',
+		'playerStatistics',
 		'rosters',
 		'staff',
-		'teams'
+		'teams',
+		'teamStatistics'
 	]
 }

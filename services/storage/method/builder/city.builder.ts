@@ -1,9 +1,13 @@
-export const cities = (data: City): City => ({
+import { City, CityQuery } from 'models/api/city.model'
+
+export const cities = (data: CityQuery): City => ({
 	id: data.id,
-	name: data.name
+	name: data.name,
+	state: data.state
 })
 
-export const citiesByName = (data: City): City => ({
+export const citiesByName = (data: CityQuery): City => ({
 	id: data.id,
-	name: data.name
+	name: data.name,
+	state: data.state
 })

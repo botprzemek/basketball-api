@@ -1,10 +1,12 @@
-export const playersById = (data: any[], [id]): any[] =>
-	data.filter((player: any): boolean => player.id === `${id}`)
+import { PlayerQuery } from 'models/api/player.model'
 
-export const playersByName = (data: any[], [name]): any[] =>
-	data.filter((player: any): boolean =>
+export const playersById = (data: PlayerQuery[], [id]): PlayerQuery[] =>
+	data.filter((player: PlayerQuery): boolean => player.id === id)
+
+export const playersByName = (data: PlayerQuery[], [name]): PlayerQuery[] =>
+	data.filter((player: PlayerQuery): boolean =>
 		`${player.name} ${player.lastname}`.toLowerCase().includes(name.toLowerCase())
 	)
 
-export const playersByTeamId = (data: any[], [id]): any[] =>
-	data.filter((player: any): boolean => player.team_id === `${id}`)
+export const playersByTeamId = (data: PlayerQuery[], [id]): PlayerQuery[] =>
+	data.filter((player: PlayerQuery): boolean => player.team_id === id)

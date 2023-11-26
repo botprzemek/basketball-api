@@ -1,7 +1,7 @@
 import Game from 'models/game/game.model'
 import Team from 'models/game/team.model'
 import Player from 'models/game/player.model'
-import PositionType from 'models/game/type/position.model'
+import PositionType from 'models/game/type/position.enum'
 import storage from 'services/storage.service'
 import Quarter from 'models/game/quarter.model'
 

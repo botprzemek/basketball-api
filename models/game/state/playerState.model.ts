@@ -1,4 +1,4 @@
-import FoulType from 'models/game/type/foul.model'
+import Foul from 'models/game/type/foul.enum'
 
 enum State {
 	WARMING_UP = 'WARMING_UP',
@@ -72,19 +72,19 @@ export default class PlayerState {
 		return this
 	}
 
-	public setFouled(foul: FoulType): PlayerState {
+	public setFouled(foul: Foul): PlayerState {
 		this.state = State.FOULED
 
 		switch (foul) {
-			case FoulType.INSIDE:
+			case Foul.INSIDE:
 				this.freethrows = 2
 				break
-			case FoulType.OUTSIDE:
+			case Foul.OUTSIDE:
 				this.freethrows = 3
 				break
-			case FoulType.INSIDE_AND:
-			case FoulType.OUTSIDE_AND:
-			case FoulType.TECHNICAL:
+			case Foul.INSIDE_AND:
+			case Foul.OUTSIDE_AND:
+			case Foul.TECHNICAL:
 				this.freethrows = 1
 				break
 			default:

@@ -1,7 +1,9 @@
-export const staff = (data: any): any => ({
+import { Staff, StaffQuery } from 'models/api/staff.model'
+import Role from 'models/api/enum/role.enum'
+
+export const staff = (data: StaffQuery): Staff => ({
 	id: data.id,
-	team_id: data.team_id,
 	name: data.name,
 	lastname: data.lastname,
-	role: data.role
+	role: data.role as Role
 })

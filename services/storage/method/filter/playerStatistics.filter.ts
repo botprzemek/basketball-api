@@ -1,5 +1,17 @@
-export const playersStatisticsByPlayerId = (data: any[], [id]): any[] =>
-	data.filter((playerStatistics: any): boolean => playerStatistics.player_id === `${id}`)
+import { PlayerStatisticsQuery } from 'models/api/playerStatistics.model'
 
-export const playersStatisticsAvgByPlayerId = (data: any[], [id]): any[] =>
-	data.filter((playerStatistics: any): boolean => playerStatistics.player_id === `${id}`)
+export const playersStatisticsByPlayerId = (
+	data: PlayerStatisticsQuery[],
+	[id]
+): PlayerStatisticsQuery[] =>
+	data.filter(
+		(playerStatistics: PlayerStatisticsQuery): boolean => playerStatistics.player_id === id
+	)
+
+export const playersStatisticsAvgByPlayerId = (
+	data: PlayerStatisticsQuery[],
+	[id]
+): PlayerStatisticsQuery[] =>
+	data.filter(
+		(playerStatistics: PlayerStatisticsQuery): boolean => playerStatistics.player_id === id
+	)

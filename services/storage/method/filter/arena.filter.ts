@@ -1,5 +1,7 @@
-export const arenasById = (data: any[], [id]): any[] =>
-	data.filter((arena: any): boolean => arena.id === `${id}`)
+import { ArenaQuery } from 'models/api/arena.model'
 
-export const arenasByCityId = (data: any[], [id]): any[] =>
-	data.filter((arena: any): boolean => arena.city_id === `${id}`)
+export const arenasById = (data: ArenaQuery[], [id]): ArenaQuery[] =>
+	data.filter((arena: ArenaQuery): boolean => arena.id === id)
+
+export const arenasByCityId = (data: ArenaQuery[], [id]): ArenaQuery[] =>
+	data.filter((arena: ArenaQuery): boolean => arena.city_id === id)

@@ -1,12 +1,12 @@
 import Player from 'models/game/player.model'
-import FoulType from 'models/game/type/foul.model'
+import Foul from 'models/game/type/foul.enum'
 
 export default class Call {
 	private readonly player: Player
 	private readonly opponent: Player
-	private readonly type: FoulType
+	private readonly type: Foul
 
-	constructor(player: Player, opponent: Player, type: FoulType) {
+	constructor(player: Player, opponent: Player, type: Foul) {
 		this.player = player
 		this.opponent = opponent
 		this.type = type
@@ -20,7 +20,7 @@ export default class Call {
 		return this.opponent
 	}
 
-	getType(): FoulType {
+	getType(): Foul {
 		return this.type
 	}
 }

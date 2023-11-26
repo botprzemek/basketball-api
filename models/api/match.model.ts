@@ -1,3 +1,13 @@
-interface Match {}
+export interface MatchQuery {
+	id: bigint
+	arena_id: bigint
+	league_id: bigint
+	timestamp: string
+}
 
-// TODO
+export interface Match {
+	id: bigint
+	arena_id: bigint
+	league_id: bigint
+	timestamp: string
+}

@@ -1,11 +1,11 @@
 import Player from 'models/game/player.model'
 import PlayerStatistics from 'models/game/statistics/playerStatistics.model'
-import FoulType from 'models/game/type/foul.model'
+import Foul from 'models/game/type/foul.enum'
 import TeamStatistics from 'models/game/statistics/teamStatistics.model'
 import QuarterStatistics from 'models/game/statistics/quarterStatistics.model'
 import Game from 'models/game/game.model'
 import Team from 'models/game/team.model'
-import Call from 'models/game/type/call.model'
+import Call from 'models/game/call.model'
 
 export default class StatisticsManager {
 	private readonly teamStatistics: TeamStatistics
@@ -73,7 +73,7 @@ export default class StatisticsManager {
 		return this
 	}
 
-	public addFoul(number: number, fouledBy: number, type: FoulType): StatisticsManager {
+	public addFoul(number: number, fouledBy: number, type: Foul): StatisticsManager {
 		if (!this.game.getState().isPlaying()) return this
 		if (this.game.getState().isCall()) return this
 

@@ -1,5 +1,7 @@
-export const teamsById = (data: any[], [id]): any[] =>
-	data.filter((team: any): boolean => team.id === `${id}`)
+import { TeamQuery } from 'models/api/team.model'
 
-export const teamsByName = (data: any[], [name]): any[] =>
-	data.filter((team: any): boolean => team.name.toLowerCase().includes(name.toLowerCase()))
+export const teamsById = (data: TeamQuery[], [id]): TeamQuery[] =>
+	data.filter((team: TeamQuery): boolean => team.id === id)
+
+export const teamsByName = (data: TeamQuery[], [name]): TeamQuery[] =>
+	data.filter((team: TeamQuery): boolean => team.name.toLowerCase().includes(name.toLowerCase()))

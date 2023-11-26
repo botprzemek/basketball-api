@@ -16,6 +16,12 @@ DROP TABLE IF EXISTS league;
 DROP TABLE IF EXISTS arena;
 DROP TABLE IF EXISTS city;
 
+DROP TYPE IF EXISTS position;
+DROP TYPE IF EXISTS role;
+
+CREATE TYPE IF NOT EXISTS position_enum AS ENUM ('PG', 'SG', 'SF', 'PF', 'C');
+CREATE TYPE IF NOT EXISTS role_enum AS ENUM ('COACH', 'TRAINER', 'MANAGER');
+
 CREATE TABLE IF NOT EXISTS city (
     id INT8 NOT NULL PRIMARY KEY UNIQUE DEFAULT unique_rowid(),
     name VARCHAR NOT NULL UNIQUE,
@@ -68,7 +74,7 @@ CREATE TABLE IF NOT EXISTS staff (
     id INT8 NOT NULL PRIMARY KEY UNIQUE DEFAULT unique_rowid(),
     name VARCHAR NOT NULL,
     lastname VARCHAR NOT NULL,
-    role VARCHAR NOT NULL,
+    role role_enum NOT NULL,
     INDEX name_idx (name),
     INDEX role_idx (role)
 );
@@ -138,7 +144,7 @@ CREATE TABLE IF NOT EXISTS player (
     lastname VARCHAR NOT NULL,
     number INT8 NOT NULL UNIQUE,
     height INT8 NOT NULL,
-    position VARCHAR NOT NULL,
+    position position_enum NOT NULL,
     birthday DATE NOT NULL,
     starter BOOLEAN DEFAULT false,
     INDEX name_idx (name),
@@ -270,6 +276,24 @@ INSERT INTO team_staff (staff_id, team_id) VALUES
     ((SELECT id FROM staff WHERE name = 'Kacper' AND lastname = 'Kopeć'), (SELECT id FROM team WHERE name = 'Knury Knurów I')),
     ((SELECT id FROM staff WHERE name = 'Kacper' AND lastname = 'Kopeć'), (SELECT id FROM team WHERE name = 'Knury Knurów II'));
 
+INSERT INTO roster (team_id, match_id) VALUES
+    (
+        (SELECT id FROM team WHERE name = 'Knury Knurów I'),
+        (SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00')
+    ),
+    (
+        (SELECT id FROM team WHERE name = 'Batory Warriors'),
+        (SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00')
+    ),
+    (
+        (SELECT id FROM team WHERE name = 'Knury Knurów I'),
+        (SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00')
+    ),
+    (
+        (SELECT id FROM team WHERE name = 'PIK Siemianowice'),
+        (SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00')
+    );
+
 INSERT INTO player (team_id, name, lastname, number, height, position, birthday, starter) VALUES
     ((SELECT id FROM team WHERE name = 'Knury Knurów I'), 'Dawid', 'Kocięba', 0, 190, 'PF', '2001-12-06', false),
     ((SELECT id FROM team WHERE name = 'Knury Knurów I'), 'Dominik', 'Girgiel', 34, 185, 'SF', '2007-06-14', false),
@@ -301,24 +325,6 @@ INSERT INTO player (team_id, name, lastname, number, height, position, birthday,
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Piotr', 'Oleksy', 97, 179, 'PG', '2009-01-13', false),
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Samuel', 'Ntuk', 94, 186, 'SF', '2008-01-01', false),
     ((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Tomasz', 'Dubiel', 32, 180, 'SG', '2008-05-06', true);
-
-INSERT INTO roster (team_id, match_id) VALUES
-    (
-        (SELECT id FROM team WHERE name = 'Knury Knurów I'),
-        (SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00')
-    ),
-    (
-        (SELECT id FROM team WHERE name = 'Batory Warriors'),
-        (SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00')
-    ),
-    (
-        (SELECT id FROM team WHERE name = 'Knury Knurów I'),
-        (SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00')
-    ),
-    (
-        (SELECT id FROM team WHERE name = 'PIK Siemianowice'),
-        (SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00')
-    );
 
 INSERT INTO player_roster (player_id, roster_id) VALUES
     (

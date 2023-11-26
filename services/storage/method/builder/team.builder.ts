@@ -1,8 +1,9 @@
-export const teams = (data: any): any => ({
+import { Team, TeamQuery } from 'models/api/team.model'
+
+export const teams = (data: TeamQuery): Team => ({
 	id: data.id,
-	city_id: data.city_id,
 	league_id: data.league_id,
 	name: data.name,
-	won: parseInt(data.won),
-	lost: parseInt(data.lost)
+	won: data.won,
+	lost: data.lost
 })
