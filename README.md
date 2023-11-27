@@ -1,13 +1,14 @@
 # basketball-api
 
-SENN - SurrealDB, Express, Nuxt, NodeJS
+Stack of whole proejct - CENN (CockroachDB, Express, Nuxt, NodeJS)
 
 This documentation provides an overview of the REST API project developed for the Knury Knurów
 basketball team. The API is built using JavaScript + TypeScript :milky_way: with Express framework
 (Node.js), and it integrates technologies such as Supabase :sparkle:, Prisma :gem:, Socket.IO
 :loudspeaker:, and Node-Cache :eight_pointed_black_star: package for caching. 💫
 
-> [!WARNING] > <span id="status">Project is work in progress</span>
+> [!Caution]
+> <span id="status">Project is still work in progress</span>
 
 ## Navigation :busstop:
 
@@ -29,10 +30,7 @@ to interact with team-related data.
 
 ## <span id="setup">Quick Start :rocket:</span>
 
-Testing API instance running on [this link](https://api.testing.knuryknurow.pl/) (CORS is disabled
-for known reasons)
-
-## <span id="usage">Usage :tada:</span>
+Testing API instance running on [this link](https://api.testing.knuryknurow.pl/)
 
 To run the project in development mode (Nodemon - Restarting after changes), execute the following
 command:
@@ -41,12 +39,23 @@ command:
 npm run dev
 ```
 
+To run the seeding script to fill your database, execute the following
+command:
+
+```shell
+npm run seed
+```
+
 To run the project in production mode (PM2 - daemonize app and logging), execute the following
 command:
 
 ```shell
 npm run server
 ```
+
+## <span id="usage">Usage :tada:</span>
+
+
 
 ## <span id="technologies">Technologies Used :bulb:</span>
 
