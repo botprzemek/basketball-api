@@ -1,16 +1,17 @@
 import Game from 'models/game/game.model'
 import Team from 'models/game/team.model'
 import Player from 'models/game/player.model'
-import PositionType from 'models/game/type/position.enum'
+import Position from 'models/game/type/position.enum'
 import storage from 'services/storage.service'
 import Quarter from 'models/game/quarter.model'
+import {PlayerQuery} from 'models/api/player.model'
 
 const game: Game = new Game()
 
 const setup = async (): Promise<void> => {
 	const data: any = await storage('match', 'matchesByClosest', [])
 
-	data['teams'].forEach((teamData): void => {
+	data['teams'].forEach((teamData: any): void => {
 		const team: Team = new Team(teamData.name)
 
 		game.addTeam(team)
@@ -19,12 +20,12 @@ const setup = async (): Promise<void> => {
 			game.addQuarter(new Quarter(i + 1, game.getTeams()[0], game.getTeams()[1]))
 		}
 
-		teamData.players.forEach((playerData): void => {
+		teamData.players.forEach((playerData: PlayerQuery): void => {
 			const player: Player = new Player(
 				playerData.name,
 				playerData.lastname,
 				playerData.number,
-				PositionType[playerData.position],
+				playerData.position as Position,
 				playerData.starter
 			)
 			team.addPlayer(player)

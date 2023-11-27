@@ -1,15 +1,11 @@
-import { Fund, FundQuery } from 'models/api/fund.model'
-
-const currencies = {
-	'zł': 'PLN',
-}
+import {Fund, FundQuery} from 'models/api/fund.model'
 
 export const fund = (data: FundQuery): Fund => ({
 	balance: data.balance,
-	currency: currencies[data.currencyUnitSymbol],
+	currency: data.currencyUnitSymbol.replace('zł', 'PLN'),
 })
 
 export const fundByUrl = (data: FundQuery): Fund => ({
 	balance: data.balance,
-	currency: currencies[data.currencyUnitSymbol],
+	currency: data.currencyUnitSymbol.replace('zł', 'PLN'),
 })

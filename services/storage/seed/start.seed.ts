@@ -4,9 +4,7 @@ import fill from 'services/storage/seed/fill.seed'
 
 const seed = async (): Promise<void> => {
 	const start: number = performance.now()
-	let status: boolean = false
-
-	status = await drop()
+	let status: boolean = await drop()
 
 	if (!status) process.exit(0)
 
