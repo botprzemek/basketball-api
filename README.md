@@ -5,7 +5,7 @@
 
 ## <span id="overview">Project Overview :memo:</span>
 
-Stack of whole project including [website](https://github.com/botprzemek/basketball-website) - **CENN (CockroachDB, Express, Nuxt, NodeJS)**
+Stack of whole project including [website project](https://github.com/botprzemek/basketball-website) - **CENN (CockroachDB, Express, Nuxt, NodeJS)**
 
 This documentation provides an overview of the REST API project developed for the Knury Knurów
 basketball team. The API is built around JavaScript (TypeScript :milky_way:) with Express :coffee: framework (Node.js).
