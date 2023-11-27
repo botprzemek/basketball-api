@@ -5,8 +5,8 @@ import * as cors from 'cors'
 import { type CorsOptions } from 'cors'
 import helmet, { type HelmetOptions } from 'helmet'
 import { createServer, type Server } from 'http'
-import router from 'routes/router'
 import initializeStorage from 'services/storage/initialize.storage'
+import router from 'routes/router'
 
 dotenv.config()
 

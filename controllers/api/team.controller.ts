@@ -14,7 +14,7 @@ export async function teamsById(req: Request, res: Response): Promise<void> {
 }
 
 export async function teamsByName(req: Request, res: Response): Promise<void> {
-	const data: Team[] = await storage('teams', 'teamsByName', [BigInt(req.params.name)])
+	const data: Team[] = await storage('teams', 'teamsByName', [req.params.name])
 	sendData(req, res, data)
 }
 

@@ -2,7 +2,11 @@ import processMethod from 'services/storage/method/process.method'
 import * as cacheStorage from 'services/storage/cache.storage'
 import queries from 'services/storage/method/query.method'
 
-export default async <TypeQuery>(key: string, method?: string, parameters?: any[]): Promise<TypeQuery[]> => {
+export default async <TypeQuery>(
+	key: string,
+	method?: string,
+	parameters?: any[]
+): Promise<TypeQuery[]> => {
 	try {
 		const cachedData: TypeQuery[] = cacheStorage.getData(key)
 

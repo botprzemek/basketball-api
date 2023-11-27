@@ -5,7 +5,7 @@ export const playersStatisticsByPlayerId = (
 	[id]
 ): PlayerStatisticsQuery[] =>
 	data.filter(
-		(playerStatistics: PlayerStatisticsQuery): boolean => playerStatistics.player_id === id
+		(playerStatistics: PlayerStatisticsQuery): boolean => BigInt(playerStatistics.player_id) === id
 	)
 
 export const playersStatisticsAvgByPlayerId = (
@@ -13,5 +13,5 @@ export const playersStatisticsAvgByPlayerId = (
 	[id]
 ): PlayerStatisticsQuery[] =>
 	data.filter(
-		(playerStatistics: PlayerStatisticsQuery): boolean => playerStatistics.player_id === id
+		(playerStatistics: PlayerStatisticsQuery): boolean => BigInt(playerStatistics.player_id) === id
 	)

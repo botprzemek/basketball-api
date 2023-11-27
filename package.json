@@ -1,7 +1,7 @@
 {
 	"name": "basketball-api",
-	"version": "0.5.0",
-	"description": "REST API for my own local basketball team",
+	"version": "0.6.0",
+	"description": "Knury Knurów basketball team REST API serves as an essential extension to the team's website. Project is built around JavaScript (TypeScript 🌌) with Express framework (Node.js). It integrates technologies such as CockroachDB 🪳 and Socket.IO 📡.",
 	"author": "botprzemek",
 	"license": "Apache-2.0",
 	"keywords": [
@@ -39,7 +39,6 @@
 		"server": "pm2 start server.ts"
 	},
 	"dependencies": {
-		"@types/pg": "^8.10.9",
 		"bcrypt": "^5.1.1",
 		"cors": "^2.8.5",
 		"dotenv": "^16.3.1",
@@ -60,6 +59,7 @@
 		"@types/http-server": "^0.12.1",
 		"@types/jsonwebtoken": "^9.0.3",
 		"@types/nodemailer": "^6.4.9",
+		"@types/pg": "^8.10.9",
 		"@types/sqlite3": "^3.1.10",
 		"nodemon": "^3.0.1",
 		"prettier": "3.0.3",

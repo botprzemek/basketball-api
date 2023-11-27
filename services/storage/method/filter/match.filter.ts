@@ -1,7 +1,7 @@
 // TODO
 
 export const matchesById = (data: any[], [id]): any[] =>
-	data.filter((match: any): boolean => match.id === id)
+	data.filter((match: any): boolean => BigInt(match.id) === id)
 
 export const matchesByClosest = (data: any[]): any[] =>
 	data

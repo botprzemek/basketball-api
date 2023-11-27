@@ -4,7 +4,7 @@ import Player from 'models/game/player.model'
 import Position from 'models/game/type/position.enum'
 import storage from 'services/storage.service'
 import Quarter from 'models/game/quarter.model'
-import {PlayerQuery} from 'models/api/player.model'
+import { PlayerQuery } from 'models/api/player.model'
 
 const game: Game = new Game()
 

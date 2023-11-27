@@ -1,6 +1,6 @@
 export default {
-	enabled: false,
-	time: 300,
+	enabled: true,
+	time: 3600,
 	routes: [
 		'arenas',
 		'cities',

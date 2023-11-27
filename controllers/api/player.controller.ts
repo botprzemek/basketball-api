@@ -14,7 +14,7 @@ export async function playersById(req: Request, res: Response): Promise<void> {
 }
 
 export async function playersByName(req: Request, res: Response): Promise<void> {
-	const data: Player[] = await storage('players', 'playersByName', [BigInt(req.params.name)])
+	const data: Player[] = await storage('players', 'playersByName', [req.params.name])
 	sendData(req, res, data)
 }
 

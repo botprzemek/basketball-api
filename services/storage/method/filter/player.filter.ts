@@ -1,7 +1,7 @@
 import { PlayerQuery } from 'models/api/player.model'
 
 export const playersById = (data: PlayerQuery[], [id]): PlayerQuery[] =>
-	data.filter((player: PlayerQuery): boolean => player.id === id)
+	data.filter((player: PlayerQuery): boolean => BigInt(player.id) === id)
 
 export const playersByName = (data: PlayerQuery[], [name]): PlayerQuery[] =>
 	data.filter((player: PlayerQuery): boolean =>
@@ -9,4 +9,4 @@ export const playersByName = (data: PlayerQuery[], [name]): PlayerQuery[] =>
 	)
 
 export const playersByTeamId = (data: PlayerQuery[], [id]): PlayerQuery[] =>
-	data.filter((player: PlayerQuery): boolean => player.team_id === id)
+	data.filter((player: PlayerQuery): boolean => BigInt(player.team_id) === id)
