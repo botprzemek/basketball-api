@@ -1,22 +1,24 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
-import { RosterQuery } from 'models/api/roster.model'
+import {RosterQuery} from 'models/api/roster.model'
 
 export const rosters = async (): Promise<RosterQuery[]> =>
 	cockroachStorage()`
       SELECT roster.id, roster.match_id, player.* 
-      FROM roster, player_roster, player
-      WHERE player.id = player_roster.player_id`
+      FROM player_roster, roster, player
+      WHERE player_roster.player_id = player.id
+      AND player_roster.roster_id = roster.id`
 
-export const rostersById = async (parameters: any[]): Promise<RosterQuery[]> =>
+export const rostersById = async ([id]): Promise<RosterQuery[]> =>
 	cockroachStorage()`
       SELECT roster.id, roster.match_id, player.* 
-      FROM roster, player_roster, player
-      WHERE player.id = player_roster.player_id
-      AND roster.id = ${parameters[0]}`
+      FROM player_roster, roster, player
+      WHERE player_roster.player_id = player.id
+      AND roster.id = ${id}`
 
-export const rostersByMatchId = async (parameters: any[]): Promise<RosterQuery[]> =>
+export const rostersByMatchId = async ([id]): Promise<RosterQuery[]> =>
 	cockroachStorage()`
       SELECT roster.id, roster.match_id, player.* 
-      FROM roster, player_roster, player
-      WHERE player.id = player_roster.player_id
-      AND roster.match_id = ${parameters[0]}`
+      FROM player_roster, roster, player
+      WHERE player_roster.player_id = player.id
+      AND player_roster.roster_id = roster.id
+      AND roster.match_id = ${id}`

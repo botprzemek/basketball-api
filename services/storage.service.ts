@@ -12,6 +12,8 @@ export default async <TypeQuery>(
 
 		if (cachedData) return processMethod(cachedData, method, parameters)
 
+		console.log(key, method, parameters)
+
 		const queryData: TypeQuery[] = await queries[key]()
 
 		if (queryData.length > 0) cacheStorage.setData(key, queryData)

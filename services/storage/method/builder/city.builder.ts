@@ -5,9 +5,3 @@ export const cities = (data: CityQuery): City => ({
 	name: data.name,
 	state: data.state
 })
-
-export const citiesByName = (data: CityQuery): City => ({
-	id: data.id,
-	name: data.name,
-	state: data.state
-})

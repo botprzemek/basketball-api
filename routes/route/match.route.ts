@@ -1,20 +1,24 @@
-import { Router } from 'express'
+import {Router} from 'express'
 import {
 	matches,
+	matchesAfter,
 	matchesAfterDate,
+	matchesBefore,
 	matchesBeforeDate,
-	matchesByClosest,
 	matchesByDate,
-	matchesById
+	matchesById,
+	matchesClosest
 } from 'controllers/api/match.controller'
-import { rostersByMatchId } from 'controllers/api/roster.controller'
-import { teamStatisticsByMatchId } from 'controllers/api/teamStatistics.controller'
+import {teamStatisticsByMatchId} from 'controllers/api/teamStatistics.controller'
+import {rostersByMatchId} from "controllers/api/roster.controller";
 
 const router: Router = Router()
 
 router.get('/', matches)
 
-router.get('/closest', matchesByClosest)
+router.get('/after', matchesAfter)
+router.get('/before', matchesBefore)
+router.get('/closest', matchesClosest)
 
 router.get('/id/:id', matchesById)
 router.get('/id/:id/rosters', rostersByMatchId)

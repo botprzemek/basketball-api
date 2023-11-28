@@ -1,9 +1,9 @@
-// TODO
+import {Match, MatchQuery} from 'models/api/match.model'
 
-export const matchesById = (data: any[], [id]): any[] =>
+export const matchesById = (data: MatchQuery[], [id]): Match[] =>
 	data.filter((match: any): boolean => BigInt(match.id) === id)
 
-export const matchesByClosest = (data: any[]): any[] =>
+export const matchesClosest = (data: MatchQuery[]): Match[] =>
 	data
 		.filter((match: any): boolean => match.timestamp > new Date().toISOString())
 		.sort(
@@ -12,13 +12,19 @@ export const matchesByClosest = (data: any[]): any[] =>
 		)
 		.splice(1)
 
-export const matchesByDate = (data: any[], [date]): any[] =>
+export const matchesAfter = (data: MatchQuery[]): Match[] =>
+	data.filter((match: any): boolean => new Date() < new Date(match.timestamp))
+
+export const matchesBefore = (data: MatchQuery[]): Match[] =>
+	data.filter((match: any): boolean => new Date() > new Date(match.timestamp))
+
+export const matchesByDate = (data: MatchQuery[], [date]): Match[] =>
 	data.filter(
-		(match: any): boolean => date === new Date(match.datetime).toISOString().split('T')[0]
+		(match: any): boolean => date === new Date(match.timestamp).toISOString().split('T')[0]
 	)
 
-export const matchesAfterDate = (data: any[], [date]): any[] =>
-	data.filter((match: any): boolean => new Date(date) < new Date(match.datetime))
+export const matchesAfterDate = (data: MatchQuery[], [date]): Match[] =>
+	data.filter((match: any): boolean => new Date(date) < new Date(match.timestamp))
 
-export const matchesBeforeDate = (data: any[], [date]): any[] =>
-	data.filter((match: any): boolean => new Date(date) > new Date(match.datetime))
+export const matchesBeforeDate = (data: MatchQuery[], [date]): Match[] =>
+	data.filter((match: any): boolean => new Date(date) > new Date(match.timestamp))

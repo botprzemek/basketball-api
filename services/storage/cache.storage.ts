@@ -1,10 +1,12 @@
 import * as NodeCache from 'node-cache'
 import cacheConfig from 'configs/cache.config'
+import setupCache from 'services/storage/cache/setup.cache'
 
 let cache: NodeCache
 
-const assign = (): any => {
+const assign = (): NodeCache => {
 	cache = new NodeCache({ stdTTL: cacheConfig.time * 1000 })
+	setupCache()
 	return cache
 }
 
