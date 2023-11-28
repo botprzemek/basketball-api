@@ -8,14 +8,12 @@ export const playersStatistics = async (): Promise<PlayerStatisticsQuery[]> =>
       WHERE player_statistics.player_id = player.id 
       ORDER BY player.lastname ASC`
 
-export const playersStatisticsByTeamId = async (
-	parameters: any[]
-): Promise<PlayerStatisticsQuery[]> =>
+export const playersStatisticsByTeamId = async ([id]): Promise<PlayerStatisticsQuery[]> =>
 	cockroachStorage()`
       SELECT player_statistics.*, player.team_id 
       FROM player_statistics, player 
       WHERE player_statistics.player_id = player.id 
-      AND player.team_id = ${parameters[0]} 
+      AND player.team_id = ${id} 
       ORDER BY player.lastname ASC`
 
 export const playersStatisticsAvg = async (): Promise<PlayerStatisticsQuery[]> =>
@@ -69,9 +67,7 @@ export const playersStatisticsAvgAssists = async (): Promise<PlayerStatisticsQue
       FROM player_statistics 
       GROUP BY player_statistics.player_id`
 
-export const playersStatisticsAvgById = async (
-	parameters: any[]
-): Promise<PlayerStatisticsQuery[]> =>
+export const playersStatisticsAvgById = async ([id]): Promise<PlayerStatisticsQuery[]> =>
 	cockroachStorage()`
       SELECT player_statistics.player_id, 
       COUNT(player_statistics.player_id) AS games_played, 
@@ -90,5 +86,5 @@ export const playersStatisticsAvgById = async (
       SUM(player_statistics.turnovers) AS turnovers, 
       SUM(player_statistics.fouls) AS fouls
       FROM player_statistics 
-      WHERE player_statistics.player_id = ${parameters[0]} 
+      WHERE player_statistics.player_id = ${id} 
       GROUP BY player_statistics.player_id`

@@ -1,6 +1,7 @@
 import processMethod from 'services/storage/method/process.method'
 import * as cacheStorage from 'services/storage/cache.storage'
-import queries from 'services/storage/method/query.method'
+import queries from 'services/storage/query.storage'
+import builderMethod from 'services/storage/method/builder.method'
 
 export default async <TypeQuery>(
 	key: string,
@@ -12,15 +13,13 @@ export default async <TypeQuery>(
 
 		if (cachedData) return processMethod(cachedData, method, parameters)
 
-		console.log(key, method, parameters)
-
 		const queryData: TypeQuery[] = await queries[key]()
 
 		if (queryData.length > 0) cacheStorage.setData(key, queryData)
 
 		if (!method || !parameters) return processMethod(queryData, method, parameters)
 
-		return processMethod(await queries[method](parameters), method, parameters)
+		return builderMethod[method](await queries[method](parameters))
 	} catch {
 		return []
 	}

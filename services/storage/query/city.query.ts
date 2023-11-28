@@ -7,14 +7,14 @@ export const cities = async (): Promise<CityQuery[]> =>
 		FROM city 
 		ORDER BY name ASC`
 
-export const citiesById = async (parameters: any[]): Promise<CityQuery[]> =>
+export const citiesById = async ([id]): Promise<CityQuery[]> =>
 	cockroachStorage()`
 		SELECT city.*
 		FROM city 
-		WHERE id = ${parameters[0]}`
+		WHERE id = ${id}`
 
-export const citiesByName = async (parameters: any[]): Promise<CityQuery[]> =>
+export const citiesByName = async ([name]): Promise<CityQuery[]> =>
 	cockroachStorage()`
 		SELECT city.*
 		FROM city 
-		WHERE name = ${parameters[0]}`
+		WHERE name = ${name}`

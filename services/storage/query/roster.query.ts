@@ -1,5 +1,5 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
-import {RosterQuery} from 'models/api/roster.model'
+import { RosterQuery } from 'models/api/roster.model'
 
 export const rosters = async (): Promise<RosterQuery[]> =>
 	cockroachStorage()`

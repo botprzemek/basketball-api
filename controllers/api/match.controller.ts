@@ -1,7 +1,7 @@
-import {type Request, type Response} from 'express'
+import { type Request, type Response } from 'express'
 import storage from 'services/storage.service'
 import sendData from 'utils/send.util'
-import {Match} from 'models/api/match.model'
+import { Match } from 'models/api/match.model'
 
 export async function matches(req: Request, res: Response): Promise<void> {
 	const data: Match[] = await storage('matches')
@@ -27,7 +27,6 @@ export async function matchesBefore(req: Request, res: Response): Promise<void> 
 	const data: Match[] = await storage('matches', 'matchesBefore', [req.params.date])
 	sendData(req, res, data)
 }
-
 
 export async function matchesByDate(req: Request, res: Response): Promise<void> {
 	const data: Match[] = await storage('matches', 'matchesByDate', [req.params.date])

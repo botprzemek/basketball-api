@@ -1,4 +1,4 @@
-import {Match, MatchQuery} from 'models/api/match.model'
+import { Match, MatchQuery } from 'models/api/match.model'
 
 export const matchesById = (data: MatchQuery[], [id]): Match[] =>
 	data.filter((match: any): boolean => BigInt(match.id) === id)

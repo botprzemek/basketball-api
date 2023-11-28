@@ -7,21 +7,21 @@ export const teams = async (): Promise<TeamQuery[]> =>
 		FROM team 
 		ORDER BY name ASC`
 
-export const teamsById = async (parameters: any[]): Promise<TeamQuery[]> =>
+export const teamsById = async ([id]): Promise<TeamQuery[]> =>
 	cockroachStorage()`
 		SELECT team.* 
 		FROM team 
-		WHERE id = ${parameters[0]}`
+		WHERE id = ${id}`
 
-export const teamsByName = async (parameters: any[]): Promise<TeamQuery[]> =>
+export const teamsByName = async ([name]): Promise<TeamQuery[]> =>
 	cockroachStorage()`
 		SELECT team.* 
 		FROM team 
-		WHERE name = ${parameters[0]}`
+		WHERE name = ${name}`
 
-export const teamsByCityId = async (parameters: any[]): Promise<TeamQuery[]> =>
+export const teamsByCityId = async ([id]): Promise<TeamQuery[]> =>
 	cockroachStorage()`
 		SELECT team.* 
 		FROM team 
-		WHERE city_id = ${parameters[0]}
+		WHERE city_id = ${id}
 		ORDER BY name ASC`
