@@ -7,8 +7,6 @@
 
 ## <span id="overview">Project Overview :memo:</span>
 
----
-
 Stack of whole project including
 [website project](https://github.com/botprzemek/basketball-website) - **CENN (CockroachDB, Express,
 Nuxt, NodeJS)**
@@ -16,11 +14,9 @@ Nuxt, NodeJS)**
 This documentation provides an overview of the REST API project developed for the Knury Knurów
 basketball team. The API is built around JavaScript (TypeScript :milky_way:) with Express :coffee:
 framework (Node.js). It integrates technologies such as CockroachDB :cockroach: and Socket.IO
-:satellite:, Node-Mailer :mailbox: and Node-Cache :eight_pointed_black_star: for caching.
+:satellite:, Node-Mailer :mailbox: and Node-Cache :eight_pointed_black_star:
 
 ## Navigation :busstop:
-
----
 
 1. [Status](#status)
 2. [Project Overview](#overview)
@@ -32,8 +28,6 @@ framework (Node.js). It integrates technologies such as CockroachDB :cockroach: 
 
 ## <span id="setup">Quick Start :rocket:</span>
 
----
-
 Testing API instance running on [this link](https://api.testing.knuryknurow.pl/), please refer to
 project's documentation about API endpoints
 
@@ -44,15 +38,11 @@ command:
 npm run dev
 ```
 
----
-
 To run the seeding script to fill your database, execute the following command:
 
 ```shell
 npm run seed
 ```
-
----
 
 To run the project in production mode (PM2 - daemonize app and logging), execute the following
 command:
@@ -63,13 +53,9 @@ npm run server
 
 ## <span id="usage">Usage :tada:</span>
 
----
-
 <!-- TODO API AND SOCKET -->
 
 ## <span id="technologies">Technologies Used :bulb:</span>
-
----
 
 1. [**JavaScript**](https://developer.mozilla.org/en-US/docs/Web/JavaScript): Programming language
    used for the project's core functionality. :toolbox:
@@ -88,12 +74,10 @@ npm run server
 
 ## <span id="database">Database Models :abacus:</span>
 
----
-
 These models define the structure of the sports-related database, including basketball arenas, local
 cities, players, teams, statistics, matches, and rosters, along with their respective relationships.
 
-### 1. City <a name="city"></a>
+### 1. City
 
 - **id** (INT8): Primary key, unique identifier for the city.
 - **name** (VARCHAR): Name of the city (not null, unique).
@@ -102,9 +86,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 **Indexes:**
 - `name_idx`: Index on the name column.
 
----
-
-### 2. Arena <a name="arena"></a>
+### 2. Arena
 
 - **id** (INT8): Primary key, unique identifier for the arena.
 - **city_id** (INT8): Foreign key referencing the city table (not null, references city.id, on delete cascade).
@@ -115,9 +97,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `name_idx`: Index on the name column.
 - `city_id_idx`: Index on the city_id column.
 
----
-
-### 3. League <a name="league"></a>
+### 3. League
 
 - **id** (INT8): Primary key, unique identifier for the league.
 - **arena_id** (INT8): Foreign key referencing the arena table (not null, references arena.id, on delete cascade).
@@ -129,9 +109,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `arena_id_idx`: Index on the arena_id column.
 - `city_id_idx`: Index on the city_id column.
 
----
-
-### 4. Match <a name="match"></a>
+### 4. Match
 
 - **id** (INT8): Primary key, unique identifier for the match.
 - **arena_id** (INT8): Foreign key referencing the arena table (not null, references arena.id, on delete cascade).
@@ -143,9 +121,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `arena_id_idx`: Index on the arena_id column.
 - `league_id_idx`: Index on the league_id column.
 
----
-
-### 5. Team <a name="team"></a>
+### 5. Team
 
 - **id** (INT8): Primary key, unique identifier for the team.
 - **city_id** (INT8): Foreign key referencing the city table (not null, references city.id, on delete cascade).
@@ -159,9 +135,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `city_id_idx`: Index on the city_id column.
 - `league_id_idx`: Index on the league_id column.
 
----
-
-### 6. Staff <a name="staff"></a>
+### 6. Staff
 
 - **id** (INT8): Primary key, unique identifier for the staff.
 - **name** (VARCHAR): First name of the staff (not null).
@@ -172,9 +146,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `name_idx`: Index on the name column.
 - `role_idx`: Index on the role column.
 
----
-
-### 7. Team_Staff <a name="team_staff"></a>
+### 7. Team_Staff
 
 - **staff_id** (INT8): Foreign key referencing the staff table (not null, references staff.id, on delete cascade).
 - **team_id** (INT8): Foreign key referencing the team table (not null, references team.id, on delete cascade).
@@ -183,9 +155,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `staff_id_idx`: Index on the staff_id column.
 - `team_id_idx`: Index on the team_id column.
 
----
-
-### 8. Team_Statistics <a name="team_statistics"></a>
+### 8. Team_Statistics
 
 - **id** (INT8): Primary key, unique identifier for the team statistics.
 - **match_id** (INT8): Foreign key referencing the match table (not null, references match.id, on delete cascade, unique).
@@ -208,9 +178,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `match_id_idx`: Index on the match_id column.
 - `team_id_idx`: Index on the team_id column.
 
----
-
-### 9. Quarter_Statistics <a name="quarter_statistics"></a>
+### 9. Quarter_Statistics
 
 - **id** (INT8): Primary key, unique identifier for the quarter statistics.
 - **match_id** (INT8): Foreign key referencing the match table (not null, references match.id, on delete cascade).
@@ -234,9 +202,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `match_id_idx`: Index on the match_id column.
 - `team_id_idx`: Index on the team_id column.
 
----
-
-### 10. Roster <a name="roster"></a>
+### 10. Roster
 
 - **id** (INT8): Primary key, unique identifier for the roster.
 - **match_id** (INT8): Foreign key referencing the match table (not null, references match.id, on delete cascade).
@@ -246,9 +212,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `match_id_idx`: Index on the match_id column.
 - `team_id_idx`: Index on the team_id column.
 
----
-
-### 11. Player <a name="player"></a>
+### 11. Player
 
 - **id** (INT8): Primary key, unique identifier for the player.
 - **team_id** (INT8): Foreign key referencing the team table (not null, references team.id, on delete cascade).
@@ -266,9 +230,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `team_id_idx`: Index on the team_id column.
 - Unique constraint on `(team_id, number)`.
 
----
-
-### 12. Player_Roster <a name="player_roster"></a>
+### 12. Player_Roster
 
 - **player_id** (INT8): Foreign key referencing the player table (not null, references player.id, on delete cascade).
 - **roster_id** (INT8): Foreign key referencing the roster table (not null, references roster.id, on delete cascade).
@@ -277,9 +239,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `player_id_idx`: Index on the player_id column.
 - `roster_id_idx`: Index on the roster_id column.
 
----
-
-### 13. Player_Statistics <a name="player_statistics"></a>
+### 13. Player_Statistics
 
 - **id** (INT8): Primary key, unique identifier for the player statistics.
 - **match_id** (INT8): Foreign key referencing the match table (not null, references match.id, on delete cascade).
@@ -304,9 +264,7 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 - `player_id_idx`: Index on the player_id column.
 - Unique constraint on `(match_id, player_id)`.
 
----
-
-### 14. Backlog <a name="backlog"></a>
+### 14. Backlog
 
 - **id** (INT8): Primary key, unique identifier for the backlog.
 - **match_id** (INT8): Foreign key referencing the match table (not null, references match.id, on delete cascade).
@@ -316,12 +274,8 @@ cities, players, teams, statistics, matches, and rosters, along with their respe
 **Indexes:**
 - `match_id_idx`: Index on the match_id column.
 
----
-
 This documentation provides an overview of the database structure, including tables, columns, data types, and relationships. Use this as a reference for understanding the schema and designing queries for the PostgreSQL database.
 
 ## <span id="endpoints">Endpoints :satellite:</span>
-
----
 
 <!-- TODO ENDPOINTS -->
