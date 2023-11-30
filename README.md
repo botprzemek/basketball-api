@@ -21,22 +21,22 @@ framework (Node.js). It integrates technologies such as CockroachDB :cockroach: 
 2. [Project Overview](#overview)
 3. [Quick Start](#setup)
 4. [Features](#features)
-4. [Usage](#usage)
-5. [Technologies used](#technologies)
+5. [Usage](#usage)
+6. [Technologies used](#technologies)
 7. [Endpoints](#endpoints)
-6. [Database Models](#database)
-7. [Contributors](#contributors)
-8. [Author](#author)
-9. [License](#license)
+8. [Database Models](#database)
+9. [Contributors](#contributors)
+10. [Author](#author)
+11. [License](#license)
 
 ## <span id="setup">Quick Start :rocket:</span>
 
-Testing API instance running on [this link](https://api.testing.knuryknurow.pl/), please refer to API's endpoints
+Testing API instance running on [this link](https://api.testing.knuryknurow.pl/), please refer to
+API's endpoints
 
 1. Install Node
 
-2. Clone repository
-git clone https://github.com/botprzemek/basketball-api.git
+2. Clone repository git clone https://github.com/botprzemek/basketball-api.git
 
 cd basketball-api
 
@@ -56,12 +56,12 @@ COCKROACH_HOST=your.database.domain.com
 COCKROACH_PORT=26257
 COCKROACH_NAME=api
 COCKROACH_USER=your_user
-COCKROACH_PASSWORD=your-database-password
+COCKROACH_PASSWORD=your_database_password
 
 MAIL_URL=your.mail.domain.com
 MAIL_PORT=587
 MAIL_USER=your_user
-MAIL_PASSWORD=your-mail-password
+MAIL_PASSWORD=your_mail_password
 
 TOKEN_KEY=generated_token
 ```
@@ -98,8 +98,8 @@ npm run server
    used for the project's core functionality. :toolbox:
 2. [**TypeScript**](https://www.typescriptlang.org/docs): Superset of mentioned above JavaScript,
    used for adding static typing and enhancing code maintainability. :link:
-3. [**Node**](https://nodejs.org/en/docs) An asynchronous event-driven JavaScript runtime,
-   designed to build scalable network applications. :crystal_ball:
+3. [**Node**](https://nodejs.org/en/docs) An asynchronous event-driven JavaScript runtime, designed
+   to build scalable network applications. :crystal_ball:
 4. [**CockroachDB**](https://www.cockroachlabs.com/docs): Database engine used for storing and
    retrieving team-related data. :file_folder:
 5. [**Express**](https://expressjs.com/en/4x/api): Web application framework for building the API's
@@ -112,7 +112,9 @@ npm run server
 
 ## <span id="database">Database Models :abacus:</span>
 
-This section provides an overview of the structure, including  basketball arenas, cities, players, teams, statistics, matches, and rosters, along with their respective relationships inside the CockroachDB database.
+This section provides an overview of the structure, including basketball arenas, cities, players,
+teams, statistics, matches, and rosters, along with their respective relationships inside the
+CockroachDB database.
 
 ### 1. City
 
@@ -352,13 +354,12 @@ This section provides an overview of the structure, including  basketball arenas
 
 Contributors
 
-This project follows the all-contributors specification and is brought to you by these awesome contributors.
+This project follows the all-contributors specification and is brought to you by these awesome
+contributors.
 
 author
 
-Github @botprzemek
-Discord botprzemek
-Email info@botprzemek.pl
+Github @botprzemek Discord botprzemek Email info@botprzemek.pl
 
 license
 

@@ -5,3 +5,6 @@ export const teamsById = (data: TeamQuery[], [id]): TeamQuery[] =>
 
 export const teamsByName = (data: TeamQuery[], [name]): TeamQuery[] =>
 	data.filter((team: TeamQuery): boolean => team.name.toLowerCase().includes(name.toLowerCase()))
+
+export const teamsByCityId = (data: TeamQuery[], [id]): TeamQuery[] =>
+	data.filter((team: TeamQuery): boolean => BigInt(team.city_id) === id)
