@@ -9,7 +9,7 @@ export async function players(req: Request, res: Response): Promise<void> {
 }
 
 export async function playersById(req: Request, res: Response): Promise<void> {
-	const data: Player[] = await storage('players', 'playersById', [BigInt(req.params.id)])
+	const data: Player[] = await storage('players', 'playersById', [BigInt(req.params.id || 0)])
 	sendData(req, res, data)
 }
 
@@ -19,6 +19,6 @@ export async function playersByName(req: Request, res: Response): Promise<void> 
 }
 
 export async function playersByTeamId(req: Request, res: Response): Promise<void> {
-	const data: Player[] = await storage('players', 'playersByTeamId', [BigInt(req.params.id)])
+	const data: Player[] = await storage('players', 'playersByTeamId', [BigInt(req.params.id || 0)])
 	sendData(req, res, data)
 }

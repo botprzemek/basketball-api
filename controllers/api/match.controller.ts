@@ -9,7 +9,7 @@ export async function matches(req: Request, res: Response): Promise<void> {
 }
 
 export async function matchesById(req: Request, res: Response): Promise<void> {
-	const data: Match[] = await storage('matches', 'matchesById', [BigInt(req.params.id)])
+	const data: Match[] = await storage('matches', 'matchesById', [BigInt(req.params.id || 0)])
 	sendData(req, res, data)
 }
 

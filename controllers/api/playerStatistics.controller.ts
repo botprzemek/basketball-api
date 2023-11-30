@@ -18,7 +18,7 @@ export async function playersStatisticsByTeamId(req: Request, res: Response): Pr
 	const data: PlayerStatistics[] = await storage(
 		'playersStatistics',
 		'playersStatisticsByTeamId',
-		[BigInt(req.params.id)]
+		[BigInt(req.params.id || 0)]
 	)
 	sendData(req, res, data)
 }
@@ -27,7 +27,7 @@ export async function playersStatisticsByPlayerId(req: Request, res: Response): 
 	const data: PlayerStatistics[] = await storage(
 		'playersStatistics',
 		'playersStatisticsByPlayerId',
-		[BigInt(req.params.id)]
+		[BigInt(req.params.id || 0)]
 	)
 	sendData(req, res, data)
 }
@@ -45,7 +45,16 @@ export async function playersStatisticsAvgByPlayerId(req: Request, res: Response
 	const data: PlayerStatisticsAvg[] = await storage(
 		'playersStatistics',
 		'playersStatisticsAvgByPlayerId',
-		[BigInt(req.params.id)]
+		[BigInt(req.params.id || 0)]
+	)
+	sendData(req, res, data)
+}
+
+export async function playersStatisticsAvgByTeamId(req: Request, res: Response): Promise<void> {
+	const data: PlayerStatisticsAvg[] = await storage(
+		'playersStatistics',
+		'playersStatisticsAvgByTeamId',
+		[BigInt(req.params.id || 0)]
 	)
 	sendData(req, res, data)
 }

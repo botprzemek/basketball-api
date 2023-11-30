@@ -9,6 +9,6 @@ export async function staff(req: Request, res: Response): Promise<void> {
 }
 
 export async function staffByTeamId(req: Request, res: Response): Promise<void> {
-	const data: Staff[] = await storage('staff', 'staffByTeamId', [BigInt(req.params.id)])
+	const data: Staff[] = await storage('staff', 'staffByTeamId', [BigInt(req.params.id || 0)])
 	sendData(req, res, data)
 }

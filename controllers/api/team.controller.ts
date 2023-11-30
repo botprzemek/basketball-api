@@ -9,7 +9,7 @@ export async function teams(req: Request, res: Response): Promise<void> {
 }
 
 export async function teamsById(req: Request, res: Response): Promise<void> {
-	const data: Team[] = await storage('teams', 'teamsById', [BigInt(req.params.id)])
+	const data: Team[] = await storage('teams', 'teamsById', [BigInt(req.params.id || 0)])
 	sendData(req, res, data)
 }
 
@@ -19,6 +19,6 @@ export async function teamsByName(req: Request, res: Response): Promise<void> {
 }
 
 export async function teamsByCityId(req: Request, res: Response): Promise<void> {
-	const data: Team[] = await storage('teams', 'teamsByCityId', [BigInt(req.params.id)])
+	const data: Team[] = await storage('teams', 'teamsByCityId', [BigInt(req.params.id || 0)])
 	sendData(req, res, data)
 }

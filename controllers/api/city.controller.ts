@@ -9,7 +9,7 @@ export async function cities(req: Request, res: Response): Promise<void> {
 }
 
 export async function citiesById(req: Request, res: Response): Promise<void> {
-	const data: City[] = await storage('cities', 'citiesById', [BigInt(req.params.id)])
+	const data: City[] = await storage('cities', 'citiesById', [BigInt(req.params.id || 0)])
 	sendData(req, res, data)
 }
 

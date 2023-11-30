@@ -9,11 +9,11 @@ export async function arenas(req: Request, res: Response): Promise<void> {
 }
 
 export async function arenasById(req: Request, res: Response): Promise<void> {
-	const data: Arena[] = await storage('arenas', 'arenasById', [BigInt(req.params.id)])
+	const data: Arena[] = await storage('arenas', 'arenasById', [BigInt(req.params.id || 0)])
 	sendData(req, res, data)
 }
 
 export async function arenasByCityId(req: Request, res: Response): Promise<void> {
-	const data: Arena[] = await storage('arenas', 'arenasByCityId', [BigInt(req.params.id)])
+	const data: Arena[] = await storage('arenas', 'arenasByCityId', [BigInt(req.params.id || 0)])
 	sendData(req, res, data)
 }
