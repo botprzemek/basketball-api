@@ -41,6 +41,7 @@ export interface PlayerStatistics {
 
 export interface PlayerStatisticsAvgQuery {
 	player_id: bigint
+	team_id: bigint
 	games_played: number
 	minutes: number
 	inside_fgm: number
@@ -60,6 +61,7 @@ export interface PlayerStatisticsAvgQuery {
 
 export interface PlayerStatisticsAvg {
 	player_id: bigint
+	team_id: bigint
 	games_played: number
 	minutes: number
 	points: number
@@ -81,6 +83,7 @@ export interface PlayerStatisticsAvg {
 
 export interface PlayerStatisticsAvgPoints {
 	player_id: bigint
+	team_id: bigint
 	games_played: number
 	points: number
 	inside_fgm: number
@@ -93,6 +96,7 @@ export interface PlayerStatisticsAvgPoints {
 
 export interface PlayerStatisticsAvgRebounds {
 	player_id: bigint
+	team_id: bigint
 	games_played: number
 	rebounds_sum: number
 	rebounds_off: number
@@ -101,6 +105,7 @@ export interface PlayerStatisticsAvgRebounds {
 
 export interface PlayerStatisticsAvgAssists {
 	player_id: bigint
+	team_id: bigint
 	games_played: number
 	assists: number
 }

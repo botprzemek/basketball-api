@@ -6,7 +6,7 @@ import Game from 'models/game/game.model'
 import { Namespace, Socket } from 'socket.io'
 import GameState from 'models/game/state/gameState.model'
 import Timer from 'models/game/timer.model'
-import game from 'models/game/data.game'
+import game from 'services/socket/data.socket'
 
 game.getState().setWarmingUp()
 

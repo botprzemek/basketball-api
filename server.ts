@@ -37,6 +37,5 @@ http.listen(port, (): void => {
 		`${new Date().toLocaleTimeString('pl-PL')} [server] listening on http://localhost:${port}`
 	)
 	initializeStorage()
-	// initializeMail()
 	// initializeSocket(http)
 })

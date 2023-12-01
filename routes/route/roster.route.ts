@@ -1,10 +1,10 @@
-import { Router } from 'express'
-import { rosters, rostersById } from 'controllers/api/roster.controller'
+import {Router} from 'express'
+import {rosters, rostersById} from 'controllers/api/roster.controller'
 
 const router: Router = Router()
 
 router.get('/', rosters)
 
-router.get('/id/:id', rostersById)
+router.get('/id/:id([0-9]{18})', rostersById)
 
 export default router

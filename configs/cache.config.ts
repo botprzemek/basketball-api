@@ -9,9 +9,9 @@ export default {
 		'matches',
 		'players',
 		'playerStatistics',
+		'playerStatisticsAvg',
 		'rosters',
 		'staff',
-		'teams',
-		'teamStatistics'
+		'teams'
 	]
 }

@@ -9,6 +9,8 @@ export async function leagues(req: Request, res: Response): Promise<void> {
 }
 
 export async function leaguesById(req: Request, res: Response): Promise<void> {
-	const data: League[] = await storage('leagues', 'leaguesById', [BigInt(req.params.id || 0)])
+	const data: League[] = await storage('leagues', 'leaguesById', [
+		req.params.id ? BigInt(req.params.id) : 0
+	])
 	sendData(req, res, data)
 }

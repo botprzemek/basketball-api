@@ -18,7 +18,7 @@ export async function playersStatisticsByTeamId(req: Request, res: Response): Pr
 	const data: PlayerStatistics[] = await storage(
 		'playersStatistics',
 		'playersStatisticsByTeamId',
-		[BigInt(req.params.id || 0)]
+		[req.params.id ? BigInt(req.params.id) : 0]
 	)
 	sendData(req, res, data)
 }
@@ -27,14 +27,14 @@ export async function playersStatisticsByPlayerId(req: Request, res: Response): 
 	const data: PlayerStatistics[] = await storage(
 		'playersStatistics',
 		'playersStatisticsByPlayerId',
-		[BigInt(req.params.id || 0)]
+		[req.params.id ? BigInt(req.params.id) : 0]
 	)
 	sendData(req, res, data)
 }
 
 export async function playersStatisticsAvg(req: Request, res: Response): Promise<void> {
 	const data: PlayerStatisticsAvg[] = await storage(
-		'playersStatistics',
+		'playersStatisticsAvg',
 		'playersStatisticsAvg',
 		[]
 	)
@@ -43,25 +43,25 @@ export async function playersStatisticsAvg(req: Request, res: Response): Promise
 
 export async function playersStatisticsAvgByPlayerId(req: Request, res: Response): Promise<void> {
 	const data: PlayerStatisticsAvg[] = await storage(
-		'playersStatistics',
+		'playersStatisticsAvg',
 		'playersStatisticsAvgByPlayerId',
-		[BigInt(req.params.id || 0)]
+		[req.params.id ? BigInt(req.params.id) : 0]
 	)
 	sendData(req, res, data)
 }
 
 export async function playersStatisticsAvgByTeamId(req: Request, res: Response): Promise<void> {
 	const data: PlayerStatisticsAvg[] = await storage(
-		'playersStatistics',
+		'playersStatisticsAvg',
 		'playersStatisticsAvgByTeamId',
-		[BigInt(req.params.id || 0)]
+		[req.params.id ? BigInt(req.params.id) : 0]
 	)
 	sendData(req, res, data)
 }
 
 export async function playersStatisticsAvgPoints(req: Request, res: Response): Promise<void> {
 	const data: PlayerStatisticsAvgPoints[] = await storage(
-		'playersStatistics',
+		'playersStatisticsAvg',
 		'playersStatisticsAvgPoints',
 		[]
 	)
@@ -70,7 +70,7 @@ export async function playersStatisticsAvgPoints(req: Request, res: Response): P
 
 export async function playersStatisticsAvgRebounds(req: Request, res: Response): Promise<void> {
 	const data: PlayerStatisticsAvgRebounds[] = await storage(
-		'playersStatistics',
+		'playersStatisticsAvg',
 		'playersStatisticsAvgRebounds',
 		[]
 	)
@@ -79,7 +79,7 @@ export async function playersStatisticsAvgRebounds(req: Request, res: Response):
 
 export async function playersStatisticsAvgAssists(req: Request, res: Response): Promise<void> {
 	const data: PlayerStatisticsAvgAssists[] = await storage(
-		'playersStatistics',
+		'playersStatisticsAvg',
 		'playersStatisticsAvgAssists',
 		[]
 	)

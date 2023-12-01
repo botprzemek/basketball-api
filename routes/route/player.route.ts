@@ -1,5 +1,5 @@
-import { Router } from 'express'
-import { players, playersById, playersByName } from 'controllers/api/player.controller'
+import {Router} from 'express'
+import {players, playersById, playersByName} from 'controllers/api/player.controller'
 import {
 	playersStatistics,
 	playersStatisticsAvg,
@@ -14,9 +14,9 @@ const router: Router = Router()
 
 router.get('/', players)
 
-router.get('/id/:id', playersById)
-router.get('/id/:id/statistics', playersStatisticsByPlayerId)
-router.get('/id/:id/statistics/avg', playersStatisticsAvgByPlayerId)
+router.get('/id/:id([0-9]{18})', playersById)
+router.get('/id/:id([0-9]{18})/statistics', playersStatisticsByPlayerId)
+router.get('/id/:id([0-9]{18})/statistics/avg', playersStatisticsAvgByPlayerId)
 
 router.get('/name/:name', playersByName)
 

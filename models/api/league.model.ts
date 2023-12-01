@@ -7,5 +7,7 @@ export interface LeagueQuery {
 
 export interface League {
 	id: bigint
+	arena_id: bigint
+	city_id: bigint
 	name: string
 }

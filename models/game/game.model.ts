@@ -1,7 +1,7 @@
 import Quarter from 'models/game/quarter.model'
 import Team from 'models/game/team.model'
 import GameState from 'models/game/state/gameState.model'
-import game from 'models/game/data.game'
+import game from 'services/socket/data.socket'
 
 export default class Game {
 	private readonly state: GameState

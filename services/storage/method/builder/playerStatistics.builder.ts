@@ -30,7 +30,8 @@ export const playersStatistics = (data: PlayerStatisticsQuery): PlayerStatistics
 
 export const playersStatisticsAvg = (data: PlayerStatisticsAvgQuery): PlayerStatisticsAvg => ({
 	player_id: data.player_id,
-	games_played: data.games_played,
+	team_id: data.team_id,
+	games_played: Number(data.games_played),
 	minutes: data.minutes / data.games_played,
 	points: (data.freethrows_fgm + data.inside_fgm * 2 + data.outside_fgm * 3) / data.games_played,
 	inside_fgm: data.inside_fgm / data.games_played,
@@ -53,7 +54,8 @@ export const playersStatisticsAvgPoints = (
 	data: PlayerStatisticsAvgQuery
 ): PlayerStatisticsAvgPoints => ({
 	player_id: data.player_id,
-	games_played: data.games_played,
+	team_id: data.team_id,
+	games_played: Number(data.games_played),
 	points: (data.freethrows_fgm + data.inside_fgm * 2 + data.outside_fgm * 3) / data.games_played,
 	inside_fgm: data.inside_fgm / data.games_played,
 	inside_fga: data.inside_fga / data.games_played,
@@ -67,7 +69,8 @@ export const playersStatisticsAvgRebounds = (
 	data: PlayerStatisticsAvgQuery
 ): PlayerStatisticsAvgRebounds => ({
 	player_id: data.player_id,
-	games_played: data.games_played,
+	team_id: data.team_id,
+	games_played: Number(data.games_played),
 	rebounds_sum: (data.rebounds_off + data.rebounds_def) / data.games_played,
 	rebounds_off: data.rebounds_off / data.games_played,
 	rebounds_def: data.rebounds_def / data.games_played
@@ -77,6 +80,7 @@ export const playersStatisticsAvgAssists = (
 	data: PlayerStatisticsAvgQuery
 ): PlayerStatisticsAvgAssists => ({
 	player_id: data.player_id,
-	games_played: data.games_played,
+	team_id: data.team_id,
+	games_played: Number(data.games_played),
 	assists: data.assists / data.games_played
 })
