@@ -1,7 +1,7 @@
 export interface CityQuery {
-	id: bigint
-	name: string
-	state: string
+	readonly id: bigint
+	readonly name: string
+	readonly state: string
 }
 
 export interface City {

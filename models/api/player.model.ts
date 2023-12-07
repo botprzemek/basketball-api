@@ -5,8 +5,8 @@ export interface PlayerQuery {
 	team_id: bigint
 	name: string
 	lastname: string
-	number: number
-	height: number
+	number: string
+	height: string
 	position: string
 	birthday: string
 	starter: boolean

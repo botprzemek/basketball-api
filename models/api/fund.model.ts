@@ -1,6 +1,6 @@
 export interface FundQuery {
-	balance: number
-	currencyUnitSymbol: string
+	readonly balance: number
+	readonly currencyUnitSymbol: string
 }
 
 export interface Fund {

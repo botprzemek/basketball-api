@@ -1,5 +1,5 @@
-import {Router} from 'express'
-import {rosters, rostersById} from 'controllers/api/roster.controller'
+import { Router } from 'express'
+import { rosters, rostersById } from 'controllers/api/roster.controller'
 
 const router: Router = Router()
 

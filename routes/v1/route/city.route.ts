@@ -1,7 +1,7 @@
-import {Router} from 'express'
-import {cities, citiesById, citiesByName} from 'controllers/api/city.controller'
-import {arenasByCityId} from 'controllers/api/arena.controller'
-import {teamsByCityId} from 'controllers/api/team.controller'
+import { Router } from 'express'
+import { cities, citiesById, citiesByName } from 'controllers/api/city.controller'
+import { arenasByCityId } from 'controllers/api/arena.controller'
+import { teamsByCityId } from 'controllers/api/team.controller'
 
 const router: Router = Router()
 

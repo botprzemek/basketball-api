@@ -1,4 +1,4 @@
-import {Router} from 'express'
+import { Router } from 'express'
 import {
 	matches,
 	matchesAfter,
@@ -9,8 +9,8 @@ import {
 	matchesById,
 	matchesClosest
 } from 'controllers/api/match.controller'
-import {teamStatisticsByMatchId} from 'controllers/api/teamStatistics.controller'
-import {rostersByMatchId} from 'controllers/api/roster.controller'
+import { teamStatisticsByMatchId } from 'controllers/api/teamStatistics.controller'
+import { rostersByMatchId } from 'controllers/api/roster.controller'
 
 const router: Router = Router()
 

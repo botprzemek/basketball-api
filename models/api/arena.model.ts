@@ -1,8 +1,8 @@
 export interface ArenaQuery {
-	id: bigint
-	city_id: bigint
-	name: string
-	location: string
+	readonly id: bigint
+	readonly city_id: bigint
+	readonly name: string
+	readonly location: string
 }
 
 export interface Arena {

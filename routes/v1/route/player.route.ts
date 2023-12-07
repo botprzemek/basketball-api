@@ -1,5 +1,5 @@
-import {Router} from 'express'
-import {players, playersById, playersByName} from 'controllers/api/player.controller'
+import { Router } from 'express'
+import { players, playersById, playersByName } from 'controllers/api/player.controller'
 import {
 	playersStatistics,
 	playersStatisticsAvg,

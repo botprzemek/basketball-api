@@ -1,9 +1,15 @@
-import {Router} from 'express'
-import {teams, teamsById, teamsByName} from 'controllers/api/team.controller'
-import {playersByTeamId} from 'controllers/api/player.controller'
-import {staffByTeamId} from 'controllers/api/staff.controller'
-import {playersStatisticsAvgByTeamId, playersStatisticsByTeamId} from 'controllers/api/playerStatistics.controller'
-import {teamStatisticsAvgByTeamId, teamStatisticsByTeamId} from 'controllers/api/teamStatistics.controller'
+import { Router } from 'express'
+import { teams, teamsById, teamsByName } from 'controllers/api/team.controller'
+import { playersByTeamId } from 'controllers/api/player.controller'
+import { staffByTeamId } from 'controllers/api/staff.controller'
+import {
+	playersStatisticsAvgByTeamId,
+	playersStatisticsByTeamId
+} from 'controllers/api/playerStatistics.controller'
+import {
+	teamStatisticsAvgByTeamId,
+	teamStatisticsByTeamId
+} from 'controllers/api/teamStatistics.controller'
 
 const router: Router = Router()
 

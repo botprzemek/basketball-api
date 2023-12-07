@@ -1,8 +1,8 @@
 export interface LeagueQuery {
-	id: bigint
-	arena_id: bigint
-	city_id: bigint
-	name: string
+	readonly id: bigint
+	readonly arena_id: bigint
+	readonly city_id: bigint
+	readonly name: string
 }
 
 export interface League {
