@@ -7,7 +7,7 @@ export const leagues = async (): Promise<LeagueQuery[]> =>
 		FROM league 
 		ORDER BY name ASC`
 
-export const leaguesById = async ([id]): Promise<LeagueQuery[]> =>
+export const leaguesById = async ([id]: number[]): Promise<LeagueQuery[]> =>
 	cockroachStorage()`
 		SELECT league.* 
 		FROM league 

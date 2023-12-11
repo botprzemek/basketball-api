@@ -1,4 +1,4 @@
-import {Player, PlayerQuery} from 'models/api/player.model'
+import { Player, PlayerQuery } from 'models/api/player.model'
 import Position from 'models/api/enum/position.enum'
 
 export const players = (data: PlayerQuery): Player => ({
