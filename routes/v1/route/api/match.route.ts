@@ -1,31 +1,31 @@
-import { Router } from 'express'
+import {Router} from 'express'
 import {
-	matches,
-	matchesAfter,
-	matchesAfterDate,
-	matchesBefore,
-	matchesBeforeDate,
-	matchesByDate,
-	matchesById,
-	matchesClosest
+	getMatches,
+	getMatchesAfter,
+	getMatchesAfterDate,
+	getMatchesBefore,
+	getMatchesBeforeDate,
+	getMatchesByDate,
+	getMatchesById,
+	getMatchesClosest
 } from 'controllers/get/api/match.controller'
-import { getTeamStatisticsByMatchId } from 'controllers/get/api/teamStatistics.controller'
-import { rostersByMatchId } from 'controllers/get/api/roster.controller'
+import {getTeamStatisticsByMatchId} from 'controllers/get/api/teamStatistics.controller'
+import {getRostersByMatchId} from 'controllers/get/api/roster.controller'
 
 const router: Router = Router()
 
-router.get('/', matches)
+router.get('/', getMatches)
 
-router.get('/after', matchesAfter)
-router.get('/before', matchesBefore)
-router.get('/closest', matchesClosest)
+router.get('/after', getMatchesAfter)
+router.get('/before', getMatchesBefore)
+router.get('/closest', getMatchesClosest)
 
-router.get('/id/:id([0-9]{18})', matchesById)
-router.get('/id/:id([0-9]{18})/rosters', rostersByMatchId)
+router.get('/id/:id([0-9]{18})', getMatchesById)
+router.get('/id/:id([0-9]{18})/rosters', getRostersByMatchId)
 router.get('/id/:id([0-9]{18})/statistics', getTeamStatisticsByMatchId)
 
-router.get('/date/:date(202[0-9]-[0,1][0-9]-[0,1,2,3][0-9])', matchesByDate)
-router.get('/date/:date(202[0-9]-[0,1][0-9]-[0,1,2,3][0-9])/after', matchesAfterDate)
-router.get('/date/:date(202[0-9]-[0,1][0-9]-[0,1,2,3][0-9])/before', matchesBeforeDate)
+router.get('/date/:date(202[0-9]-[0,1][0-9]-[0,1,2,3][0-9])', getMatchesByDate)
+router.get('/date/:date(202[0-9]-[0,1][0-9]-[0,1,2,3][0-9])/after', getMatchesAfterDate)
+router.get('/date/:date(202[0-9]-[0,1][0-9]-[0,1,2,3][0-9])/before', getMatchesBeforeDate)
 
 export default router
