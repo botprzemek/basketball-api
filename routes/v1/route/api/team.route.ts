@@ -1,15 +1,15 @@
 import { Router } from 'express'
-import { getTeams, getTeamsById, getTeamsByName } from 'controllers/get/api/team.controller'
+import { getTeams, getTeamsById, getTeamsByName } from 'controllers/get/basketball/team.controller'
 import {
 	getTeamStatisticsAvgByTeamId,
 	getTeamStatisticsByTeamId
-} from 'controllers/get/api/teamStatistics.controller'
-import { getPlayersByTeamId } from 'controllers/get/api/player.controller'
+} from 'controllers/get/basketball/teamStatistics.controller'
+import { getPlayersByTeamId } from 'controllers/get/basketball/player.controller'
 import {
 	getPlayersStatisticsAvgByTeamId,
 	getPlayersStatisticsByTeamId
-} from 'controllers/get/api/playerStatistics.controller'
-import { getStaffByTeamId } from 'controllers/get/api/staff.controller'
+} from 'controllers/get/basketball/playerStatistics.controller'
+import { getStaffByTeamId } from 'controllers/get/basketball/staff.controller'
 
 const router: Router = Router()
 

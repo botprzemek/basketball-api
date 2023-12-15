@@ -1,4 +1,4 @@
-import {type Request, type Response} from 'express'
+import { type Request, type Response } from 'express'
 
 export default function (req: Request, res: Response, data: any[]): void {
 	if (!data) {

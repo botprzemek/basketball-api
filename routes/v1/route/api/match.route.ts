@@ -1,4 +1,4 @@
-import {Router} from 'express'
+import { Router } from 'express'
 import {
 	getMatches,
 	getMatchesAfter,
@@ -8,9 +8,9 @@ import {
 	getMatchesByDate,
 	getMatchesById,
 	getMatchesClosest
-} from 'controllers/get/api/match.controller'
-import {getTeamStatisticsByMatchId} from 'controllers/get/api/teamStatistics.controller'
-import {getRostersByMatchId} from 'controllers/get/api/roster.controller'
+} from 'controllers/get/basketball/match.controller'
+import { getTeamStatisticsByMatchId } from 'controllers/get/basketball/teamStatistics.controller'
+import { getRostersByMatchId } from 'controllers/get/basketball/roster.controller'
 
 const router: Router = Router()
 

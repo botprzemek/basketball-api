@@ -1,5 +1,5 @@
-import {Request, Response} from 'express'
-import {verify, VerifyErrors} from 'jsonwebtoken'
+import { Request, Response } from 'express'
+import { verify, VerifyErrors } from 'jsonwebtoken'
 
 export default (req: Request, res: Response): void => {
 	let token = req.headers['Authorization']
@@ -8,8 +8,9 @@ export default (req: Request, res: Response): void => {
 		res.status(401)
 		res.json({
 			error: {
-				description: 'Please provide a valid authorization token, refer to the API documentation'
-			},
+				description:
+					'Please provide a valid authorization token, refer to the API documentation'
+			}
 		})
 		return
 	}
@@ -20,8 +21,9 @@ export default (req: Request, res: Response): void => {
 		res.status(401)
 		res.json({
 			error: {
-				description: 'Please provide a valid authorization token, refer to the API documentation'
-			},
+				description:
+					'Please provide a valid authorization token, refer to the API documentation'
+			}
 		})
 		return
 	}
@@ -34,8 +36,9 @@ export default (req: Request, res: Response): void => {
 				res.status(401)
 				res.json({
 					error: {
-						description: 'Please provide a valid authorization token, refer to the API documentation'
-					},
+						description:
+							'Please provide a valid authorization token, refer to the API documentation'
+					}
 				})
 				return
 			}
@@ -44,8 +47,9 @@ export default (req: Request, res: Response): void => {
 				res.status(401)
 				res.json({
 					error: {
-						description: 'Please provide a valid authorization token, refer to the API documentation'
-					},
+						description:
+							'Please provide a valid authorization token, refer to the API documentation'
+					}
 				})
 				return
 			}
@@ -54,8 +58,9 @@ export default (req: Request, res: Response): void => {
 				res.status(401)
 				res.json({
 					error: {
-						description: 'Please provide a valid authorization token, refer to the API documentation'
-					},
+						description:
+							'Please provide a valid authorization token, refer to the API documentation'
+					}
 				})
 				return
 			}

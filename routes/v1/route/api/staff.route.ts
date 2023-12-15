@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getStaff } from 'controllers/get/api/staff.controller'
+import { getStaff } from 'controllers/get/basketball/staff.controller'
 
 const router: Router = Router()
 

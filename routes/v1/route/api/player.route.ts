@@ -1,15 +1,19 @@
-import {Router} from 'express'
-import {getPlayers, getPlayersById, getPlayersByName} from 'controllers/get/api/player.controller'
-import {createPlayers} from 'controllers/post/api/player.controller'
+import { Router } from 'express'
 import {
-  getPlayersStatistics,
-  getPlayersStatisticsAvg,
-  getPlayersStatisticsAvgAssists,
-  getPlayersStatisticsAvgByPlayerId,
-  getPlayersStatisticsAvgPoints,
-  getPlayersStatisticsAvgRebounds,
-  getPlayersStatisticsByPlayerId
-} from 'controllers/get/api/playerStatistics.controller'
+	getPlayers,
+	getPlayersById,
+	getPlayersByName
+} from 'controllers/get/basketball/player.controller'
+import { createPlayers } from 'controllers/post/api/player.controller'
+import {
+	getPlayersStatistics,
+	getPlayersStatisticsAvg,
+	getPlayersStatisticsAvgAssists,
+	getPlayersStatisticsAvgByPlayerId,
+	getPlayersStatisticsAvgPoints,
+	getPlayersStatisticsAvgRebounds,
+	getPlayersStatisticsByPlayerId
+} from 'controllers/get/basketball/playerStatistics.controller'
 
 const router: Router = Router()
 

@@ -1,5 +1,5 @@
-import {Request, Response} from 'express'
-import {sqliteStorage} from 'services/storage/sqlite.storage'
+import { Request, Response } from 'express'
+import { sqliteStorage } from 'services/storage/sqlite.storage'
 
 export default async (req: Request, res: Response): Promise<void> => {
 	try {
@@ -9,8 +9,9 @@ export default async (req: Request, res: Response): Promise<void> => {
 			res.status(404)
 			res.json({
 				error: {
-					description: 'Please provide a valid verification code, refer to the API documentation'
-				},
+					description:
+						'Please provide a valid verification code, refer to the API documentation'
+				}
 			})
 			return
 		}
@@ -25,8 +26,9 @@ export default async (req: Request, res: Response): Promise<void> => {
 			res.status(404)
 			res.json({
 				error: {
-					description: 'Please provide a valid verification code, refer to the API documentation'
-				},
+					description:
+						'Please provide a valid verification code, refer to the API documentation'
+				}
 			})
 			return
 		}

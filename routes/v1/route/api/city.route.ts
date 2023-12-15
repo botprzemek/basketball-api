@@ -1,7 +1,11 @@
 import { Router } from 'express'
-import { getCities, getCitiesById, getCitiesByName } from 'controllers/get/api/city.controller'
-import { getArenasByCityId } from 'controllers/get/api/arena.controller'
-import { getTeamsByCityId } from 'controllers/get/api/team.controller'
+import {
+	getCities,
+	getCitiesById,
+	getCitiesByName
+} from 'controllers/get/basketball/city.controller'
+import { getArenasByCityId } from 'controllers/get/basketball/arena.controller'
+import { getTeamsByCityId } from 'controllers/get/basketball/team.controller'
 
 const router: Router = Router()
 

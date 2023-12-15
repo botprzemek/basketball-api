@@ -1,8 +1,8 @@
-import {type NextFunction, type Request, type Response} from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 import settingsConfig from 'configs/default.config'
 
 export default function (req: Request, res: Response, next: NextFunction): void {
-	if (!settingsConfig.useSecret || req.headers['authorization'] === `Bearer ${process.env.SECRET}`) {
+	if (!settingsConfig.useSecret || req.headers['x-api-key'] === process.env.SECRET) {
 		res.locals.start = performance.now()
 		next()
 		return
@@ -10,14 +10,15 @@ export default function (req: Request, res: Response, next: NextFunction): void 
 
 	console.log(
 		`${new Date().toLocaleTimeString('pl-PL')} [server] unauthorized access (${
-			req.headers['x-real-ip']
+			req.headers['x-real-ip'] || req.ip
 		})`
 	)
 
 	res.status(401)
 	res.json({
 		error: {
-			description: 'Please provide a valid authorization token, refer to the API documentation'
-		},
+			description:
+				'Please provide a valid authorization token, refer to the API documentation'
+		}
 	})
 }

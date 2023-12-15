@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getArenas, getArenasById } from 'controllers/get/api/arena.controller'
+import { getArenas, getArenasById } from 'controllers/get/basketball/arena.controller'
 
 const router: Router = Router()
 

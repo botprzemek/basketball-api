@@ -12,6 +12,7 @@ export default {
 		'playerStatisticsAvg',
 		'rosters',
 		'staff',
-		'teams'
+		'teams',
+		'teamsStatistics'
 	]
 }

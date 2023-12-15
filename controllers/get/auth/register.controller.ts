@@ -1,8 +1,8 @@
-import {Request, Response} from 'express'
-import {hash} from 'bcrypt'
-import {randomBytes} from 'crypto'
-import {sign} from 'jsonwebtoken'
-import {sqliteStorage} from 'services/storage/sqlite.storage'
+import { Request, Response } from 'express'
+import { hash } from 'bcrypt'
+import { randomBytes } from 'crypto'
+import { sign } from 'jsonwebtoken'
+import { sqliteStorage } from 'services/storage/sqlite.storage'
 import settingsConfig from 'configs/default.config'
 
 export default async (req: Request, res: Response): Promise<void> => {
@@ -13,8 +13,9 @@ export default async (req: Request, res: Response): Promise<void> => {
 			res.status(404)
 			res.json({
 				error: {
-					description: 'Please provide a valid email or password, refer to the API documentation'
-				},
+					description:
+						'Please provide a valid email or password, refer to the API documentation'
+				}
 			})
 			return
 		}
@@ -30,7 +31,7 @@ export default async (req: Request, res: Response): Promise<void> => {
 			res.json({
 				error: {
 					description: 'Please provide another username, refer to the API documentation'
-				},
+				}
 			})
 			return
 		}

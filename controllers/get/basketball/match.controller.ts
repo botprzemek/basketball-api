@@ -1,7 +1,7 @@
-import {type Request, type Response} from 'express'
+import { type Request, type Response } from 'express'
 import storage from 'services/storage.service'
 import sendData from 'utils/send.util'
-import {Match} from 'models/api/match.model'
+import { Match } from 'models/api/match.model'
 
 export async function getMatches(req: Request, res: Response): Promise<void> {
 	const data: Match[] = await storage('matches')
