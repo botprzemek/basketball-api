@@ -1,4 +1,4 @@
-import { ArenaQuery } from 'models/api/arena.model'
+import { ArenaQuery } from 'models/basketball/arena.model'
 
 export const arenasById = (data: ArenaQuery[], [id]): ArenaQuery[] =>
 	data.filter((arena: ArenaQuery): boolean => BigInt(arena.id) === id)

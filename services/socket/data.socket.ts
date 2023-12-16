@@ -3,7 +3,7 @@ import Team from 'models/game/team.model'
 import Player from 'models/game/player.model'
 import storage from 'services/storage.service'
 import Quarter from 'models/game/quarter.model'
-import { Player as PlayerModel } from 'models/api/player.model'
+import { Player as PlayerModel } from 'models/basketball/player.model'
 
 const game: Game = new Game()
 

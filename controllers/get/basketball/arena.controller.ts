@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import storage from 'services/storage.service'
 import sendData from 'utils/send.util'
-import { Arena } from 'models/api/arena.model'
+import { Arena } from 'models/basketball/arena.model'
 
 export async function getArenas(req: Request, res: Response): Promise<void> {
 	const data: Arena[] = await storage('arenas')

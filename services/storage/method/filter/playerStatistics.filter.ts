@@ -1,4 +1,4 @@
-import { PlayerStatisticsQuery } from 'models/api/playerStatistics.model'
+import { PlayerStatisticsQuery } from 'models/basketball/playerStatistics.model'
 
 export const playersStatisticsByPlayerId = (
 	data: PlayerStatisticsQuery[],

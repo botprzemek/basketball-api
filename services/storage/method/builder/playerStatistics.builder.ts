@@ -6,7 +6,7 @@ import {
 	PlayerStatisticsAvgQuery,
 	PlayerStatisticsAvgRebounds,
 	PlayerStatisticsQuery
-} from 'models/api/playerStatistics.model'
+} from 'models/basketball/playerStatistics.model'
 
 export const playersStatistics = (data: PlayerStatisticsQuery): PlayerStatistics => ({
 	match_id: data.match_id,

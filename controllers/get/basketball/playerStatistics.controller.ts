@@ -7,7 +7,7 @@ import {
 	PlayerStatisticsAvgAssists,
 	PlayerStatisticsAvgPoints,
 	PlayerStatisticsAvgRebounds
-} from 'models/api/playerStatistics.model'
+} from 'models/basketball/playerStatistics.model'
 
 export async function getPlayersStatistics(req: Request, res: Response): Promise<void> {
 	const data: PlayerStatistics[] = await storage('playersStatistics')

@@ -1,5 +1,5 @@
-import { Roster, RosterQuery } from 'models/api/roster.model'
-import Position from 'models/api/enum/position.enum'
+import { Roster, RosterQuery } from 'models/basketball/roster.model'
+import Position from 'models/basketball/enum/position.enum'
 
 export const rosters = (data: RosterQuery): Roster => ({
 	id: data.id,

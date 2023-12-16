@@ -1,4 +1,4 @@
-import { Player, PlayerQuery } from 'models/api/player.model'
+import { Player, PlayerQuery } from 'models/basketball/player.model'
 
 export interface RosterQuery extends PlayerQuery {
 	id: bigint

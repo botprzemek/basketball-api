@@ -1,4 +1,4 @@
-import { CityQuery } from 'models/api/city.model'
+import { CityQuery } from 'models/basketball/city.model'
 
 export const citiesById = (data: CityQuery[], [id]): CityQuery[] =>
 	data.filter((city: CityQuery): boolean => BigInt(city.id) === id)

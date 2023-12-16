@@ -1,4 +1,4 @@
-import { Team, TeamQuery } from 'models/api/team.model'
+import { Team, TeamQuery } from 'models/basketball/team.model'
 
 export const teams = (data: TeamQuery): Team => ({
 	id: data.id,

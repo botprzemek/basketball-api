@@ -4,7 +4,7 @@ import {
 	getPlayersById,
 	getPlayersByName
 } from 'controllers/get/basketball/player.controller'
-import { createPlayers } from 'controllers/post/api/player.controller'
+import { createPlayers } from 'controllers/post/basketball/player.controller'
 import {
 	getPlayersStatistics,
 	getPlayersStatisticsAvg,

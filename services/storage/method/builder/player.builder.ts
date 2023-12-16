@@ -1,5 +1,5 @@
-import { Player, PlayerQuery } from 'models/api/player.model'
-import Position from 'models/api/enum/position.enum'
+import { Player, PlayerQuery } from 'models/basketball/player.model'
+import Position from 'models/basketball/enum/position.enum'
 
 export const players = (data: PlayerQuery): Player => ({
 	id: data.id,

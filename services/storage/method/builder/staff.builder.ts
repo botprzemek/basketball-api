@@ -1,5 +1,5 @@
-import { Staff, StaffQuery } from 'models/api/staff.model'
-import Role from 'models/api/enum/role.enum'
+import { Staff, StaffQuery } from 'models/basketball/staff.model'
+import Role from 'models/basketball/enum/role.enum'
 
 export const staff = (data: StaffQuery): Staff => ({
 	id: data.id,

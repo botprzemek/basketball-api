@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import storage from 'services/storage.service'
 import sendData from 'utils/send.util'
-import { League } from 'models/api/league.model'
+import { League } from 'models/basketball/league.model'
 
 export async function getLeagues(req: Request, res: Response): Promise<void> {
 	const data: League[] = await storage('leagues')

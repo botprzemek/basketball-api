@@ -1,4 +1,4 @@
-import { League, LeagueQuery } from 'models/api/league.model'
+import { League, LeagueQuery } from 'models/basketball/league.model'
 
 export const leagues = (data: LeagueQuery): League => ({
 	id: data.id,

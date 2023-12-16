@@ -1,4 +1,4 @@
-import { PlayerQuery } from 'models/api/player.model'
+import { PlayerQuery } from 'models/basketball/player.model'
 
 export const playersById = (data: PlayerQuery[], [id]): PlayerQuery[] =>
 	data.filter((player: PlayerQuery): boolean => BigInt(player.id) === id)

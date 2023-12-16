@@ -1,5 +1,5 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
-import { CityQuery } from 'models/api/city.model'
+import { CityQuery } from 'models/basketball/city.model'
 
 export const cities = async (): Promise<CityQuery[]> =>
 	cockroachStorage()`

@@ -1,4 +1,4 @@
-import { Arena, ArenaQuery } from 'models/api/arena.model'
+import { Arena, ArenaQuery } from 'models/basketball/arena.model'
 
 export const arenas = (data: ArenaQuery): Arena => ({
 	id: data.id,

@@ -1,5 +1,5 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
-import { TeamStatisticsQuery } from 'models/api/teamStatistics.model'
+import { TeamStatisticsQuery } from 'models/basketball/teamStatistics.model'
 
 export const teamsStatistics = async (): Promise<TeamStatisticsQuery[]> =>
 	cockroachStorage()`

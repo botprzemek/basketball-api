@@ -1,20 +1,26 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
-import { ArenaQuery } from 'models/api/arena.model'
+import { ArenaQuery } from 'models/basketball/arena.model'
+import QueryEnum from 'models/storage/query.enum'
 
-export const arenas = async (): Promise<ArenaQuery[]> =>
-	cockroachStorage()`
-		SELECT arena.*
-		FROM arena 
-		ORDER BY name ASC`
-
-export const arenasById = async ([id]: number[]): Promise<ArenaQuery[]> =>
-	cockroachStorage()`
-		SELECT arena.*
-		FROM arena 
-		WHERE id = ${id}`
-
-export const arenasByCityId = async ([id]: number[]): Promise<ArenaQuery[]> =>
-	cockroachStorage()`
-		SELECT arena.*
-		FROM arena 
-		WHERE city_id = ${id}`
+export default async (queryEnum: QueryEnum, ...params: any[]): Promise<ArenaQuery[]> => {
+	switch (queryEnum) {
+		case QueryEnum.ID: {
+			return cockroachStorage()`
+				SELECT arena.*
+				FROM arena 
+				WHERE id = ${params.at(0)}`
+		}
+		case QueryEnum.CITY_ID: {
+			return cockroachStorage()`
+				SELECT arena.*
+				FROM arena 
+				WHERE city_id = ${params.at(0)}`
+		}
+		default: {
+			return cockroachStorage()`
+				SELECT arena.*
+				FROM arena 
+				ORDER BY name ASC`
+		}
+	}
+}

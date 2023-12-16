@@ -1,4 +1,4 @@
-import Role from 'models/api/enum/role.enum'
+import Role from 'models/basketball/enum/role.enum'
 
 export interface StaffQuery {
 	id: bigint

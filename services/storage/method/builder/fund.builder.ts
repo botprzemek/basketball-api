@@ -1,4 +1,4 @@
-import { Fund, FundQuery } from 'models/api/fund.model'
+import { Fund, FundQuery } from 'models/basketball/fund.model'
 
 export const fund = (data: FundQuery): Fund => ({
 	balance: data.balance,

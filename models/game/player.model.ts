@@ -1,6 +1,6 @@
 import PlayerState from 'models/game/state/playerState.model'
 import PlayerStatistics from 'models/game/statistics/playerStatistics.model'
-import PositionType from 'models/api/enum/position.enum'
+import PositionType from 'models/basketball/enum/position.enum'
 
 export default class Player {
 	private readonly name: string

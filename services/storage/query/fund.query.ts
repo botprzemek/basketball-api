@@ -1,5 +1,5 @@
 import defaultConfig from 'configs/default.config'
-import { FundQuery } from 'models/api/fund.model'
+import { FundQuery } from 'models/basketball/fund.model'
 
 export const fund = async (): Promise<FundQuery[]> => [
 	await fetch(defaultConfig.fund).then((response: Response): Promise<any> => response.json())

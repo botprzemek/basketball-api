@@ -1,4 +1,4 @@
-import { Match, MatchQuery } from 'models/api/match.model'
+import { Match, MatchQuery } from 'models/basketball/match.model'
 
 export const matches = (data: MatchQuery): Match => ({
 	id: data.id,
