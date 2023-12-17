@@ -1,6 +1,7 @@
 import { type Request, type Response } from 'express'
 
-export default function (req: Request, res: Response, data: any[]): void {
+export default function <RequestType>(req: Request, res: Response): void {
+	const data = res.locals.data
 	if (!data) {
 		res.json({
 			data: []

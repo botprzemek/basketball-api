@@ -11,7 +11,7 @@
 		"paths": {
 			"configs/*": ["./configs/*"],
 			"controllers/*": ["./controllers/*"],
-			"middleware/*": ["./middleware/*"],
+			"middlewares/*": ["./middlewares/*"],
 			"models/*": ["./models/*"],
 			"routes/*": ["./routes/*"],
 			"services/*": ["./services/*"],

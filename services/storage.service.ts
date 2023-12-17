@@ -1,25 +1,67 @@
-import processMethod from 'services/storage/method/process.method'
+import QueryEnum from 'models/storage/query.enum'
+import queryStorage from 'services/storage/query.storage'
 import * as cacheStorage from 'services/storage/cache.storage'
-import queries from 'services/storage/query.storage'
+import processMethod from 'services/storage/method/process.method'
 
-export default async <TypeQuery>(
-	key: string,
-	method?: string,
-	parameters?: any[]
-): Promise<TypeQuery[]> => {
-	try {
-		const cachedData: TypeQuery[] = cacheStorage.getData(key)
+const routes: string[] = [
+	'arenas',
+	'cities',
+	'fund',
+	'leagues',
+	'matches',
+	'players',
+	'playerStatistics',
+	'rosters',
+	'staff',
+	'teams',
+	'teamStatistics'
+]
 
-		if (cachedData) return processMethod(cachedData, key, method, parameters)
+const methods: any = {}
 
-		const queryData: TypeQuery[] = await queries[key]()
+routes.forEach((key: string): void => {
+	methods[key] = {
+		create: async <QueryType>(query: QueryEnum, ...params: any[]): Promise<QueryType[]> => {
+			const queryData: QueryType[] = await queryStorage[key](query, params)
 
-		if (queryData.length > 0) cacheStorage.setData(key, queryData)
+			if (queryData.length > 0) cacheStorage.setData(key, queryData)
+			if (!query || !params) return processMethod(queryData, key, query, params)
 
-		if (!method || !parameters) return processMethod(queryData, key, method, parameters)
+			return processMethod(await queryStorage.insert[key](query, params), key, query, params)
+		},
+		update: async <QueryType>(query: QueryEnum, ...params: any[]): Promise<QueryType[]> => {
+			const queryData: QueryType[] = await queryStorage[key](query, params)
 
-		return processMethod(await queries[method](parameters), key, method, parameters)
-	} catch {
-		return []
+			if (queryData.length > 0) cacheStorage.setData(key, queryData)
+			if (!query || !params) return processMethod(queryData, key, query, params)
+
+			return processMethod(await queryStorage.update[key](query, params), key, query, params)
+		},
+		get: async <QueryType>(query: QueryEnum, ...params: any[]): Promise<QueryType[]> => {
+			const cachedData: QueryType[] = cacheStorage.getData(key)
+
+			console.log(key, query, params)
+
+			if (cachedData) return processMethod(cachedData, key, query, params)
+
+			const queryData: QueryType[] = await queryStorage.select[key]()
+
+			if (queryData.length > 0) cacheStorage.setData(key, queryData)
+			if (!query || !params) return processMethod(queryData, key, query, params)
+
+			console.log(await queryStorage.select[key](query, params))
+
+			return processMethod(await queryStorage.select[key](query, params), key, query, params)
+		},
+		delete: async <QueryType>(query: QueryEnum, ...params: any[]): Promise<QueryType[]> => {
+			const queryData: QueryType[] = await queryStorage[key](query, params)
+
+			if (queryData.length > 0) cacheStorage.setData(key, queryData)
+			if (!query || !params) return processMethod(queryData, key, query, params)
+
+			return processMethod(await queryStorage.delete[key](query, params), key, query, params)
+		}
 	}
-}
+})
+
+export default methods
