@@ -22,7 +22,7 @@ export default async (): Promise<boolean> => {
 				id INT8 NOT NULL PRIMARY KEY UNIQUE DEFAULT unique_rowid(),
 				city_id INT8 NOT NULL REFERENCES city (id) ON DELETE CASCADE,
 				name VARCHAR NOT NULL UNIQUE,
-				location VARCHAR NOT NULL,
+				location VARCHAR NOT NULL UNIQUE,
 				INDEX name_idx (name),
 				INDEX city_id_idx (city_id)
 			);
@@ -178,9 +178,31 @@ export default async (): Promise<boolean> => {
 				data VARCHAR NOT NULL,
 				timestamp DATE NOT NULL DEFAULT current_timestamp,
 				INDEX match_id_idx (match_id)
-			);`.simple()
+			);
+			
+			CREATE VIEW player_statistics_average AS SELECT player_statistics.player_id,
+				count(player_statistics.player_id)    AS games_played,
+				player.team_id                        AS team_id,
+				sum(player_statistics.minutes)        AS minutes,
+				sum(player_statistics.assists)        AS assists,
+				sum(player_statistics.rebounds_off)   AS rebounds_off,
+				sum(player_statistics.rebounds_def)   AS rebounds_def,
+				sum(player_statistics.inside_fgm)     AS inside_fgm,
+				sum(player_statistics.inside_fga)     AS inside_fga,
+				sum(player_statistics.outside_fgm)    AS outside_fgm,
+				sum(player_statistics.outside_fga)    AS outside_fga,
+				sum(player_statistics.freethrows_fgm) AS freethrows_fgm,
+				sum(player_statistics.freethrows_fga) AS freethrows_fga,
+				sum(player_statistics.blocks)         AS blocks,
+				sum(player_statistics.steals)         AS steals,
+				sum(player_statistics.turnovers)      AS turnovers,
+				sum(player_statistics.fouls)          AS fouls
+			FROM player, player_statistics
+			WHERE player.id = player_statistics.player_id
+			GROUP BY player.team_id, player_statistics.player_id`.simple()
 		return true
-	} catch {
+	} catch (error) {
+		console.log(error)
 		return false
 	}
 }

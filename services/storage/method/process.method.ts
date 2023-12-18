@@ -3,21 +3,17 @@ import filterMethod from 'services/storage/method/filter.method'
 import QueryEnum from 'models/storage/query.enum'
 
 export default <QueryType>(
-	data: any,
+	data: QueryType[],
 	key: string,
-	query?: QueryEnum,
-	...parameters: any[]
+	query: QueryEnum,
+	parameters: any[]
 ): QueryType[] => {
 	if (!data) return []
 
-	data = query && parameters && filterMethod[key][query] ? filterMethod[key][query](data, parameters) : data
+	data =
+		query && parameters && filterMethod[key] ? filterMethod[key](data, query, parameters) : data
 
-	for (let i: number = 0; i < data.length; i++) {
-		data[i] =
-			query && builderMethod[query]
-				? builderMethod[query](data[i])
-				: builderMethod[key](data[i])
-	}
+	for (let i: number = 0; i < data.length; i++) data[i] = builderMethod[key](data[i])
 
 	return data
 }

@@ -8,6 +8,8 @@ export default async (): Promise<boolean> => {
 			
 			SET DATABASE = api;
 			
+			DROP VIEW IF EXISTS player_statistics_average;
+			
 			DROP TABLE IF EXISTS backlog;
 			DROP TABLE IF EXISTS player_statistics;
 			DROP TABLE IF EXISTS player_roster;
@@ -26,7 +28,8 @@ export default async (): Promise<boolean> => {
 			DROP TYPE IF EXISTS position_enum;
 			DROP TYPE IF EXISTS role_enum;`.simple()
 		return true
-	} catch {
+	} catch (error) {
+		console.log(error)
 		return false
 	}
 }

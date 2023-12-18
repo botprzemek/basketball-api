@@ -12,7 +12,7 @@ export default function <RequestType>(req: Request, res: Response): void {
 		data: data
 	})
 	console.log(
-		`${new Date().toLocaleTimeString('pl-PL')} [request] GET ${decodeURI(
+		`${new Date().toLocaleTimeString('pl-PL')} [request] ${req.method} ${decodeURI(
 			req.baseUrl + req.path
 		)} (${((performance.now() - res.locals.start) / 1000).toFixed(2)}s)`
 	)

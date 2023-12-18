@@ -321,7 +321,8 @@ export default async (): Promise<boolean> => {
 					20, 1, 0, 1, 1, 3, 0, 0, 1, 2, 0, 1, 2, 1
 				);`.simple()
 		return true
-	} catch {
+	} catch (error) {
+		console.log(error)
 		return false
 	}
 }
