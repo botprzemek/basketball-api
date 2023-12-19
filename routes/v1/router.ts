@@ -11,14 +11,6 @@ const router: Router = Router()
 const routes: Routes = {
 	auth: authRoute,
 	arenas: arenaRoute
-	// cities: cityRoute,
-	// fund: fundRoute,
-	// leagues: leagueRoute,
-	// matches: matchRoute,
-	// players: playerRoute,
-	// rosters: rosterRoute,
-	// staff: staffRoute,
-	// teams: teamRoute
 }
 
 router.use(error).use(secret)

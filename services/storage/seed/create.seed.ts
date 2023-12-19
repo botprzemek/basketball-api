@@ -21,10 +21,11 @@ export default async (): Promise<boolean> => {
 			CREATE TABLE IF NOT EXISTS arena (
 				id INT8 NOT NULL PRIMARY KEY UNIQUE DEFAULT unique_rowid(),
 				city_id INT8 NOT NULL REFERENCES city (id) ON DELETE CASCADE,
-				name VARCHAR NOT NULL UNIQUE,
-				location VARCHAR NOT NULL UNIQUE,
+				name VARCHAR NOT NULL,
+				location VARCHAR NOT NULL,
 				INDEX name_idx (name),
-				INDEX city_id_idx (city_id)
+				INDEX city_id_idx (city_id),
+				UNIQUE (name, location)
 			);
 			
 			CREATE TABLE IF NOT EXISTS league (

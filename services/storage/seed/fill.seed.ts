@@ -20,7 +20,7 @@ export default async (): Promise<boolean> => {
 			INSERT INTO arena (city_id, name, location) VALUES
 				((SELECT id FROM city WHERE name = 'Knurów'), 'MOSiR', '50°14''00.3"N 18°39''13.8"E'),
 				((SELECT id FROM city WHERE name = 'Katowice'), 'Spodek', '50°16''00.4"N 19°01''35.2"E')
-			ON CONFLICT (name) DO NOTHING;
+			ON CONFLICT (location, name) DO NOTHING;
 			
 			INSERT INTO league (arena_id, city_id, name) VALUES
 				((SELECT id FROM arena WHERE name = 'Spodek'), (SELECT id FROM city WHERE name = 'Katowice'), 'Śląska Liga Koszykówki'),
