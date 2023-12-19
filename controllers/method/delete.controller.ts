@@ -1,8 +1,13 @@
-import {NextFunction, Request, Response} from 'express'
-import QueryEnum from "models/storage/query.enum";
-import storageService from "services/storage.service";
+import { NextFunction, Request, Response } from 'express'
+import QueryEnum from 'types/storage/query.enum'
+import storageService from 'services/storage.service'
 
-export default async <Route>(req: Request, res: Response, route: string, next: NextFunction): Promise<void> => {
+export default async <Route>(
+	req: Request,
+	res: Response,
+	route: string,
+	next: NextFunction
+): Promise<void> => {
 	const value = Object.values(req.query).at(0)
 
 	if (!value || Array.isArray(value)) {

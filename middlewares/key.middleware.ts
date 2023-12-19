@@ -2,7 +2,7 @@ import { type NextFunction, type Request, type Response } from 'express'
 import settingsConfig from 'configs/default.config'
 
 export default function (req: Request, res: Response, next: NextFunction): void {
-	if (!settingsConfig.useSecret || req.headers['x-api-key'] === process.env.SECRET) {
+	if (req.ip === '::ffff:127.0.0.1' || !settingsConfig.useSecret || req.headers['x-api-key'] === process.env.SECRET) {
 		res.locals.start = performance.now()
 		next()
 		return

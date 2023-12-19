@@ -1,4 +1,4 @@
-import QueryEnum from 'models/storage/query.enum'
+import QueryEnum from 'types/storage/query.enum'
 
 export default {
 	arenas: QueryEnum.CITY_ID

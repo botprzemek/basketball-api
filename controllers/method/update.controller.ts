@@ -1,10 +1,18 @@
-import { Request, Response } from 'express'
-import Payload from 'types/controller/payload.interface'
+import { NextFunction, Request, Response } from 'express'
+import QueryEnum from 'types/storage/query.enum'
 import storageService from 'services/storage.service'
+import Payload from 'types/controller/payload.interface'
 import expressions from 'utils/expression.util'
 import createKeys from 'utils/identifier.util'
 
-export default async <Route>(req: Request, res: Response, route: string): Promise<void> => {
+// TODO
+
+export default async <Route>(
+	req: Request,
+	res: Response,
+	route: string,
+	next: NextFunction
+): Promise<void> => {
 	const payload: Payload = {}
 	const valid: boolean = Object.keys(expressions[route]).every((key: string): void => {
 		payload[key] = req.body[key]

@@ -1,6 +1,6 @@
 import builderMethod from 'services/storage/method/builder.method'
 import filterMethod from 'services/storage/method/filter.method'
-import QueryEnum from 'models/storage/query.enum'
+import QueryEnum from 'types/storage/query.enum'
 
 export default <QueryType>(
 	data: QueryType[],

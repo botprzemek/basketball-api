@@ -1,4 +1,4 @@
-import { Arena, ArenaQuery } from 'models/basketball/arena.model'
+import { Arena, ArenaQuery } from 'types/basketball/arena.model'
 
 export default (data: ArenaQuery): Arena => ({
 	id: data.id,

@@ -1,6 +1,6 @@
-import drop from 'services/storage/seed/drop.seed'
-import create from 'services/storage/seed/create.seed'
-import fill from 'services/storage/seed/fill.seed'
+import drop from 'utils/seed/drop.seed'
+import create from 'utils/seed/create.seed'
+import fill from 'utils/seed/fill.seed'
 
 const seed = async (): Promise<void> => {
 	const start: number = performance.now()

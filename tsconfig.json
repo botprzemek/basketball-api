@@ -13,6 +13,7 @@
 			"controllers/*": ["./controllers/*"],
 			"middlewares/*": ["./middlewares/*"],
 			"models/*": ["./models/*"],
+			"types/*": ["./types/*"],
 			"routes/*": ["./routes/*"],
 			"services/*": ["./services/*"],
 			"utils/*": ["./utils/*"]

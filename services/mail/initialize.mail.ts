@@ -7,6 +7,8 @@ export default (): void => {
 
 	if (!transporter) return
 
+	if (!mailConfig.enabled) return
+
 	transporter.sendMail(mailConfig.options, (error: Error): void => {
 		if (!error) {
 			console.log(`${new Date().toLocaleTimeString('pl-PL')} [mail] connected to mail`)

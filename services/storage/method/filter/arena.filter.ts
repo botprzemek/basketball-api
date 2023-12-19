@@ -1,5 +1,5 @@
-import { ArenaQuery } from 'models/basketball/arena.model'
-import QueryEnum from 'models/storage/query.enum'
+import { ArenaQuery } from 'types/basketball/arena.model'
+import QueryEnum from 'types/storage/query.enum'
 
 export default (data: ArenaQuery[], query: QueryEnum, params: any[]): ArenaQuery[] => {
 	switch (query) {

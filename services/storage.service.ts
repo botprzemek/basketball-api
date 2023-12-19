@@ -1,4 +1,4 @@
-import QueryEnum from 'models/storage/query.enum'
+import QueryEnum from 'types/storage/query.enum'
 import queryStorage from 'services/storage/query.storage'
 import routes from 'utils/route.util'
 import processMethod from 'services/storage/method/process.method'

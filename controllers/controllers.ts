@@ -6,5 +6,5 @@ export default {
 	post: postController,
 	// patch: patchController,
 	get: getController,
-	delete: deleteController,
+	delete: deleteController
 }

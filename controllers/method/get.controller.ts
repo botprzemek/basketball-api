@@ -1,6 +1,6 @@
-import {NextFunction, Request, Response} from 'express'
+import { NextFunction, Request, Response } from 'express'
 import storageService from 'services/storage.service'
-import QueryEnum from 'models/storage/query.enum'
+import QueryEnum from 'types/storage/query.enum'
 
 export default async (
 	req: Request,

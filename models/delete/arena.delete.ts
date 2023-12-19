@@ -1,5 +1,5 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
-import QueryEnum from 'models/storage/query.enum'
+import QueryEnum from 'types/storage/query.enum'
 
 export default async (query: QueryEnum, ...params: any[]): Promise<boolean> => {
 	switch (query) {
