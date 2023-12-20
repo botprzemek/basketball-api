@@ -1,13 +1,15 @@
-import { Request, Response } from 'express'
-import { hash } from 'bcrypt'
-import { randomBytes } from 'crypto'
-import { sign } from 'jsonwebtoken'
-import { sqliteStorage } from 'services/storage/sqlite.storage'
+import {Request, Response} from 'express'
+import {hash} from 'bcrypt'
+import {randomBytes} from 'crypto'
+import {sign} from 'jsonwebtoken'
+import {sqliteStorage} from 'services/storage/sqlite.storage'
 import settingsConfig from 'configs/default.config'
 
 export default async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { first_name, last_name, email, password } = req.body
+
+		console.log(req)
 
 		if (!(email && password && first_name && last_name)) {
 			res.status(404)
@@ -27,7 +29,7 @@ export default async (req: Request, res: Response): Promise<void> => {
 		))
 
 		if (isUserCreated) {
-			res.status(404)
+			res.status(409)
 			res.json({
 				error: {
 					description: 'Please provide another username, refer to the API documentation'

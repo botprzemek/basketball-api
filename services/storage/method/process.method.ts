@@ -5,15 +5,16 @@ import QueryEnum from 'types/storage/query.enum'
 export default <QueryType>(
 	data: QueryType[],
 	key: string,
-	query: QueryEnum,
-	parameters: any[]
+	query?: QueryEnum,
+	parameter?: any
 ): QueryType[] => {
 	if (!data) return []
 
-	data =
-		query && parameters && filterMethod[key] ? filterMethod[key](data, query, parameters) : data
+	data = query && parameter ? filterMethod(query, data, parameter) : data
 
-	for (let i: number = 0; i < data.length; i++) data[i] = builderMethod[key](data[i])
+	for (let i: number = 0; i < data.length; i++) {
+		data[i] = builderMethod[key] ? builderMethod[key](data[i]) : data[i]
+	}
 
 	return data
 }

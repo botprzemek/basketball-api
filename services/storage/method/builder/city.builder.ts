@@ -1,6 +1,6 @@
-import { City, CityQuery } from 'models/basketball/city.model'
+import { City, CityQuery } from 'types/basketball/city.model'
 
-export const cities = (data: CityQuery): City => ({
+export default (data: CityQuery): City => ({
 	id: data.id,
 	name: data.name,
 	state: data.state

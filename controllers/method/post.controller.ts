@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import Payload from 'types/controller/payload.interface'
 import storageService from 'services/storage.service'
 import expressions from 'utils/expression.util'
-import createKeys from 'utils/identifier.util'
+import sortCache from 'services/cache/sort.cache'
 
 export default async <Route>(req: Request, res: Response, route: string): Promise<void> => {
 	const payload: Payload = {}
@@ -13,20 +13,20 @@ export default async <Route>(req: Request, res: Response, route: string): Promis
 
 	if (!valid) {
 		res.sendStatus(400)
-		console.log(
-			`${new Date().toLocaleTimeString('pl-PL')} [request] ${req.method} ${decodeURI(
-				req.baseUrl + req.path
-			)} (${((performance.now() - res.locals.start) / 1000).toFixed(2)}s)`
-		)
 		return
 	}
 
-	const data: Route[] = await storageService[route].create(
-		createKeys[route],
-		...Object.values(payload)
-	)
+	const createdData: Route[] = await storageService[route].create(payload)
 
-	res.sendStatus(data.length !== 0 ? 201 : 422)
+	if (createdData.length === 0) {
+		res.sendStatus(422)
+		return
+	}
+
+	sortCache(route, createdData)
+
+	res.sendStatus(201)
+
 	console.log(
 		`${new Date().toLocaleTimeString('pl-PL')} [request] ${req.method} ${decodeURI(
 			req.baseUrl + req.path

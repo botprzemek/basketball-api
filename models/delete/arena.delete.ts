@@ -1,22 +1,23 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
 import QueryEnum from 'types/storage/query.enum'
+import { ArenaQuery } from 'types/basketball/arena.model'
 
-export default async (query: QueryEnum, ...params: any[]): Promise<boolean> => {
+export default async (query: QueryEnum, parameter: bigint): Promise<ArenaQuery[]> => {
 	switch (query) {
 		case QueryEnum.ID: {
-			const data = await cockroachStorage()`
+			return cockroachStorage()`
 				DELETE FROM arena 
-				WHERE id = ${params.at(0)}`
-			return data.length !== 0
+				WHERE id = ${parameter.toString()} 
+				RETURNING *`
 		}
 		case QueryEnum.CITY_ID: {
-			const data = await cockroachStorage()`
+			return cockroachStorage()`
 				DELETE FROM arena 
-				WHERE city_id = ${params.at(0)}`
-			return data.length !== 0
+				WHERE city_id = ${parameter.toString()} 
+				RETURNING *`
 		}
 		default: {
-			return false
+			return []
 		}
 	}
 }

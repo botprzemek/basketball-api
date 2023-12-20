@@ -17,6 +17,6 @@ export default async (
 
 	const key: QueryEnum = (Object.keys(req.query).at(0) as string).toUpperCase() as QueryEnum
 
-	res.locals.data = await storageService[route].get(key, BigInt(value as string))
+	res.locals.data = await storageService[route].get(key, value)
 	return next()
 }
