@@ -1,7 +1,7 @@
-import { Player, PlayerQuery } from 'models/basketball/player.model'
-import Position from 'models/basketball/enum/position.enum'
+import { Player, PlayerQuery } from 'types/basketball/player.model'
+import Position from 'types/basketball/enum/position.enum'
 
-export const players = (data: PlayerQuery): Player => ({
+export default (data: PlayerQuery): Player => ({
 	id: data.id,
 	team_id: data.team_id,
 	name: data.name,

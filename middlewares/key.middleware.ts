@@ -5,7 +5,7 @@ export default function (req: Request, res: Response, next: NextFunction): void 
 	if (
 		req.ip === '::ffff:127.0.0.1' ||
 		!settingsConfig.useSecret ||
-		req.headers['x-api-key'] === process.env.SECRET
+		req.headers['x-api-key'] === process.env.API_KEY
 	) {
 		res.locals.start = performance.now()
 		next()

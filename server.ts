@@ -9,6 +9,7 @@ import routerV1 from 'routes/v1/router'
 import matchMiddleware from './middlewares/invalid.middleware'
 import initializeStorage from 'services/storage/initialize.storage'
 import initializeMail from 'services/mail/initialize.mail'
+import * as zlib from 'zlib'
 
 dotenv.config()
 

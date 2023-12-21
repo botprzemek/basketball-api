@@ -1,9 +1,9 @@
-import {Request, Response} from 'express'
+import { Request, Response } from 'express'
 import Payload from 'types/controller/payload.interface'
 import expressions from 'utils/expression.util'
 import storageService from 'services/storage.service'
 import updateCache from 'services/cache/update.cache'
-import QueryEnum from "types/storage/query.enum";
+import QueryEnum from 'types/storage/query.enum'
 
 export default async <Route>(req: Request, res: Response, route: string): Promise<void> => {
 	const payload: Payload = {}

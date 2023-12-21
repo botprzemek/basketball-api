@@ -1,7 +1,7 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
-import {ArenaQuery} from 'types/basketball/arena.model'
+import { ArenaQuery } from 'types/basketball/arena.model'
 import QueryEnum from 'types/storage/query.enum'
-import {TransactionSql} from 'postgres'
+import { TransactionSql } from 'postgres'
 
 export default async (query: QueryEnum, parameter: bigint, data: any): Promise<ArenaQuery[]> => {
 	switch (query) {
