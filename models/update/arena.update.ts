@@ -1,9 +1,7 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
-import { ArenaQuery } from 'types/basketball/arena.model'
+import {ArenaQuery} from 'types/basketball/arena.model'
 import QueryEnum from 'types/storage/query.enum'
-import { TransactionSql } from 'postgres'
-
-// TODO
+import {TransactionSql} from 'postgres'
 
 export default async (query: QueryEnum, parameter: bigint, data: any): Promise<ArenaQuery[]> => {
 	switch (query) {
@@ -13,7 +11,8 @@ export default async (query: QueryEnum, parameter: bigint, data: any): Promise<A
 					(sql: TransactionSql) => sql<ArenaQuery[]>`
 				UPDATE arena
 				SET name = ${data.name}, location = ${data.location}
-				WHERE id = ${parameter.toString()}`
+				WHERE id = ${parameter.toString()}
+				RETURNING *`
 				)
 				.catch(() => [])
 		}

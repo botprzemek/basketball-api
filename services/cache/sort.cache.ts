@@ -6,6 +6,11 @@ export default <Route>(route: string, data: Route[]): void => {
 	if (!cachedData) return
 
 	cachedData.push(...(data as Route[]))
-	cachedData.sort((a: any, b: any): number => a.name.localeCompare(b.name))
+
+	cachedData.sort((a: any, b: any): number => {
+		if (a.name && b.name) return a.name.localeCompare(b.name)
+		return 0
+	})
+
 	setData(route, cachedData)
 }

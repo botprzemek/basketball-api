@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import {Request, Response} from 'express'
 import Payload from 'types/controller/payload.interface'
 import storageService from 'services/storage.service'
 import expressions from 'utils/expression.util'
@@ -18,7 +18,7 @@ export default async <Route>(req: Request, res: Response, route: string): Promis
 
 	const createdData: Route[] = await storageService[route].create(payload)
 
-	if (createdData.length === 0) {
+	if (!createdData || createdData.length === 0) {
 		res.sendStatus(422)
 		return
 	}
