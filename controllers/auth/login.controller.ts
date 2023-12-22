@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { compare } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 import { sqliteStorage } from 'services/storage/sqlite.storage'
-import settingsConfig from 'configs/default.config'
+import defaultConfig from 'configs/default.config'
 
 export default async (req: Request, res: Response): Promise<void> => {
 	try {
@@ -42,7 +42,7 @@ export default async (req: Request, res: Response): Promise<void> => {
 			},
 			process.env.TOKEN_KEY as string,
 			{
-				expiresIn: settingsConfig.expireTime
+				expiresIn: defaultConfig.authTime
 			}
 		)
 

@@ -4,7 +4,7 @@ import settingsConfig from 'configs/default.config'
 export default function (req: Request, res: Response, next: NextFunction): void {
 	if (
 		req.ip === '::ffff:127.0.0.1' ||
-		!settingsConfig.useSecret ||
+		!settingsConfig.useApiKey ||
 		req.headers['x-api-key'] === process.env.API_KEY
 	) {
 		res.locals.start = performance.now()

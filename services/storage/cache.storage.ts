@@ -1,10 +1,10 @@
 import * as NodeCache from 'node-cache'
-import cacheConfig from 'configs/cache.config'
+import defaultConfig from 'configs/default.config'
 
 let cache: NodeCache
 
 const assign = (): NodeCache => {
-	cache = new NodeCache({ stdTTL: cacheConfig.time * 1000 })
+	cache = new NodeCache({ stdTTL: defaultConfig.cacheTime * 1000 })
 	return cache
 }
 

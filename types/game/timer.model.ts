@@ -1,5 +1,5 @@
 import gameConfig from 'configs/game.config'
-import Game from 'models/game/game.model'
+import Game from 'types/game/game.model'
 
 export default class Timer {
 	private time: number

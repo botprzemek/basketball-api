@@ -6,9 +6,9 @@ export default async (data: any): Promise<ArenaQuery[]> =>
 	cockroachStorage()
 		.begin(
 			(sql: TransactionSql): Promise<ArenaQuery[]> => sql<ArenaQuery[]>`
-		INSERT INTO arena (city_id, name, location) 
-		VALUES (${data.city_id}, ${data.name}, ${data.location}) 
-		ON CONFLICT (name, location) DO NOTHING
-		RETURNING *`
+			INSERT INTO arena (city_id, name, location) 
+			VALUES (${data.city_id}, ${data.name}, ${data.location}) 
+			ON CONFLICT (name, location) DO NOTHING
+			RETURNING *`
 		)
 		.catch(() => [])
