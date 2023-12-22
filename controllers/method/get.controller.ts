@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import {NextFunction, Request, Response} from 'express'
 import storageService from 'services/storage.service'
 import QueryEnum from 'types/storage/query.enum'
 import expressions from 'utils/expression.util'
@@ -10,18 +10,23 @@ export default async (
 	next: NextFunction
 ): Promise<void> => {
 	const value = Object.values(req.query).at(0)
+	const key: string | undefined = Object.keys(req.query).at(0)
 
-	if (!value || Array.isArray(value)) {
+	if (!key || !value || Array.isArray(value)) {
 		res.locals.data = await storageService[route].get()
 		return next()
 	}
 
-	const key: QueryEnum = (Object.keys(req.query).at(0) as string).toUpperCase() as QueryEnum
-	const isValid: boolean =
-		key === QueryEnum.ID || Object.keys(expressions[route]).includes(key.toLowerCase())
+	const query: QueryEnum = key.toUpperCase() as QueryEnum
+	const routeExpressions: {} = expressions[route] ? expressions[route] : {}
+	const validQuery: QueryEnum = routeExpressions[key.toLowerCase()] ? query : QueryEnum.ID
 
-	res.locals.data = isValid
-		? await storageService[route].get(key, value)
+	const valid: boolean = !!routeExpressions[validQuery.toLowerCase()]
+
+	// parameters[route](req.query, valid)
+
+	res.locals.data = valid
+		? await storageService[route].get(query, value)
 		: await storageService[route].get()
 
 	return next()

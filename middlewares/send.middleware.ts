@@ -1,6 +1,6 @@
-import {type Request, type Response} from 'express'
+import { type Request, type Response } from 'express'
 import defaultConfig from 'configs/default.config'
-import compressUtil from 'utils/compress.util'
+import compressionUtil from 'utils/compression.util'
 import Compression from 'types/compression.enum'
 
 export default function (req: Request, res: Response): void {
@@ -26,5 +26,5 @@ export default function (req: Request, res: Response): void {
 		return
 	}
 
-	void compressUtil(res, data)
+	void compressionUtil(res, data)
 }

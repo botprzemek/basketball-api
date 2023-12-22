@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import {Router} from 'express'
 import registerAuthorization from 'controllers/auth/register.controller'
 import loginAuthorization from 'controllers/auth/login.controller'
 import authenticateAuthorization from 'controllers/auth/authenticate.controller'

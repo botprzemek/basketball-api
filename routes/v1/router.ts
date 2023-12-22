@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import {Router} from 'express'
 import error from 'middlewares/error.middleware'
 import secret from 'middlewares/key.middleware'
 import sendMiddleware from 'middlewares/send.middleware'
@@ -10,7 +10,7 @@ const router: Router = Router()
 
 router.use(error).use(secret)
 
-router.use(`/auth`, authRoute)
+router.use('/auth', authRoute)
 
 Object.keys(routes).forEach((route: string) => router.use(`/${route}`, getRouter(route)))
 
