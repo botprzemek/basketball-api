@@ -1,9 +1,9 @@
-import { Team, TeamQuery } from 'models/basketball/team.model'
+import { Team, TeamQuery } from 'types/basketball/team.model'
 
-export const teams = (data: TeamQuery): Team => ({
+export default (data: TeamQuery): Team => ({
 	id: data.id,
 	league_id: data.league_id,
 	name: data.name,
-	won: data.won,
-	lost: data.lost
+	won: parseInt(data.won),
+	lost: parseInt(data.lost)
 })

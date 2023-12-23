@@ -1,7 +1,7 @@
-import { Staff, StaffQuery } from 'models/basketball/staff.model'
-import Role from 'models/basketball/enum/role.enum'
+import { Staff, StaffQuery } from 'types/basketball/staff.model'
+import Role from 'types/basketball/enum/role.enum'
 
-export const staff = (data: StaffQuery): Staff => ({
+export default (data: StaffQuery): Staff => ({
 	id: data.id,
 	name: data.name,
 	lastname: data.lastname,

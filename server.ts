@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv'
 import * as express from 'express'
-import {type Express} from 'express'
+import { type Express } from 'express'
 import * as cors from 'cors'
-import {type CorsOptions} from 'cors'
-import helmet, {type HelmetOptions} from 'helmet'
-import {createServer, type Server} from 'http'
+import { type CorsOptions } from 'cors'
+import helmet, { type HelmetOptions } from 'helmet'
+import { createServer, type Server } from 'http'
 import routerV1 from 'routes/v1/router'
 import matchMiddleware from './middlewares/invalid.middleware'
 import initializeStorage from 'services/storage/initialize.storage'
@@ -22,10 +22,7 @@ const helmetOptions: HelmetOptions = {
 	contentSecurityPolicy: true
 }
 
-server
-	.disable('x-powered-by')
-	.set('trust proxy', true)
-	.options('*', cors())
+server.disable('x-powered-by').set('trust proxy', true).options('*', cors())
 
 server
 	.use(cors(options))

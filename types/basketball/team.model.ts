@@ -3,8 +3,8 @@ export interface TeamQuery {
 	city_id: bigint
 	league_id: bigint
 	name: string
-	won: number
-	lost: number
+	won: string
+	lost: string
 }
 
 export interface Team {

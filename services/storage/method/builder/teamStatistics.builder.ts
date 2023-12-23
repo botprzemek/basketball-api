@@ -1,6 +1,6 @@
-import { TeamStatistics, TeamStatisticsQuery } from 'models/basketball/teamStatistics.model'
+import { TeamStatistics, TeamStatisticsQuery } from 'types/basketball/teamStatistics.model'
 
-export const teamStatistics = (data: TeamStatisticsQuery): TeamStatistics => ({
+export default (data: TeamStatisticsQuery): TeamStatistics => ({
 	id: data.id,
 	match_id: data.match_id,
 	team_id: data.team_id,

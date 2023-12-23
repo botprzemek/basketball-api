@@ -1,3 +1,3 @@
-export default  {
-  // const parameters
+export default {
+	// const parameters
 }

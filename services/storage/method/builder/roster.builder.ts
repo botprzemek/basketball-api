@@ -1,7 +1,8 @@
-import { Roster, RosterQuery } from 'models/basketball/roster.model'
-import Position from 'models/basketball/enum/position.enum'
+import { Roster, RosterQuery } from 'types/basketball/roster.model'
+import { Player, PlayerQuery } from 'types/basketball/player.model'
+import Position from 'types/basketball/enum/position.enum'
 
-export const rosters = (data: RosterQuery): Roster => ({
+export default (data: RosterQuery & PlayerQuery): Roster & Player => ({
 	id: data.id,
 	match_id: data.match_id,
 	team_id: data.team_id,

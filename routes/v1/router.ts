@@ -1,4 +1,4 @@
-import {Router} from 'express'
+import { Router } from 'express'
 import error from 'middlewares/error.middleware'
 import secret from 'middlewares/key.middleware'
 import sendMiddleware from 'middlewares/send.middleware'
