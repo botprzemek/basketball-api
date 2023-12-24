@@ -4,18 +4,15 @@ export default (query: QueryEnum, data: any[], parameter: string): any[] => {
 	switch (query) {
 		case QueryEnum.ID:
 		case QueryEnum.CITY_ID: {
-			return data.filter((element): boolean =>
-				element[query.toLowerCase()]
-					? BigInt(element[query.toLowerCase()]) === BigInt(parameter)
-					: false
+			return data.filter(
+				(element): boolean => BigInt(element[query.toLowerCase()]) === BigInt(parameter)
 			)
 		}
 		case QueryEnum.NAME:
-		case QueryEnum.TEAM_NAME: {
+		case QueryEnum.TEAM_NAME:
+		case QueryEnum.LOCATION: {
 			return data.filter((element): boolean =>
-				element[query.toLowerCase()]
-					? element[query.toLowerCase()].includes(parameter)
-					: false
+				element[query.toLowerCase()].includes(parameter)
 			)
 		}
 		default: {

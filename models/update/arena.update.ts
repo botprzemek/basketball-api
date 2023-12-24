@@ -3,13 +3,13 @@ import { ArenaQuery } from 'types/basketball/arena.model'
 import QueryEnum from 'types/storage/query.enum'
 import { TransactionSql } from 'postgres'
 
-export default async (query: QueryEnum, parameter: bigint, data: any): Promise<ArenaQuery[]> => {
+export default async (table: string, query: QueryEnum, parameter: bigint, data): Promise<any[]> => {
 	switch (query) {
 		case QueryEnum.ID: {
 			return cockroachStorage()
 				.begin(
 					(sql: TransactionSql) => sql<ArenaQuery[]>`
-				UPDATE arena
+				UPDATE ${cockroachStorage()(table)}
 				SET name = ${data.name}, location = ${data.location}
 				WHERE id = ${parameter.toString()}
 				RETURNING *`

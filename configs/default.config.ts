@@ -5,7 +5,7 @@ export default {
 	email: 'info@knuryknurow.pl',
 	fund: 'https://zrzutka.pl/sm74bt/data.json',
 	useApiKey: true,
-	useCache: true,
+	useCache: false,
 	useCompression: Compression.GZIP,
 	cacheTime: 1800,
 	authTime: '1d'

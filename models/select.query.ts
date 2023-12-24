@@ -17,7 +17,8 @@ export default async (table: string, query?: QueryEnum, parameter?: bigint): Pro
 				.catch(() => [])
 		}
 		case QueryEnum.NAME:
-		case QueryEnum.TEAM_NAME: {
+		case QueryEnum.TEAM_NAME:
+		case QueryEnum.LOCATION: {
 			return cockroachStorage()
 				.begin(
 					(sql: TransactionSql): Promise<ArenaQuery[]> => sql<ArenaQuery[]>`
