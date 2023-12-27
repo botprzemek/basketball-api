@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv'
-import * as express from 'express'
-import { type Express } from 'express'
 import * as cors from 'cors'
 import { type CorsOptions } from 'cors'
-import helmet, { type HelmetOptions } from 'helmet'
+import * as express from 'express'
+import { type Express } from 'express'
 import { createServer, type Server } from 'http'
+import helmet, { type HelmetOptions } from 'helmet'
 import routerV1 from 'routes/v1/router'
 import matchMiddleware from './middlewares/invalid.middleware'
 import initializeStorage from 'services/storage/initialize.storage'
@@ -45,7 +45,7 @@ server
 		})
 	)
 
-server.use('/v1', routerV1).get('*', matchMiddleware)
+server.use('/v1', routerV1).all('*', matchMiddleware)
 
 initializeStorage()
 initializeMail()

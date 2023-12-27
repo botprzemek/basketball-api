@@ -1,14 +1,12 @@
-import { type Request, type Response } from 'express'
+import {type Request, type Response} from 'express'
 import defaultConfig from 'configs/default.config'
 import compressionUtil from 'utils/compression.util'
 import Compression from 'types/compression.enum'
 
 export default function (req: Request, res: Response): void {
-	const data: { data: any[] } = {
-		data: res.locals.data
-	}
+	const data: any[] = res.locals.data
 
-	if (!data.data || !Array.isArray(data.data) || data.data.length === 0) {
+	if (!data || !Array.isArray(data) || data.length === 0) {
 		res.sendStatus(204)
 		return
 	}
