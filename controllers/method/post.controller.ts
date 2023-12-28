@@ -1,4 +1,4 @@
-import {Request, Response} from 'express'
+import { Request, Response } from 'express'
 import Payload from 'types/controller/payload.interface'
 import storageService from 'services/storage.service'
 import expressions from 'utils/expression.util'

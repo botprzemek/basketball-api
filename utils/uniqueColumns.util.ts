@@ -1,3 +1,3 @@
 export default {
-  arenas: [ 'name', 'location' ]
+	arenas: ['name', 'location']
 }

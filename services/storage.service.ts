@@ -3,7 +3,7 @@ import queryStorage from 'services/storage/query.storage'
 import routes from 'utils/route.util'
 import processMethod from 'services/storage/method/process.method'
 import selectQuery from 'models/select.query'
-import {getData, setData} from 'services/cache.service'
+import { getData, setData } from 'services/cache.service'
 import deleteQuery from 'models/delete.query'
 import insertQuery from 'models/insert.query'
 

@@ -1,7 +1,7 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
 import QueryEnum from 'types/storage/query.enum'
-import {ArenaQuery} from 'types/basketball/arena.model'
-import {TransactionSql} from 'postgres'
+import { ArenaQuery } from 'types/basketball/arena.model'
+import { TransactionSql } from 'postgres'
 import routes from 'utils/route.util'
 
 export default async (key: string, query?: QueryEnum, parameter?: string): Promise<any[]> => {
