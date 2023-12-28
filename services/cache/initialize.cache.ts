@@ -1,4 +1,4 @@
-import * as cacheStorage from 'services/storage/cache.storage'
+import * as cacheStorage from 'services/cache.service'
 import setupCache from 'services/cache/setup.cache'
 
 export default (): void => {

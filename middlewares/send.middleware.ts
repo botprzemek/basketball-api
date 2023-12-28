@@ -1,4 +1,4 @@
-import {type Request, type Response} from 'express'
+import { type Request, type Response } from 'express'
 import defaultConfig from 'configs/default.config'
 import compressionUtil from 'utils/compression.util'
 import Compression from 'types/compression.enum'

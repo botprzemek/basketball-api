@@ -1,6 +1,5 @@
-import arenaInsert from 'models/insert/arena.insert'
+import arenaInsert from 'models/insert.query'
 import arenaUpdate from 'models/update/arena.update'
-import arenaDelete from 'models/delete.query'
 
 export default {
 	insert: {
@@ -8,8 +7,5 @@ export default {
 	},
 	update: {
 		arenas: arenaUpdate
-	},
-	delete: {
-		arenas: arenaDelete
 	}
 }

@@ -14,7 +14,7 @@ dotenv.config()
 
 const server: Express = express()
 const http: Server = createServer(server)
-const port: number = parseInt(process.env.PORT as string)
+const port: number = Number(process.env.PORT as string)
 const options: CorsOptions = {
 	origin: JSON.parse(process.env.ADDRESSES as string)
 }

@@ -3,7 +3,9 @@ const enum QueryEnum {
 	CITY_ID = 'CITY_ID',
 	NAME = 'NAME',
 	TEAM_NAME = 'TEAM_NAME',
-	LOCATION = 'LOCATION'
+	LOCATION = 'LOCATION',
+	WON = 'WON',
+	LOST = 'LOST'
 }
 
 export default QueryEnum

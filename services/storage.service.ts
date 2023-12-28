@@ -3,14 +3,15 @@ import queryStorage from 'services/storage/query.storage'
 import routes from 'utils/route.util'
 import processMethod from 'services/storage/method/process.method'
 import selectQuery from 'models/select.query'
-import { getData, setData } from 'services/storage/cache.storage'
+import {getData, setData} from 'services/cache.service'
 import deleteQuery from 'models/delete.query'
+import insertQuery from 'models/insert.query'
 
 const methods: any = {}
 
 Object.keys(routes).forEach((key: string): void => {
 	methods[key] = {
-		create: async (data: any): Promise<boolean> => queryStorage.insert[key](data),
+		create: async (data: any): Promise<any[]> => insertQuery(key, data),
 		update: async <QueryType>(
 			query: QueryEnum,
 			parameter: any,
@@ -21,15 +22,15 @@ Object.keys(routes).forEach((key: string): void => {
 
 			if (cachedData) return processMethod(cachedData, key, query, value)
 
-			const queryData: QueryType[] = await selectQuery(routes[key])
+			const queryData: QueryType[] = await selectQuery(key)
 
 			if (queryData.length > 0) setData(key, queryData)
 			if (!query || !value) return processMethod(queryData, key, query, value)
 
-			return processMethod(await selectQuery(routes[key], query, value), key, query, value)
+			return processMethod(await selectQuery(key, query, value), key, query, value)
 		},
 		delete: async <QueryType>(query: QueryEnum, parameter: any): Promise<QueryType[]> =>
-			deleteQuery(routes[key], query, parameter)
+			deleteQuery(key, query, parameter)
 	}
 })
 

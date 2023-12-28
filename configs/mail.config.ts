@@ -24,7 +24,7 @@ if (enabled) {
 			auth = {
 				pool: true,
 				host: process.env.MAIL_URL,
-				port: parseInt(process.env.MAIL_PORT || '587'),
+				port: Number(process.env.MAIL_PORT || '587'),
 				secure: false,
 				auth: {
 					user: process.env.MAIL_USER,
@@ -37,7 +37,7 @@ if (enabled) {
 			auth = {
 				pool: true,
 				host: process.env.MAIL_URL,
-				port: parseInt(process.env.MAIL_PORT || '587'),
+				port: Number(process.env.MAIL_PORT || '587'),
 				secure: false,
 				auth: {
 					user: process.env.MAIL_USER,

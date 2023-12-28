@@ -3,7 +3,7 @@ import error from 'middlewares/error.middleware'
 import secret from 'middlewares/key.middleware'
 import sendMiddleware from 'middlewares/send.middleware'
 import getRouter from 'routes/v1/router/route.router'
-import authRoute from 'routes/v1/router/auth/auth.route'
+import authRoute from 'routes/v1/router/route/auth.route'
 import routes from 'utils/route.util'
 
 const router: Router = Router()

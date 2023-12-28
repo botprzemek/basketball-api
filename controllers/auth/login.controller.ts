@@ -5,7 +5,6 @@ import { sqliteStorage } from 'services/storage/sqlite.storage'
 import defaultConfig from 'configs/default.config'
 
 export default async (req: Request, res: Response): Promise<void> => {
-	console.log(req.body)
 	try {
 		const { email, password } = req.body
 
@@ -51,9 +50,7 @@ export default async (req: Request, res: Response): Promise<void> => {
 
 		res.status(200)
 		res.json({
-			data: {
-				token: token
-			}
+			token: token
 		})
 	} catch (error) {
 		console.log(error)

@@ -1,22 +1,25 @@
 import QueryEnum from 'types/storage/query.enum'
 
 export default (query: QueryEnum, data: any[], parameter: string): any[] => {
-	switch (query) {
-		case QueryEnum.ID:
-		case QueryEnum.CITY_ID: {
-			return data.filter(
-				(element): boolean => BigInt(element[query.toLowerCase()]) === BigInt(parameter)
-			)
+	return data.filter((element): boolean => {
+		const value: any = element[query.toLowerCase()]
+		switch (query) {
+			case QueryEnum.ID:
+			case QueryEnum.CITY_ID: {
+				return BigInt(value) === BigInt(parameter)
+			}
+			case QueryEnum.NAME:
+			case QueryEnum.TEAM_NAME:
+			case QueryEnum.LOCATION: {
+				return value.includes(parameter)
+			}
+			case QueryEnum.WON:
+			case QueryEnum.LOST: {
+				return Number(value) === Number(parameter)
+			}
+			default: {
+				return element
+			}
 		}
-		case QueryEnum.NAME:
-		case QueryEnum.TEAM_NAME:
-		case QueryEnum.LOCATION: {
-			return data.filter((element): boolean =>
-				element[query.toLowerCase()].includes(parameter)
-			)
-		}
-		default: {
-			return data
-		}
-	}
+	})
 }

@@ -12,9 +12,7 @@ export default <QueryType>(
 
 	data = query && parameter ? filterMethod(query, data, parameter) : data
 
-	for (let i: number = 0; i < data.length; i++) {
-		data[i] = builderMethod[key] ? builderMethod[key](data[i]) : data[i]
-	}
+	data.map((element: QueryType) => builderMethod(key, element))
 
 	return data
 }
