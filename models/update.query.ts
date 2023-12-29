@@ -1,5 +1,4 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
-import {ArenaQuery} from 'types/basketball/arena.model'
 import QueryEnum from 'types/storage/query.enum'
 import {TransactionSql} from 'postgres'
 import routes from 'utils/route.util'
@@ -13,7 +12,7 @@ export default async (
 ): Promise<any> =>
 	cockroachStorage()
 		.begin(
-			(sql: TransactionSql) => sql<ArenaQuery[]>`
+			(sql: TransactionSql) => sql<any[]>`
 			UPDATE ${cockroachStorage()(routes[key])}
 			SET ${cockroachStorage()(data, Object.keys(expressions[key]))}
 			WHERE ${cockroachStorage()(query.toLowerCase())} = ${parameter.toString()}
