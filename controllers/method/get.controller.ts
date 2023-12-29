@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import {NextFunction, Request, Response} from 'express'
 import storageService from 'services/storage.service'
 import QueryEnum from 'types/storage/query.enum'
 import expressions from 'utils/expression.util'
@@ -23,7 +23,7 @@ export default async (
 
 	const valid: boolean = !!routeExpressions[validQuery.toLowerCase()]
 
-	// parameters[route](req.query, valid)
+	// parameters[route](Object.keys(query).slice(valid ? 1 : 0),)
 
 	res.locals.data = valid
 		? await storageService[route].get(query, value)

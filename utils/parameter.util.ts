@@ -1,9 +1,9 @@
-// TODO
-
-const validParameters: string[] = ['page', 'per']
-
-export default (query: any, valid: boolean, data: any): void => {
-	// const keys: string[] = Object.keys(query).slice(valid ? 1 : 0)
-	//
-	// keys.forEach((key: string): void => parameterMethod(key, query[key], data))
-}
+// const validParameters: string[] = ['page', 'per']
+//
+// const methods = {
+//   sort: <QueryType>(key: any, data: QueryType[]): QueryType[] => data.sort((a: any, b: any): number => (a[key] && b[key]) ? a[key].localeCompare(b[key]) : 0)
+// }
+//
+// export default <QueryType>(queries: { [method: string]: { key: string, data: string[] } }): QueryType[] => {
+// 	Object.keys(queries).map((query: string): QueryType[] => methods[query](queries[query].key, queries[query].data))
+// }

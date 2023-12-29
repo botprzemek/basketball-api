@@ -5,7 +5,16 @@ export default {
 		location:
 			/^([-+]?\d{1,2})°\s*(\d{1,2})'\s*([\d.]+)"\s*([NS])\s*([-+]?\d{1,3})°\s*(\d{1,2})'\s*([\d.]+)"\s*([EW])$/
 	},
-	players: {},
+	players: {
+		team_id: /^\d{18}$/,
+		name: /^.{3,32}$/,
+		lastname: /^.{3,32}$/,
+		number: /^\d{3}$/,
+		height: /^\d{4}$/,
+		position: /^.{1,2}$/,
+		birthday: /^.{6,32}$/,
+		starter: /^.{4,5}$/
+	},
 	teams: {
 		league_id: /^\d{18}$/,
 		name: /^.{3,32}$/,

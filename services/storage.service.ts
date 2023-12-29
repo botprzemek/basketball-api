@@ -1,9 +1,8 @@
 import QueryEnum from 'types/storage/query.enum'
-import queryStorage from 'services/storage/query.storage'
 import routes from 'utils/route.util'
 import processMethod from 'services/storage/method/process.method'
 import selectQuery from 'models/select.query'
-import { getData, setData } from 'services/cache.service'
+import {getData, setData} from 'services/cache.service'
 import deleteQuery from 'models/delete.query'
 import insertQuery from 'models/insert.query'
 
@@ -11,12 +10,9 @@ const methods: any = {}
 
 Object.keys(routes).forEach((key: string): void => {
 	methods[key] = {
-		create: async (data: any): Promise<any[]> => insertQuery(key, data),
-		update: async <QueryType>(
-			query: QueryEnum,
-			parameter: any,
-			data: any
-		): Promise<QueryType> => queryStorage.update[key](query, parameter, data),
+		create: async <QueryType>(data: QueryType[]): Promise<any[]> => insertQuery(key, data),
+		update: async <QueryType>(query: QueryEnum, parameter: any, data: any): Promise<QueryType> => data,
+			// queryStorage.update[key](query, parameter, data),
 		get: async <QueryType>(query: QueryEnum, value: any): Promise<QueryType[]> => {
 			const cachedData = getData(key)
 

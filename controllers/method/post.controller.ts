@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import {Request, Response} from 'express'
 import Payload from 'types/controller/payload.interface'
 import storageService from 'services/storage.service'
 import expressions from 'utils/expression.util'
@@ -6,9 +6,11 @@ import sortCache from 'services/cache/sort.cache'
 
 export default async <Route>(req: Request, res: Response, route: string): Promise<void> => {
 	const payload: Payload = {}
-	const valid: boolean = Object.keys(expressions[route]).every((key: string): void => {
+	let valid: boolean = false
+
+	Object.keys(expressions[route]).forEach((key: string): void => {
 		payload[key] = req.body[key]
-		return expressions[route][key].test(payload[key] as string)
+		valid = expressions[route][key].test(payload[key] as string)
 	})
 
 	if (!valid) {
@@ -21,7 +23,7 @@ export default async <Route>(req: Request, res: Response, route: string): Promis
 	console.log(createdData)
 
 	if (!createdData || createdData.length === 0) {
-		res.sendStatus(422)
+		res.status(422)
 		return
 	}
 
