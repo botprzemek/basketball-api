@@ -1,5 +1,5 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
-import {TransactionSql} from 'postgres'
+import { TransactionSql } from 'postgres'
 import routes from 'utils/route.util'
 import uniqueColumns from 'utils/uniqueColumns.util'
 

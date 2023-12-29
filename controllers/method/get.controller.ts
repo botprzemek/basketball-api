@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response} from 'express'
+import { NextFunction, Request, Response } from 'express'
 import storageService from 'services/storage.service'
 import QueryEnum from 'types/storage/query.enum'
 import expressions from 'utils/expression.util'
