@@ -1,9 +1,8 @@
 import { Request, Response } from 'express'
 import Payload from 'types/controller/payload.interface'
+import QueryEnum from 'types/storage/query.enum'
 import expressions from 'utils/expression.util'
 import storageService from 'services/storage.service'
-import updateCache from 'services/cache/update.cache'
-import QueryEnum from 'types/storage/query.enum'
 
 export default async <Route>(req: Request, res: Response, route: string): Promise<void> => {
 	const payload: Payload = {}
@@ -32,8 +31,6 @@ export default async <Route>(req: Request, res: Response, route: string): Promis
 		res.sendStatus(422)
 		return
 	}
-
-	updateCache(route, updatedData)
 
 	res.sendStatus(201)
 

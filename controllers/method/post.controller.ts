@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import Payload from 'types/controller/payload.interface'
 import storageService from 'services/storage.service'
 import expressions from 'utils/expression.util'
-import sortCache from 'services/cache/sort.cache'
 
 export default async <Route>(req: Request, res: Response, route: string): Promise<void> => {
 	const payload: Payload = {}
@@ -20,14 +19,10 @@ export default async <Route>(req: Request, res: Response, route: string): Promis
 
 	const createdData: Route[] = await storageService[route].create(payload)
 
-	console.log(createdData)
-
 	if (!createdData || createdData.length === 0) {
 		res.status(422)
 		return
 	}
-
-	sortCache(route, createdData)
 
 	res.sendStatus(201)
 
