@@ -49,7 +49,7 @@ export default async (): Promise<boolean> => {
 			);
 			
 			CREATE TABLE IF NOT EXISTS team (
-				id   INT8 NOT NULL PRIMARY KEY DEFAULT unique_rowid(),
+				id INT8 NOT NULL PRIMARY KEY DEFAULT unique_rowid(),
 				city_id INT8 NOT NULL REFERENCES city (id) ON DELETE CASCADE,
 				league_id INT8 NOT NULL REFERENCES league (id) ON DELETE CASCADE,
 				name VARCHAR NOT NULL UNIQUE,

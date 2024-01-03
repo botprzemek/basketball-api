@@ -11,21 +11,16 @@ const methods: any = {}
 
 Object.keys(routes).forEach((key: string): void => {
 	methods[key] = {
-		create: async <QueryType>(data: QueryType[]): Promise<QueryType[]> => {
-			const queryData: QueryType[] = await insertQuery(key, data)
-
-			const cachedData: QueryType[] = getData(key)
-
-			if (queryData.length <= 0) return []
-
-			return cachedData
+		create: async (data: any[]): Promise<any[]> => {
+			const queryData: any[] = await insertQuery(key, data)
+			return queryData.length > 0 ? getData(key) : []
 		},
-		update: async <QueryType>(
+		update: async (
 			query: QueryEnum,
 			parameter: any,
 			data: any
-		): Promise<QueryType[]> => {
-			const queryData: QueryType[] = await updateQuery(key, query, parameter, data)
+		): Promise<any[]> => {
+			const queryData: any[] = await updateQuery(key, query, parameter, data)
 
 			if (queryData.length === 0) return queryData
 
@@ -38,24 +33,25 @@ Object.keys(routes).forEach((key: string): void => {
 				cachedData[index] = data
 			})
 
-			cachedData
-				.sort((a: any, b: any): number => (a.name && b.name) ? a.name.localeCompare(b.name) : 0)
+			cachedData.sort((a: any, b: any): number =>
+				a.name && b.name ? a.name.localeCompare(b.name) : 0
+			)
 
 			return setData(key, cachedData)
 		},
-		get: async <QueryType>(query: QueryEnum, value: any): Promise<QueryType[]> => {
+		get: async (query: QueryEnum, value: any): Promise<any[]> => {
 			const cachedData = getData(key)
 
 			if (cachedData) return processMethod(cachedData, key, query, value)
 
-			const queryData: QueryType[] = await selectQuery(key)
+			const queryData: any[] = await selectQuery(key)
 
 			if (queryData.length > 0) setData(key, queryData)
 			if (!query || !value) return processMethod(queryData, key, query, value)
 
 			return processMethod(await selectQuery(key, query, value), key, query, value)
 		},
-		delete: async <QueryType>(query: QueryEnum, parameter: any): Promise<QueryType[]> =>
+		delete: async (query: QueryEnum, parameter: any): Promise<any[]> =>
 			deleteQuery(key, query, parameter)
 	}
 })

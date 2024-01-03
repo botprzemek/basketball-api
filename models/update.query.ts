@@ -1,6 +1,6 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
 import QueryEnum from 'types/storage/query.enum'
-import { TransactionSql } from 'postgres'
+import {TransactionSql} from 'postgres'
 import routes from 'utils/route.util'
 import expressions from 'utils/expression.util'
 
@@ -13,7 +13,4 @@ export default async (key: string, query: QueryEnum, parameter: bigint, data: an
 			WHERE ${cockroachStorage()(query.toLowerCase())} = ${parameter.toString()}
 		RETURNING *`
 		)
-		.catch((error) => {
-			console.log(error)
-			return []
-		})
+		.catch(() => [])

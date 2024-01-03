@@ -1,10 +1,11 @@
-import { Request, Response } from 'express'
+import {Request, Response} from 'express'
 import QueryEnum from 'types/storage/query.enum'
 import storageService from 'services/storage.service'
 import filterCache from 'services/cache/filter.cache'
 import expressions from 'utils/expression.util'
+import Route from "types/routes.interface";
 
-export default async <Route>(req: Request, res: Response, route: string): Promise<void> => {
+export default async (req: Request, res: Response, route: string): Promise<void> => {
 	const value = Object.values(req.query).at(0)
 
 	if (!value || Array.isArray(value)) {
@@ -32,7 +33,7 @@ export default async <Route>(req: Request, res: Response, route: string): Promis
 		return
 	}
 
-	filterCache<Route>(route, key, deletedData)
+	filterCache(route, key, deletedData)
 
 	res.sendStatus(200)
 

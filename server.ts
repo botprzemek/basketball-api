@@ -1,14 +1,14 @@
 import * as dotenv from 'dotenv'
 import * as cors from 'cors'
-import { type CorsOptions } from 'cors'
+import {type CorsOptions} from 'cors'
 import * as express from 'express'
-import { type Express } from 'express'
-import { createServer, type Server } from 'http'
-import helmet, { type HelmetOptions } from 'helmet'
-import routerV1 from 'routes/v1/router'
+import {type Express} from 'express'
+import {createServer, type Server} from 'http'
+import helmet from 'helmet'
 import matchMiddleware from './middlewares/invalid.middleware'
 import initializeStorage from 'services/storage/initialize.storage'
 import initializeMail from 'services/mail/initialize.mail'
+import routerV1 from 'routes/v1/router'
 
 dotenv.config()
 
@@ -18,17 +18,14 @@ const port: number = Number(process.env.PORT as string)
 const options: CorsOptions = {
 	origin: JSON.parse(process.env.ADDRESSES as string)
 }
-const helmetOptions: HelmetOptions = {
-	contentSecurityPolicy: true
-}
 
-server.disable('x-powered-by').set('trust proxy', true).options('*', cors())
+server
+	.set('trust proxy', true)
+	.options('*', cors())
 
 server
 	.use(cors(options))
-	.use(helmet(helmetOptions))
-	.use(helmet.hidePoweredBy())
-	.use(helmet.noSniff())
+	.use(helmet())
 
 server
 	.use(

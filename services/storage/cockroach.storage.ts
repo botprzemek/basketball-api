@@ -11,8 +11,7 @@ const config = {
 	password: process.env.COCKROACH_PASSWORD,
 	max: 20,
 	idle_timeout: 30000,
-	connection_timeout: 2000,
-	transform: postgres.toCamel
+	connection_timeout: 2000
 }
 
 let sql: postgres.Sql

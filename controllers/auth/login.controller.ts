@@ -1,19 +1,19 @@
-import { Request, Response } from 'express'
-import { compare } from 'bcrypt'
-import { sign } from 'jsonwebtoken'
-import { sqliteStorage } from 'services/storage/sqlite.storage'
+import {Request, Response} from 'express'
+import {compare} from 'bcrypt'
+import {sign} from 'jsonwebtoken'
+import {sqliteStorage} from 'services/storage/sqlite.storage'
 import defaultConfig from 'configs/default.config'
 
 export default async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { email, password } = req.body
 
-		if (!(email && password)) {
+		if (!email || !password) {
 			res.status(404)
 			res.json({
 				error: {
 					description:
-						'Please provide a valid email or password, refer to the Website documentation'
+						'Please provide a valid email or password, refer to the API documentation'
 				}
 			})
 			return
@@ -52,9 +52,13 @@ export default async (req: Request, res: Response): Promise<void> => {
 		res.json({
 			token: token
 		})
-	} catch (error) {
-		console.log(error)
+	} catch {
 		res.status(404)
-		res.json(error)
+		res.json({
+			error: {
+				description:
+					'There was an error with verifing the credentials, refer to the API documentation'
+			}
+		})
 	}
 }

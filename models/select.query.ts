@@ -1,16 +1,17 @@
 import cockroachStorage from 'services/storage/cockroach.storage'
 import QueryEnum from 'types/storage/query.enum'
-import { TransactionSql } from 'postgres'
-import { ArenaQuery } from 'types/basketball/arena.model'
+import {TransactionSql} from 'postgres'
 import routes from 'utils/route.util'
 
 export default async (key: string, query?: QueryEnum, parameter?: bigint): Promise<any[]> => {
 	switch (query) {
 		case QueryEnum.ID:
-		case QueryEnum.CITY_ID: {
+		case QueryEnum.CITY_ID:
+		case QueryEnum.LEAGUE_ID:
+		case QueryEnum.TEAM_ID: {
 			return cockroachStorage()
 				.begin(
-					(sql: TransactionSql): Promise<ArenaQuery[]> => sql<ArenaQuery[]>`
+					(sql: TransactionSql): Promise<any[]> => sql<any[]>`
 					SELECT ${cockroachStorage()(routes[key])}.*
 					FROM ${cockroachStorage()(routes[key])} 
 					WHERE ${cockroachStorage()(query.toLowerCase())} = ${`${parameter}`}`
@@ -22,7 +23,7 @@ export default async (key: string, query?: QueryEnum, parameter?: bigint): Promi
 		case QueryEnum.LOCATION: {
 			return cockroachStorage()
 				.begin(
-					(sql: TransactionSql): Promise<ArenaQuery[]> => sql<ArenaQuery[]>`
+					(sql: TransactionSql): Promise<any[]> => sql<any[]>`
 					SELECT ${cockroachStorage()(routes[key])}.*
 					FROM ${cockroachStorage()(routes[key])} 
 					WHERE ${cockroachStorage()(query.toLowerCase())} ILIKE ${'%' + parameter + '%'}`
@@ -32,7 +33,7 @@ export default async (key: string, query?: QueryEnum, parameter?: bigint): Promi
 		default: {
 			return cockroachStorage()
 				.begin(
-					(sql: TransactionSql): Promise<ArenaQuery[]> => sql<ArenaQuery[]>`
+					(sql: TransactionSql): Promise<any[]> => sql<any[]>`
 					SELECT ${cockroachStorage()(routes[key])}.*
 					FROM ${cockroachStorage()(routes[key])}`
 				)

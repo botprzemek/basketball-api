@@ -5,6 +5,10 @@ export default {
 		location:
 			/^([-+]?\d{1,2})°\s*(\d{1,2})'\s*([\d.]+)"\s*([NS])\s*([-+]?\d{1,3})°\s*(\d{1,2})'\s*([\d.]+)"\s*([EW])$/
 	},
+	cities: {
+		name: /^.{3,32}$/,
+		state: /^.{3,32}$/
+	},
 	players: {
 		team_id: /^\d{18}$/,
 		name: /^.{3,32}$/,
@@ -16,6 +20,7 @@ export default {
 		starter: /^.{4,5}$/
 	},
 	teams: {
+		city_id: /^\d{18}$/,
 		league_id: /^\d{18}$/,
 		name: /^.{3,32}$/,
 		won: /^\d{0,3}$/,

@@ -1,16 +1,16 @@
-import { getData, setData } from 'services/cache.service'
+import {getData, setData} from 'services/cache.service'
 
-export default <Route>(route: string, key: string, data: Route[]): void => {
-	const cachedData: Route[] = getData(route)
+export default (route: string, key: string, data: any): void => {
+	const cachedData: [] = getData(route)
 
 	if (!cachedData) return
 
 	setData(
 		route,
 		cachedData.filter(
-			(cached: Route) =>
+			(cached: any) =>
 				!data.some(
-					(some: Route): boolean => cached[key.toLowerCase()] === some[key.toLowerCase()]
+					(some: any): boolean => cached[key.toLowerCase()] === some[key.toLowerCase()]
 				)
 		)
 	)

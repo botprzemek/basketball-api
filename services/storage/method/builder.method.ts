@@ -1,4 +1,5 @@
 import expressions from 'utils/expression.util'
+import transform from 'utils/transform.util'
 
 export default (key: string, data: any): any => {
 	if (!expressions[key]) return data
@@ -7,9 +8,7 @@ export default (key: string, data: any): any => {
 		id: data.id
 	}
 
-	if (!keys.every((key: string) => Object.keys(data).includes(key))) return data
+	if (keys.every((every: string): boolean => Object.keys(expressions[key]).includes(every))) keys.forEach((dataKey: string): void => newData[dataKey] = data[dataKey])
 
-	keys.forEach((dataKey: string) => (newData[dataKey] = data[dataKey]))
-
-	return newData
+	return transform[key] ? transform[key](newData) : newData
 }

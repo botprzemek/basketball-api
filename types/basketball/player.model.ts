@@ -1,4 +1,4 @@
-import Position from 'models/basketball/enum/position.enum'
+import Position from 'types/basketball/enum/position.enum'
 
 export interface PlayerQuery {
 	id: bigint
