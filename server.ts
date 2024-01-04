@@ -1,9 +1,9 @@
 import * as dotenv from 'dotenv'
 import * as cors from 'cors'
-import {type CorsOptions} from 'cors'
+import { type CorsOptions } from 'cors'
 import * as express from 'express'
-import {type Express} from 'express'
-import {createServer, type Server} from 'http'
+import { type Express } from 'express'
+import { createServer, type Server } from 'http'
 import helmet from 'helmet'
 import matchMiddleware from './middlewares/invalid.middleware'
 import initializeStorage from 'services/storage/initialize.storage'
@@ -19,13 +19,9 @@ const options: CorsOptions = {
 	origin: JSON.parse(process.env.ADDRESSES as string)
 }
 
-server
-	.set('trust proxy', true)
-	.options('*', cors())
+server.set('trust proxy', true).options('*', cors())
 
-server
-	.use(cors(options))
-	.use(helmet())
+server.use(cors(options)).use(helmet())
 
 server
 	.use(

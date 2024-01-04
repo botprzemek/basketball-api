@@ -1,7 +1,19 @@
 import * as dotenv from 'dotenv'
 import * as postgres from 'postgres'
+import {readFileSync as file} from 'fs'
+import {resolve} from 'path'
+import defaultConfig from 'configs/default.config'
 
 dotenv.config()
+
+const sslOptions = {
+	ca: file(resolve('ca.crt')),
+	cert: file(resolve('client.bp.crt')),
+	key: file(resolve('client.bp.key')),
+	rejectUnauthorized: true
+}
+
+const ssl = defaultConfig.useSSL ? sslOptions : false
 
 const config = {
 	host: process.env.COCKROACH_HOST,
@@ -9,6 +21,7 @@ const config = {
 	database: process.env.COCKROACH_NAME,
 	username: process.env.COCKROACH_USER,
 	password: process.env.COCKROACH_PASSWORD,
+	ssl: ssl,
 	max: 20,
 	idle_timeout: 30000,
 	connection_timeout: 2000

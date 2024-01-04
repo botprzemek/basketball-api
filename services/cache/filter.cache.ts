@@ -1,4 +1,4 @@
-import {getData, setData} from 'services/cache.service'
+import { getData, setData } from 'services/cache.service'
 
 export default (route: string, key: string, data: any): void => {
 	const cachedData: [] = getData(route)

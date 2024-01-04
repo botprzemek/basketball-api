@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response} from 'express'
+import { NextFunction, Request, Response } from 'express'
 import storageService from 'services/storage.service'
 import QueryEnum from 'types/storage/query.enum'
 import expressions from 'utils/expression.util'
@@ -21,7 +21,8 @@ export default async (
 	const routeExpressions: {} = expressions[route] ? expressions[route] : {}
 	const validQuery: QueryEnum = routeExpressions[key.toLowerCase()] ? query : QueryEnum.ID
 
-	const valid: boolean = !!routeExpressions[validQuery.toLowerCase()] || validQuery === QueryEnum.ID
+	const valid: boolean =
+		!!routeExpressions[validQuery.toLowerCase()] || validQuery === QueryEnum.ID
 
 	// parameters[route](Object.keys(query).slice(valid ? 1 : 0),)
 

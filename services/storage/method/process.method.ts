@@ -2,12 +2,7 @@ import builderMethod from 'services/storage/method/builder.method'
 import filterMethod from 'services/storage/method/filter.method'
 import QueryEnum from 'types/storage/query.enum'
 
-export default (
-	data: any[],
-	key: string,
-	query?: QueryEnum,
-	parameter?: string
-): any[] => {
+export default (data: any[], key: string, query?: QueryEnum, parameter?: string): any[] => {
 	if (!data) return []
 
 	if (parameter == 'undefined') return []

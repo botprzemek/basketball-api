@@ -1,5 +1,5 @@
-import {Request, Response} from 'express'
-import {verify, VerifyErrors} from 'jsonwebtoken'
+import { Request, Response } from 'express'
+import { verify, VerifyErrors } from 'jsonwebtoken'
 
 const verifyCallback = (res: Response, error: VerifyErrors | null, verifiedToken: any): void => {
 	if (error) {

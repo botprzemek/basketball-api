@@ -5,7 +5,7 @@ import deleteQuery from 'models/delete.query'
 import insertQuery from 'models/insert.query'
 import updateQuery from 'models/update.query'
 import processMethod from 'services/storage/method/process.method'
-import {getData, setData} from 'services/cache.service'
+import { getData, setData } from 'services/cache.service'
 
 const methods: any = {}
 
@@ -15,11 +15,7 @@ Object.keys(routes).forEach((key: string): void => {
 			const queryData: any[] = await insertQuery(key, data)
 			return queryData.length > 0 ? getData(key) : []
 		},
-		update: async (
-			query: QueryEnum,
-			parameter: any,
-			data: any
-		): Promise<any[]> => {
+		update: async (query: QueryEnum, parameter: any, data: any): Promise<any[]> => {
 			const queryData: any[] = await updateQuery(key, query, parameter, data)
 
 			if (queryData.length === 0) return queryData
