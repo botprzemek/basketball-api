@@ -11,8 +11,8 @@ export default {
 	},
 	players: {
 		team_id: /^\d{18}$/,
-		name: /^.{3,32}$/,
-		lastname: /^.{3,32}$/,
+		first_name: /^.{3,32}$/,
+		last_name: /^.{3,32}$/,
 		number: /^\d{3}$/,
 		height: /^\d{4}$/,
 		position: /^.{1,2}$/,

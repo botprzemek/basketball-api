@@ -86,12 +86,12 @@ export default async (): Promise<boolean> => {
 					'PIK Siemianowice', 0, 1)
 			ON CONFLICT (name) DO NOTHING;
 			
-			INSERT INTO staff (name, lastname, role) VALUES
+			INSERT INTO staff (first_name, last_name, role) VALUES
 				('Kacper', 'Kopeć', 'TRAINER');
 			
 			INSERT INTO team_staff (staff_id, team_id) VALUES
-				((SELECT id FROM staff WHERE name = 'Kacper' AND lastname = 'Kopeć'), (SELECT id FROM team WHERE name = 'Knury Knurów I')),
-				((SELECT id FROM staff WHERE name = 'Kacper' AND lastname = 'Kopeć'), (SELECT id FROM team WHERE name = 'Knury Knurów II'));
+				((SELECT id FROM staff WHERE first_name = 'Kacper' AND last_name = 'Kopeć'), (SELECT id FROM team WHERE name = 'Knury Knurów I')),
+				((SELECT id FROM staff WHERE first_name = 'Kacper' AND last_name = 'Kopeć'), (SELECT id FROM team WHERE name = 'Knury Knurów II'));
 			
 			INSERT INTO roster (team_id, match_id) VALUES
 				(
@@ -111,7 +111,7 @@ export default async (): Promise<boolean> => {
 					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00')
 				);
 			
-			INSERT INTO player (team_id, name, lastname, number, height, position, birthday, starter) VALUES
+			INSERT INTO player (team_id, first_name, last_name, number, height, position, birthday, starter) VALUES
 				((SELECT id FROM team WHERE name = 'Knury Knurów I'), 'Dawid', 'Kocięba', 0, 190, 'PF', '2001-12-06', false),
 				((SELECT id FROM team WHERE name = 'Knury Knurów I'), 'Dominik', 'Girgiel', 34, 185, 'SF', '2007-06-14', false),
 				((SELECT id FROM team WHERE name = 'Knury Knurów I'), 'Filip', 'Kułach', 22, 190, 'SF', '2001-07-13', false),
@@ -141,185 +141,7 @@ export default async (): Promise<boolean> => {
 				((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Patryk', 'Kubacki', 27, 190, 'PF', '2007-02-01', false),
 				((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Piotr', 'Oleksy', 97, 179, 'PG', '2009-01-13', false),
 				((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Samuel', 'Ntuk', 94, 186, 'SF', '2008-01-01', false),
-				((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Tomasz', 'Dubiel', 32, 180, 'SG', '2008-05-06', true);
-			
-			INSERT INTO player_roster (player_id, roster_id) VALUES
-				(
-					(SELECT id FROM player WHERE name = 'Dawid' AND lastname = 'Kocięba'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-10-22 10:15:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Filip' AND lastname = 'Kułach'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-10-22 10:15:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Grzegorz' AND lastname = 'Odrzywałek'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-10-22 10:15:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Igor' AND lastname = 'Szkodny'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-10-22 10:15:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Kornel' AND lastname = 'Suchocki'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-10-22 10:15:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Krzysztof' AND lastname = 'Żuber'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-10-22 10:15:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Tomasz' AND lastname = 'Gontarewicz'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-10-22 10:15:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Dawid' AND lastname = 'Kocięba'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Dominik' AND lastname = 'Girgiel'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Filip' AND lastname = 'Kułach'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Franek' AND lastname = 'Borkowski'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Grzegorz' AND lastname = 'Odrzywałek'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Kornel' AND lastname = 'Suchocki'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Przemysław' AND lastname = 'Szymański'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Kajetan' AND lastname = 'Kozłowski'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Karol' AND lastname = 'Karpiński'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Krzysztof' AND lastname = 'Żuber'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				),
-				(
-					(SELECT id FROM player WHERE name = 'Tomasz' AND lastname = 'Gontarewicz'),
-					(SELECT DISTINCT roster.id FROM player, roster, match WHERE roster.team_id = player.team_id AND match.id = roster.match_id AND player.team_id = roster.team_id AND match.timestamp = '2023-11-19 9:00:00')
-				);
-			
-			INSERT INTO team_statistics (match_id, team_id, assists, rebounds_off, rebounds_def, inside_fgm, inside_fga, outside_fgm, outside_fga, freethrows_fgm, freethrows_fga, blocks, steals, turnovers, fouls) VALUES
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00'),
-					(SELECT team.id FROM team WHERE team.name = 'Knury Knurów I'),
-					6, 6, 30, 6, 33, 6, 20, 4, 5, 4, 9, 18, 20
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT team.id FROM team WHERE team.name = 'Knury Knurów I'),
-					7, 11, 25, 10, 36, 5, 22, 5, 6, 4, 8, 12, 14
-				);
-			
-			INSERT INTO player_statistics (match_id, player_id, minutes, assists, rebounds_off, rebounds_def, inside_fgm, inside_fga, outside_fgm, outside_fga, freethrows_fgm, freethrows_fga, blocks, steals, turnovers, fouls) VALUES
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00'),
-					(SELECT id FROM player WHERE name = 'Dawid' AND lastname = 'Kocięba'),
-					14, 1, 1, 2, 1, 2, 0, 1, 0, 0, 1, 0, 0, 0
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00'),
-					(SELECT id FROM player WHERE name = 'Filip' AND lastname = 'Kułach'),
-					20, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 0, 1, 3
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00'),
-					(SELECT id FROM player WHERE name = 'Grzegorz' AND lastname = 'Odrzywałek'),
-					17, 0, 0, 2, 1, 3, 0, 0, 0, 0, 0, 0, 3, 3
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00'),
-					(SELECT id FROM player WHERE name = 'Igor' AND lastname = 'Szkodny'),
-					34, 2, 0, 5, 0, 1, 0, 3, 0, 0, 2, 0, 1, 5
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00'),
-					(SELECT id FROM player WHERE name = 'Kornel' AND lastname = 'Suchocki'),
-					36, 1, 1, 3, 2, 11, 4, 9, 3, 3, 1, 2, 6, 3
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00'),
-					(SELECT id FROM player WHERE name = 'Krzysztof' AND lastname = 'Żuber'),
-					19, 0, 5, 2, 1, 5, 1, 5, 0, 0, 0, 2, 1, 1
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-10-22 10:15:00'),
-					(SELECT id FROM player WHERE name = 'Tomasz' AND lastname = 'Gontarewicz'),
-					17, 0, 1, 2, 1, 3, 1, 1, 1, 2, 0, 1, 2, 2
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Dawid' AND lastname = 'Kocięba'),
-					19, 1, 1, 3, 0, 3, 0, 0, 0, 0, 1, 0, 1, 1
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Dominik' AND lastname = 'Girgiel'),
-					10, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Filip' AND lastname = 'Kułach'),
-					6, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Franek' AND lastname = 'Borkowski'),
-					17, 1, 1, 5, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Grzegorz' AND lastname = 'Odrzywałek'),
-					15, 2, 1, 2, 2, 3, 0, 0, 2, 2, 0, 2, 3, 2
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Kornel' AND lastname = 'Suchocki'),
-					40, 0, 3, 3, 4, 13, 3, 9, 2, 2, 0, 1, 3, 0
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Przemysław' AND lastname = 'Szymański'),
-					22, 1, 2, 2, 1, 4, 0, 1, 0, 0, 0, 1, 0, 2
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Kajetan' AND lastname = 'Kozłowski'),
-					6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Karol' AND lastname = 'Karpiński'),
-					5, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Krzysztof' AND lastname = 'Żuber'),
-					36, 0, 1, 8, 2, 7, 2, 11, 0, 0, 3, 2, 2, 4
-				),
-				(
-					(SELECT id FROM match WHERE timestamp = '2023-11-19 9:00:00'),
-					(SELECT id FROM player WHERE name = 'Tomasz' AND lastname = 'Gontarewicz'),
-					20, 1, 0, 1, 1, 3, 0, 0, 1, 2, 0, 1, 2, 1
-				);`.simple()
+				((SELECT id FROM team WHERE name = 'Knury Knurów II'), 'Tomasz', 'Dubiel', 32, 180, 'SG', '2008-05-06', true);`.simple()
 		return true
 	} catch (error) {
 		console.log(error)

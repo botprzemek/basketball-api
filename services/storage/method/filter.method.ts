@@ -11,6 +11,7 @@ export default (query: QueryEnum, data: any[], parameter: string): any[] =>
 				return BigInt(value) === BigInt(parameter)
 			}
 			case QueryEnum.NAME:
+			case QueryEnum.LAST_NAME:
 			case QueryEnum.TEAM_NAME:
 			case QueryEnum.LOCATION: {
 				return value.includes(parameter) || value === parameter || parameter.includes(value)

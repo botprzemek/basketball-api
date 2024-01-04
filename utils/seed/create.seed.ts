@@ -62,10 +62,12 @@ export default async (): Promise<boolean> => {
 			
 			CREATE TABLE IF NOT EXISTS staff (
 				id INT8 NOT NULL PRIMARY KEY UNIQUE DEFAULT unique_rowid(),
-				name VARCHAR NOT NULL,
-				lastname VARCHAR NOT NULL,
+				first_name VARCHAR NOT NULL,
+				last_name VARCHAR NOT NULL,
+				full_name VARCHAR AS (CONCAT(first_name, ' ', last_name)) STORED,
 				role role_enum NOT NULL,
-				INDEX name_idx (name),
+				INDEX first_name_idx (first_name),
+				INDEX last_name_idx (last_name),
 				INDEX role_idx (role)
 			);
 			
@@ -130,15 +132,16 @@ export default async (): Promise<boolean> => {
 			CREATE TABLE IF NOT EXISTS player (
 				id INT8 NOT NULL PRIMARY KEY UNIQUE DEFAULT unique_rowid(),
 				team_id INT8 NOT NULL REFERENCES team (id) ON DELETE CASCADE,
-				name VARCHAR NOT NULL,
-				lastname VARCHAR NOT NULL,
+				first_name VARCHAR NOT NULL,
+				last_name VARCHAR NOT NULL,
+				full_name VARCHAR AS (CONCAT(first_name, ' ', last_name)) STORED,
 				number INT8 NOT NULL UNIQUE,
 				height INT8 NOT NULL,
 				position position_enum NOT NULL,
 				birthday DATE NOT NULL,
 				starter BOOLEAN DEFAULT false,
-				INDEX name_idx (name),
-				INDEX lastname_idx (lastname),
+				INDEX first_name_idx (first_name),
+				INDEX last_name_idx (last_name),
 				INDEX team_id_idx (team_id),
 				UNIQUE (team_id, number)
 			);
