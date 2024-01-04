@@ -7,9 +7,9 @@ import defaultConfig from 'configs/default.config'
 dotenv.config()
 
 const sslOptions = {
-	ca: file(resolve('ca.crt')),
-	cert: file(resolve('client.bp.crt')),
-	key: file(resolve('client.bp.key')),
+	ca: file(resolve('certificates/ca.crt')),
+	cert: file(resolve('certificates/client.bp.crt')),
+	key: file(resolve('certificates/client.bp.key')),
 	rejectUnauthorized: true
 }
 
