@@ -47,7 +47,7 @@
 		"helmet": "^7.1.0",
 		"jsonwebtoken": "^9.0.2",
 		"node-cache": "^5.1.2",
-		"nodemailer": "^6.9.4",
+		"nodemailer": "^6.9.10",
 		"postgres": "^3.4.3",
 		"socket.io": "^4.7.2",
 		"sqlite": "^5.1.1",
