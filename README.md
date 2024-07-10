@@ -1,8 +1,53 @@
 # botprzemek's Basketball API
 
-> [!Caution] > <span id="status">Project is still work in progress</span>
+> [!Caution]
+> <span id="status">Project is still work in progress</span>
 
-<!-- TODO ADD IMAGES -->
+TODO
+- ADD IMAGES
+
+1. Cache invalidation
+
+With cache invalidation, whenever a value is updated in the primary database, each cached item with a corresponding key is automatically deleted from the cache or caches. Although cache invalidation could perhaps be seen as a “brute force approach,” the advantage is that it requires only one costly and often time-consuming write—to the primary database itself—instead of two or more. 
+
+2. Write-through caching
+
+In this case, rather than updating the primary database and removing the cache, with the write-through strategy, the application updates the cache, and then the cache updates the primary database synchronously. In other words, instead of relying on the primary database to initiate any updating, the cache is in charge of maintaining its own consistency and delivering word of any changes it makes back to the primary database.
+
+3. Write-behind caching
+
+Unfortunately, there are times when two writes can actually make a wrong. One of the drawbacks of the write-through cache strategy is that updating both the cache and the primary database requires two time-consuming, processor-taxing changes, first to the cache and then to the primary database.
+
+Another strategy, known as write-behind, avoids this problem by initially updating only the cache and then updating the primary database later. Of course, the primary database will also need to be updated, and the sooner the better, but in this case the user doesn’t have to pay the “cost” of the two writes. The second write to the primary database occurs asynchronously and behind the scenes (hence the name, write-behind) at a time when it is less likely to impair performance.
+
+Auth
+
+Hypermedia
+
+GET, POST, PUT, DELETE
+
+NODEJS, TYPESCRIPT, HTTP, REDIS, COCKROACH, DOCKER, MULTI-INSTANCE
+
+statistics
+
+parameters
+
+database schema
+
+api token
+
+rate limit
+
+ip exclude
+
+admin ui
+
+tests
+
+swagger
+openapi
+
+mocking
 
 ## <span id="overview">Project Overview :memo:</span>
 
