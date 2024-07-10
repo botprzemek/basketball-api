@@ -3,6 +3,11 @@
 > [!Caution]
 > <span id="status">Project is still work in progress</span>
 
+https://youtu.be/_1IKwnbscQU?si=U3HJeYzsupcBohvN
+https://youtu.be/GmXPwRNIrAU?si=RJVPFVS1AHvJag6-
+https://youtu.be/6WZ6S-qmtqY?si=eePsuPFUwczIGOVi
+https://youtu.be/_gQaygjm_hg?si=WGZect2sf7qOBT8O
+
 TODO
 - ADD IMAGES
 
@@ -48,6 +53,8 @@ swagger
 openapi
 
 mocking
+
+deployment
 
 ## <span id="overview">Project Overview :memo:</span>
 
