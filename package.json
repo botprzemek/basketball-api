@@ -1,0 +1,23 @@
+{
+  "name": "basketball",
+  "version": "1.0.0",
+  "description": "> [!Caution]\r > <span id=\"status\">Project is still work in progress</span>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/botprzemek/basketball.git"
+  },
+  "keywords": [
+    "rest;",
+    "api"
+  ],
+  "author": "botprzemek",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/botprzemek/basketball/issues"
+  },
+  "homepage": "https://github.com/botprzemek/basketball#readme"
+}
