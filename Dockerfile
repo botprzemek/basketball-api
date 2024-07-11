@@ -1,4 +1,21 @@
-FROM ubuntu:latest
-LABEL authors="botpr"
+FROM node:current-alpine
 
-ENTRYPOINT ["top", "-b"]
+LABEL authors = "botprzemek"
+
+ARG NODE_ENV
+
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /server
+
+COPY package*.json .
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+CMD ["node", ".dist/src/index.js"]
+
+EXPOSE 3000
