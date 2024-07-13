@@ -1,4 +1,4 @@
-enum Position {
+const enum Position {
     PG,
     SG,
     SF,

@@ -1,4 +1,4 @@
-import { getConfig } from "@/config/server";
+import config from "@/config/server";
 import router from "@/server/router";
 
 import { createServer, Server as HttpServer } from "node:http";
@@ -10,16 +10,19 @@ export class Server {
 
     constructor() {
         const api: express.Express = express().use(
-            `/v${getConfig().VERSION}`,
-            router,
+            `/v${config().VERSION}`,
+            router
         );
-
         this.server = createServer(api);
     }
 
-    public start(config: Config.Server = getConfig()): void {
-        this.server.listen(config.PORT, config.HOST, (): void => {
-            console.log(`Listening on http://${config.HOST}:${config.PORT}/`);
+    public start(): void {
+        if (this.server.listening) {
+            return;
+        }
+
+        this.server.listen(config().PORT, config().HOST, (): void => {
+            console.log(`Listening on http://${config().HOST}:${config().PORT}/`);
         });
     }
 }

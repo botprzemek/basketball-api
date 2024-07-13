@@ -5,7 +5,10 @@ import { fileURLToPath } from "node:url";
 
 export const DEFAULT = {
     SERVER: {
-        HOST: "127.0.0.1",
+        HOST:
+            process.env.NODE_ENV === "production"
+            ? "0.0.0.0"
+            : "127.0.0.1",
         PORT: 3000,
         VERSION: 1,
     },

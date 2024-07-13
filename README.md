@@ -27,7 +27,9 @@ Another strategy, known as write-behind, avoids this problem by initially updati
 
 Auth
 
-Hypermedia
+Hypermedia HATEOAS
+
+GZIP Compression
 
 GET, POST, PUT, DELETE
 

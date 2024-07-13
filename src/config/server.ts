@@ -1,6 +1,6 @@
 import { DEFAULT, load } from "@/config";
 
-export function getConfig(): Config.Server {
+export default (): Config.Server => {
     load("SERVER");
 
     return {

@@ -1,0 +1,23 @@
+services:
+  redis:
+    image: "redis:alpine"
+    restart: always
+  server:
+    image: "server"
+    restart: always
+    ports:
+      - "3000:3000"
+    build: .
+    depends_on:
+      - redis
+    links:
+      - redis
+
+networks:
+  default:
+    name: basketball
+    ipam:
+      config:
+      - subnet: 10.0.0.0/16
+        ip_range: 10.0.0.0/29
+        gateway: 10.0.0.1
