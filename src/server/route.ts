@@ -1,24 +1,29 @@
 import Handler from "@/server/handler";
-import Model from "@/server/model";
 
-import { NextFunction, Router } from "express";
+import { Router } from "express";
 
 export default class Route {
-    private readonly subRouter: Router;
+    private readonly children: Router;
+    private readonly options: any;
 
-    constructor() {
-        this.subRouter = Router();
+    constructor(options: any) {
+        this.children = Router();
+        this.options = options;
+
+        this.register();
     }
 
-    public register = (router: Router, model: Model) => {
-        const handler = new Handler(model);
+    public get = (): Router => {
+        return this.children;
+    };
 
-        this.subRouter
+    private register = () => {
+        const handler = new Handler(this.options);
+
+        this.children
             .get("/", handler.get)
-            .post("/", handler.create)
-            .put("/", handler.update)
-            .delete("/", handler.remove)
-
-        router.use(`/${model}`, this.subRouter);
-    }
+            .post("/", handler.post)
+            .put("/", handler.put)
+            .delete("/", handler.delete);
+    };
 }

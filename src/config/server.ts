@@ -1,13 +1,35 @@
-import { DEFAULT, load } from "@/config";
+import Config from "@/config";
 
-export default (): Config.Server => {
-    load("SERVER");
+export default class Server extends Config {
+    private static readonly DEFAULT: ConfigType.Server = {
+        host: process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
+        port: 3000,
+        version: 1,
+    };
 
-    return {
-        HOST: process.env.SERVER_HOST || DEFAULT.SERVER.HOST,
-        PORT: parseInt(process.env.SERVER_PORT || `${DEFAULT.SERVER.PORT}`),
-        VERSION: parseInt(
-            process.env.SERVER_VERSION || `${DEFAULT.SERVER.VERSION}`,
-        ),
+    constructor() {
+        super("server", Server.DEFAULT);
+    }
+
+    public static get = (): ConfigType.Server => {
+        return {
+            host: this.getHost(),
+            port: this.getPort(),
+            version: this.getVersion(),
+        };
+    };
+
+    public static getHost = (): string => {
+        return process.env.SERVER_HOST ?? this.DEFAULT.host;
+    };
+
+    public static getPort = (): number => {
+        return parseInt(process.env.SERVER_PORT ?? `${this.DEFAULT.port}`);
+    };
+
+    public static getVersion = (): number => {
+        return parseInt(
+            process.env.SERVER_VERSION ?? `${this.DEFAULT.version}`,
+        );
     };
 }

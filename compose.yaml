@@ -1,0 +1,49 @@
+services:
+  cockroach:
+    image: "cockroachdb/cockroach:latest"
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - type: volume
+        source: cockroach
+        target: /cockroach/cockroach-data
+        volume:
+          nocopy: true
+    command: start-single-node --insecure
+  redis:
+    image: "redis:alpine"
+    restart: always
+    volumes:
+      - type: volume
+        source: redis
+        target: /data
+        volume:
+          nocopy: true
+  server:
+    image: "server"
+    restart: always
+    ports:
+      - "3000:3000"
+    build: .
+    depends_on:
+      - cockroach
+      - redis
+    links:
+      - cockroach
+      - redis
+
+volumes:
+  cockroach:
+    name: basketball-cockroach
+  redis:
+    name: basketball-redis
+
+networks:
+  default:
+    name: basketball-network
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16
+          ip_range: 10.0.0.0/29
+          gateway: 10.0.0.1

@@ -38,7 +38,9 @@ RUN apk update && apk add nodejs
 
 WORKDIR /app
 
-COPY --from=production --chown=node:node /app .
+COPY --from=production --chown=node:node /app/.dist ./.dist
+COPY --from=production --chown=node:node /app/node_modules ./node_modules
+COPY --from=production --chown=node:node /app/package*.json .
 
 ENV NODE_ENV=production
 

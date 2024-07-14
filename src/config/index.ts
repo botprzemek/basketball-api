@@ -3,92 +3,92 @@ import { dirname, join } from "node:path";
 import * as process from "node:process";
 import { fileURLToPath } from "node:url";
 
-export const DEFAULT = {
-    SERVER: {
-        HOST:
-            process.env.NODE_ENV === "production"
-            ? "0.0.0.0"
-            : "127.0.0.1",
-        PORT: 3000,
-        VERSION: 1,
-    },
-};
+type ConfigTypeType =
+    | ConfigType.Cache
+    | ConfigType.Database
+    | ConfigType.Server;
 
-const NEWLINES_MATCH: RegExp = /\r\n|\n|\r/;
-const VALUE_MATCH: RegExp = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/;
+export default class Config {
+    private readonly NEWLINES_MATCH: RegExp = /\r\n|\n|\r/;
+    private readonly VALUE_MATCH: RegExp = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/;
 
-function format(key: string, value: string | number): string {
-    return `${key.toUpperCase()}=${value}\n`;
-}
+    private readonly name: string;
+    private readonly config: ConfigTypeType;
 
-function generate(name: string): string[] {
-    const config = DEFAULT[name as keyof typeof DEFAULT];
+    constructor(name: string, config: ConfigTypeType) {
+        this.name = name.toLowerCase();
+        this.config = config;
 
-    if (!config) {
-        return [];
+        this.load();
     }
 
-    return Object.entries(config).map(([key, value]): string =>
-        format(key, value),
-    );
-}
+    private load(): void {
+        const buffer: Buffer = this.read();
+        const variables: Record<string, string> = this.parse(buffer);
 
-function set(key: string, value: string): void {
-    if (process.env[key] || process.env[key] === value) {
-        return;
+        Object.entries(variables).forEach(([key, value]) => {
+            if (!value) {
+                return;
+            }
+
+            this.set(`${this.name}_${key}`.toUpperCase(), value);
+        });
     }
 
-    process.env[key] = value.toString();
-}
-
-function match(variables: Record<string, string>, line: string) {
-    const matches: RegExpMatchArray | null = line.match(VALUE_MATCH);
-
-    if (!(matches && matches[1] && matches[2])) {
-        return;
+    private generate(config: ConfigTypeType): string[] {
+        return Object.entries(config).map(([key, value]): string =>
+            this.format(key, value),
+        );
     }
 
-    variables[matches[1]] = matches[2];
-}
-
-function parse(source: Buffer): Record<string, string> {
-    const variables: Record<string, string> = {};
-
-    source
-        .toString()
-        .split(NEWLINES_MATCH)
-        .forEach((line: string) => match(variables, line));
-
-    return variables;
-}
-
-export function read(name: string): Buffer {
-    const path: string = join(
-        dirname(fileURLToPath(import.meta.url)),
-        "..",
-        `.env.${name.toLowerCase()}`,
-    );
-
-    if (!existsSync(path)) {
-        const generated: string = generate(name).join("");
-
-        writeFileSync(path, generated);
-
-        return Buffer.from(generated);
+    private format(key: string, value: string | number): string {
+        return `${key.toUpperCase()}=${value}\n`;
     }
 
-    return readFileSync(path);
-}
+    private match(variables: Record<string, string>, line: string) {
+        const matches: RegExpMatchArray | null = line.match(this.VALUE_MATCH);
 
-export function load(name: string): void {
-    const buffer: Buffer = read(name);
-    const variables: Record<string, string> = parse(buffer);
-
-    Object.entries(variables).forEach(([key, value]) => {
-        if (!value) {
+        if (!(matches && matches[1] && matches[2])) {
             return;
         }
 
-        set(`${name}_${key}`, value);
-    });
+        variables[matches[1]] = matches[2];
+    }
+
+    private read(): Buffer {
+        const path: string = join(
+            dirname(fileURLToPath(import.meta.url)),
+            "../..",
+            `.env.${this.name}`,
+        );
+
+        if (!existsSync(path)) {
+            const generated: string = this.generate(this.config).join("");
+
+            writeFileSync(path, generated);
+
+            return Buffer.from(generated);
+        }
+
+        return readFileSync(path);
+    }
+
+    private set(key: string, value: string): void {
+        if (process.env[key] || process.env[key] === value) {
+            return;
+        }
+
+        process.env[key] = value.toString();
+    }
+
+    private parse(source: Buffer): Record<string, string> {
+        const variables: Record<string, string> = {};
+
+        source
+            .toString()
+            .split(this.NEWLINES_MATCH)
+            .forEach((line: string) => this.match(variables, line));
+
+        return variables;
+    }
 }

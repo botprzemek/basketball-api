@@ -1,7 +1,15 @@
 .dist/
+.git/
 .github/
 .idea/
 node_modules/
 
 .env
 .env.*
+
+.dockerignore
+.gitignore
+.prettierignore
+Dockerfile
+LICENSE
+README.md

@@ -1,47 +1,69 @@
 import Controller from "@/server/controller";
-import Model from "@/server/model";
 
 import { Request, Response } from "express";
-import send from "@/server/middlewares/send";
+import { gzipSync } from "zlib";
 
 export default class Handler {
     private readonly controller: Controller;
+    private readonly options: any;
 
-    constructor(model: Model) {
-        this.controller = new Controller(model);
+    constructor(options: any) {
+        this.controller = new Controller(options.resource);
+        this.options = options;
     }
 
-    public get = async <T>(_: Request, response: Response): Promise<void> => {
-        const payload: Array<T> = await this.controller.get<T>();
+    public get = async <T>(
+        request: Request,
+        response: Response,
+    ): Promise<void> => {
+        const payload: T[] = await this.controller.get<T>();
 
-        response
-            .setHeader("Content-Type", "application/json")
-            .status(200);
+        this.send(response.status(200), payload);
+    };
 
-        send(response, payload);
-    }
+    public post = async <T>(
+        request: Request,
+        response: Response,
+    ): Promise<void> => {
+        const payload = this.controller.create<T>(request.body);
 
-    public create = async (_: Request, response: Response): Promise<void> => {
-        void this.controller.create();
+        this.send(response.status(201));
+    };
 
-        response.status(201);
+    public put = async <T>(
+        request: Request,
+        response: Response,
+    ): Promise<void> => {
+        const payload = this.controller.update<T>(request.body);
 
-        send(response);
-    }
+        this.send(response.status(204));
+    };
 
-    public update = async (_: Request, response: Response): Promise<void> => {
-        void this.controller.update();
+    public delete = async <T>(
+        request: Request,
+        response: Response,
+    ): Promise<void> => {
+        const payload = this.controller.delete<T>(request.body);
 
-        response.status(204);
+        this.send(response.status(204));
+    };
 
-        send(response);
-    }
+    private send = (response: Response, data?: any): void => {
+        if (!data) {
+            response.end();
+            return;
+        }
 
-    public remove = async (_: Request, response: Response): Promise<void> => {
-        void this.controller.remove();
+        data = JSON.stringify(data);
 
-        response.status(204);
+        let buffer: Buffer = Buffer.from(data);
 
-        send(response);
-    }
+        if (this.options.useCompression) {
+            buffer = gzipSync(buffer);
+
+            response.set("Content-Encoding", "gzip");
+        }
+
+        response.set("Content-Length", buffer.length.toString()).end(buffer);
+    };
 }

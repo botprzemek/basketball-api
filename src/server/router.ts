@@ -1,20 +1,35 @@
-import Model from "@/server/model";
+import Resource from "@/server/resource";
 import Route from "@/server/route";
 
-import { Router, RouterOptions } from "express";
+import express, { Router as RouterInstance, RouterOptions } from "express";
 
-const register = (model: Model): void => new Route().register(router, model);
+export default class Router {
+    private readonly router: RouterInstance;
+    private readonly options: RouterOptions = {
+        mergeParams: true,
+    };
 
-const options: RouterOptions = {
-    mergeParams: true,
+    constructor() {
+        this.router = RouterInstance(this.options);
+
+        this.router.use(express.json());
+
+        Object.keys(Resource)
+            .map(
+                (resource: string) =>
+                    Resource[resource as keyof typeof Resource],
+            )
+            .forEach(this.register);
+    }
+
+    public get = (): RouterInstance => {
+        return this.router;
+    };
+
+    private register = (resource: Resource): void => {
+        this.router.use(
+            `/${resource}`,
+            new Route({ resource, useCompression: true }).get(),
+        );
+    };
 }
-
-const router: Router = Router(
-    options
-);
-
-Object.keys(Model)
-    .map((model: string) => Model[model as keyof typeof Model])
-    .forEach(register);
-
-export default router;
