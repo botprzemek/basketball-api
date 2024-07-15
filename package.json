@@ -48,7 +48,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"node-cache": "^5.1.2",
 		"nodemailer": "^6.9.4",
-		"postgres": "^3.4.3",
+		"postgres": "^3.4.4",
 		"socket.io": "^4.7.2",
 		"sqlite": "^5.1.1",
 		"sqlite3": "^5.1.6"
