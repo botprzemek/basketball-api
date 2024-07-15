@@ -1,22 +1,25 @@
-import Controller from "@/server/controller";
+import Data from "@/services/data";
+import Config from "@/config/server";
+import Controller from "@/controllers";
+import Resource from "@/models/resource";
 
 import { Request, Response } from "express";
 import { gzipSync } from "zlib";
 
 export default class Handler {
     private readonly controller: Controller;
-    private readonly options: any;
 
-    constructor(options: any) {
-        this.controller = new Controller(options.resource);
-        this.options = options;
+    constructor(resource: Resource, data: Data) {
+        this.controller = new Controller(resource, data);
     }
 
     public get = async <T>(
         request: Request,
         response: Response,
     ): Promise<void> => {
-        const payload: T[] = await this.controller.get<T>();
+        const payload: Promise<T[]> = await this.controller.create<T>(
+            request.body as T[],
+        );
 
         this.send(response.status(200), payload);
     };
@@ -25,7 +28,9 @@ export default class Handler {
         request: Request,
         response: Response,
     ): Promise<void> => {
-        const payload = this.controller.create<T>(request.body);
+        const payload: Promise<void> = await this.controller.create<T>(
+            request.body as T[],
+        );
 
         this.send(response.status(201));
     };
@@ -34,7 +39,9 @@ export default class Handler {
         request: Request,
         response: Response,
     ): Promise<void> => {
-        const payload = this.controller.update<T>(request.body);
+        const payload: Promise<void> = await this.controller.update<T>(
+            request.body as T[],
+        );
 
         this.send(response.status(204));
     };
@@ -43,7 +50,9 @@ export default class Handler {
         request: Request,
         response: Response,
     ): Promise<void> => {
-        const payload = this.controller.delete<T>(request.body);
+        const payload: Promise<void> = await this.controller.delete<T>(
+            request.body as T[],
+        );
 
         this.send(response.status(204));
     };
@@ -58,10 +67,8 @@ export default class Handler {
 
         let buffer: Buffer = Buffer.from(data);
 
-        if (this.options.useCompression) {
+        if (new Config().getCompression()) {
             buffer = gzipSync(buffer);
-
-            response.set("Content-Encoding", "gzip");
         }
 
         response.set("Content-Length", buffer.length.toString()).end(buffer);

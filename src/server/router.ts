@@ -1,15 +1,18 @@
-import Resource from "@/server/resource";
+import Data from "@/services/data";
+import Resource from "@/models/resource";
 import Route from "@/server/route";
 
 import express, { Router as RouterInstance, RouterOptions } from "express";
 
 export default class Router {
+    private readonly data: Data;
     private readonly router: RouterInstance;
     private readonly options: RouterOptions = {
         mergeParams: true,
     };
 
     constructor() {
+        this.data = new Data();
         this.router = RouterInstance(this.options);
 
         this.router.use(express.json());
@@ -22,14 +25,14 @@ export default class Router {
             .forEach(this.register);
     }
 
-    public get = (): RouterInstance => {
+    public getInstance = (): RouterInstance => {
         return this.router;
     };
 
     private register = (resource: Resource): void => {
         this.router.use(
             `/${resource}`,
-            new Route({ resource, useCompression: true }).get(),
+            new Route(resource, this.data).getInstance(),
         );
     };
 }

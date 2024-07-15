@@ -1,11 +1,12 @@
+import Data from "@/services/data";
 import Model from "@/services/data/database/model";
-import Resource from "@/server/resource";
+import Resource from "@/models/resource";
 
 export default class Controller {
     private readonly model: Model;
 
-    constructor(resource: Resource) {
-        this.model = new Model(resource);
+    constructor(resource: Resource, data: Data) {
+        this.model = new Model(resource, data);
     }
 
     public get = async <T>(): Promise<T[]> => {

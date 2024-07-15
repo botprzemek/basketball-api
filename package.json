@@ -43,7 +43,7 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "NODE_ENV=dev tsx watch .",
-    "start": "NODE_ENV=production node ./dist/src/index.js"
+    "start": "npm run build && NODE_ENV=production node ./.dist/index.js"
   },
   "type": "module",
   "version": "1.0.0"

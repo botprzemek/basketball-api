@@ -1,19 +1,21 @@
-import Config from "@/config/server";
+import headers from "@/middlewares/headers";
 import Router from "@/server/router";
+import Config from "@/config/server";
 
 import { createServer, Server as HttpServer } from "node:http";
 
 import express from "express";
-import headers from "@/server/headers";
 
 export default class Server {
     private readonly server: HttpServer;
+    private readonly config: Config;
 
     constructor() {
+        this.config = new Config();
         const api: express.Express = express().use(
-            `/v${Config.getVersion()}`,
+            `/v${this.config.getVersion()}`,
             headers,
-            new Router().get(),
+            new Router().getInstance(),
         );
 
         this.server = createServer(api);
@@ -24,6 +26,6 @@ export default class Server {
             return;
         }
 
-        this.server.listen(Config.getPort(), Config.getHost());
+        this.server.listen(this.config.getPort(), this.config.getHost());
     }
 }

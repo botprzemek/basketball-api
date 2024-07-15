@@ -14,6 +14,7 @@ namespace ConfigType {
     }
 
     interface Server extends Connection {
+        compression: boolean;
         version: number;
     }
 }

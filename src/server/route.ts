@@ -1,24 +1,28 @@
-import Handler from "@/server/handler";
+import Handler from "@/handlers";
+import Resource from "@/models/resource";
 
 import { Router } from "express";
+import Data from "@/services/data";
 
 export default class Route {
     private readonly children: Router;
-    private readonly options: any;
+    private readonly data: Data;
+    private readonly resource: Resource;
 
-    constructor(options: any) {
+    constructor(resource: Resource, data: Data) {
         this.children = Router();
-        this.options = options;
+        this.data = data;
+        this.resource = resource;
 
         this.register();
     }
 
-    public get = (): Router => {
+    public getInstance = (): Router => {
         return this.children;
     };
 
-    private register = () => {
-        const handler = new Handler(this.options);
+    private register = (): void => {
+        const handler: Handler = new Handler(this.resource, this.data);
 
         this.children
             .get("/", handler.get)

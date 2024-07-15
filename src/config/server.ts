@@ -1,33 +1,46 @@
 import Config from "@/config";
 
 export default class Server extends Config {
-    private static readonly DEFAULT: ConfigType.Server = {
-        host: process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
-        port: 3000,
-        version: 1,
-    };
+    private readonly DEFAULT: ConfigType.Server;
 
     constructor() {
-        super("server", Server.DEFAULT);
+        const DEFAULT: ConfigType.Server = {
+            compression: true,
+            host:
+                process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
+            port: 3000,
+            version: 1,
+        };
+
+        super("server", DEFAULT);
+
+        this.DEFAULT = DEFAULT;
     }
 
-    public static get = (): ConfigType.Server => {
+    public get = (): ConfigType.Server => {
         return {
+            compression: this.getCompression(),
             host: this.getHost(),
             port: this.getPort(),
             version: this.getVersion(),
         };
     };
 
-    public static getHost = (): string => {
+    public getCompression = (): boolean => {
+        return Boolean.apply(
+            process.env.SERVER_COMPRESSION ?? this.DEFAULT.compression,
+        );
+    };
+
+    public getHost = (): string => {
         return process.env.SERVER_HOST ?? this.DEFAULT.host;
     };
 
-    public static getPort = (): number => {
+    public getPort = (): number => {
         return parseInt(process.env.SERVER_PORT ?? `${this.DEFAULT.port}`);
     };
 
-    public static getVersion = (): number => {
+    public getVersion = (): number => {
         return parseInt(
             process.env.SERVER_VERSION ?? `${this.DEFAULT.version}`,
         );
