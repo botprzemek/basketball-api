@@ -1,17 +1,21 @@
 import Config from "@/config";
 
 export default class Cache extends Config {
-    private static readonly DEFAULT: ConfigType.Cache = {
-        host: "redis",
-        port: 6379,
-        user: "default",
-    };
+    private readonly DEFAULT: ConfigType.Cache;
 
     constructor() {
-        super("cache", Cache.DEFAULT);
+        const DEFAULT: ConfigType.Cache = {
+            host: "redis",
+            port: 6379,
+            user: "default",
+        };
+
+        super("cache", DEFAULT);
+
+        this.DEFAULT = DEFAULT;
     }
 
-    public static get = (): ConfigType.Cache => {
+    public get = (): ConfigType.Cache => {
         return {
             host: this.getHost(),
             port: this.getPort(),
@@ -19,15 +23,15 @@ export default class Cache extends Config {
         };
     };
 
-    public static getHost = (): string => {
+    public getHost = (): string => {
         return process.env.CACHE_HOST ?? this.DEFAULT.host;
     };
 
-    public static getPort = (): number => {
+    public getPort = (): number => {
         return parseInt(process.env.CACHE_PORT ?? `${this.DEFAULT.port}`);
     };
 
-    public static getUser = (): string => {
+    public getUser = (): string => {
         return process.env.CACHE_USER ?? this.DEFAULT.user;
     };
 }

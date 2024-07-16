@@ -1,6 +1,8 @@
-import headers from "@/middlewares/headers";
-import Router from "@/server/router";
+import ApiKey from "@/middlewares/apiKey";
 import Config from "@/config/server";
+import Headers from "@/middlewares/headers";
+import ExceptionHandler from "@/handlers/exception";
+import Router from "@/server/router";
 
 import { createServer, Server as HttpServer } from "node:http";
 
@@ -11,10 +13,13 @@ export default class Server {
     private readonly config: Config;
 
     constructor() {
+        ExceptionHandler();
+
         this.config = new Config();
         const api: express.Express = express().use(
             `/v${this.config.getVersion()}`,
-            headers,
+            ApiKey,
+            Headers,
             new Router().getInstance(),
         );
 

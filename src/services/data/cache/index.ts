@@ -6,14 +6,16 @@ export default class Database {
     private readonly instance: Redis;
 
     constructor() {
-        this.instance = new Redis(Config.get());
+        this.instance = new Redis(new Config().get());
     }
 
     public clear = (): void => {};
 
     public connect = (): void => {};
 
-    public get = (): void => {};
+    public get = (): Redis => {
+        return this.instance;
+    };
 
     public initialize = (): void => {};
 }

@@ -10,6 +10,7 @@ export default class Server extends Config {
                 process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
             port: 3000,
             version: 1,
+            apiKey: "your-secret-key",
         };
 
         super("server", DEFAULT);
@@ -23,7 +24,12 @@ export default class Server extends Config {
             host: this.getHost(),
             port: this.getPort(),
             version: this.getVersion(),
+            apiKey: this.getApiKey(),
         };
+    };
+
+    public getApiKey = (): string => {
+        return process.env.SERVER_API_KEY ?? this.DEFAULT.apiKey;
     };
 
     public getCompression = (): boolean => {

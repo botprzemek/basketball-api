@@ -29,5 +29,7 @@ export default (_: Request, response: Response, next: NextFunction) => {
         response.set("Content-Encoding", "gzip");
     }
 
+    response.removeHeader("X-Powered-By");
+
     next();
 };

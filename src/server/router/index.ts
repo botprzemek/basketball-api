@@ -1,6 +1,6 @@
 import Data from "@/services/data";
 import Resource from "@/models/resource";
-import Route from "@/server/route";
+import Route from "@/server/router/route";
 
 import express, { Router as RouterInstance, RouterOptions } from "express";
 
@@ -32,7 +32,7 @@ export default class Router {
     private register = (resource: Resource): void => {
         this.router.use(
             `/${resource}`,
-            new Route(resource, this.data).getInstance(),
+            new Route(resource, this.data).register(),
         );
     };
 }

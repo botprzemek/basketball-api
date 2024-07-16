@@ -1,27 +1,28 @@
 import Data from "@/services/data";
-import Model from "@/services/data/database/model";
 import Resource from "@/models/resource";
 
 export default class Controller {
-    private readonly model: Model;
+    private readonly resource: Resource;
+    private readonly data;
 
     constructor(resource: Resource, data: Data) {
-        this.model = new Model(resource, data);
+        this.resource = resource;
+        this.data = data;
     }
 
     public get = async <T>(): Promise<T[]> => {
-        return await this.model.get<T>();
+        return await this.data.get<T>(this.resource);
     };
 
-    public create = async <T>(data: T[]): Promise<void> => {
-        return await this.model.create<T>(data);
+    public create = async <T>(data: T[]): Promise<T[]> => {
+        return await this.data.get<T>(this.resource);
     };
 
-    public update = async <T>(data: T[]): Promise<void> => {
-        return await this.model.update<T>(data);
+    public update = async <T>(data: T[]): Promise<T[]> => {
+        return await this.data.get<T>(this.resource);
     };
 
-    public delete = async <T>(data: T[]): Promise<void> => {
-        return await this.model.delete<T>(data);
+    public delete = async <T>(data: T[]): Promise<T[]> => {
+        return await this.data.get<T>(this.resource);
     };
 }
