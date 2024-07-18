@@ -25,4 +25,8 @@ export default class Controller {
     public delete = async <T>(data: T[]): Promise<T[]> => {
         return await this.data.get<T>(this.resource);
     };
+
+    public getResource = (): Resource => {
+        return this.resource;
+    };
 }

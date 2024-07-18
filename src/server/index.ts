@@ -1,7 +1,7 @@
-import ApiKey from "@/middlewares/apiKey";
+import ApiKey from "@/server/middlewares/apiKey";
 import Config from "@/config/server";
-import Headers from "@/middlewares/headers";
-import ExceptionHandler from "@/handlers/exception";
+import Error from "@/server/middlewares/error";
+import Headers from "@/server/middlewares/headers";
 import Router from "@/server/router";
 
 import { createServer, Server as HttpServer } from "node:http";
@@ -13,15 +13,13 @@ export default class Server {
     private readonly config: Config;
 
     constructor() {
-        ExceptionHandler();
-
         this.config = new Config();
-        const api: express.Express = express().use(
-            `/v${this.config.getVersion()}`,
-            ApiKey,
-            Headers,
-            new Router().getInstance(),
-        );
+
+        const api: express.Express = express()
+            .use(Headers)
+            .use(ApiKey)
+            .use(`/v${this.config.getVersion()}`, new Router().getInstance())
+            .use(Error);
 
         this.server = createServer(api);
     }

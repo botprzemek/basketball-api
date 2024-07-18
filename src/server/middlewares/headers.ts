@@ -18,7 +18,7 @@ const headers: Record<string, string> = {
     "Content-Type": "application/json",
 };
 
-export default (_: Request, response: Response, next: NextFunction) => {
+export default (_request: Request, response: Response, next: NextFunction) => {
     Object.keys(headers)
         .filter((key: keyof typeof headers): boolean => !!headers[key])
         .forEach((key: keyof typeof headers): void => {

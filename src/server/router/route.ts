@@ -1,5 +1,5 @@
 import Data from "@/services/data";
-import Handler from "@/handlers";
+import Handler from "@/server/handlers";
 import Resource from "@/models/resource";
 
 import { Router } from "express";

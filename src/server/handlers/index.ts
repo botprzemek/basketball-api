@@ -1,7 +1,9 @@
+import capitalize from "@/utils/capitalize";
 import Config from "@/config/server";
+import Controller from "@/server/controllers";
 import Data from "@/services/data";
-import Controller from "@/controllers";
 import Resource from "@/models/resource";
+import { NoContent } from "@/server/router/error";
 
 import { gzipSync } from "node:zlib";
 import { URL } from "node:url";
@@ -61,34 +63,23 @@ export default class Handler {
             return;
         }
 
+        if (data.length === 0) {
+            throw new NoContent(capitalize(this.controller.getResource()));
+        }
+
         const url = new URL(
             `${request.protocol}://${request.get("host")}${request.originalUrl}`,
         );
-
-        if (data.length === 0) {
-            data = [
-                {
-                    links: {
-                        self: {
-                            href: url,
-                        },
-                        idk: {
-                            href: `${url}/idk`,
-                        },
-                    },
-                },
-            ];
-        }
 
         data.map((value: Object): Object => {
             return {
                 ...value,
                 links: {
                     self: {
-                        href: request.url,
+                        href: url,
                     },
                     idk: {
-                        href: `${request.url}/idk`,
+                        href: `${url}/idk`,
                     },
                 },
             };
