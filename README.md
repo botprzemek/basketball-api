@@ -1,5 +1,23 @@
 # botprzemek's Basketball API
 
+Development
+
+npm run install
+
+npm run dev
+
+Building
+
+npm run install
+
+npm run build
+
+npm run start
+
+Deployment
+
+docker compose up
+
 > [!Caution]
 > <span id="status">Project is still work in progress</span>
 
