@@ -26,7 +26,7 @@ ENV NODE_ENV=production
 
 RUN npm install --clean --production
 
-COPY --from=setup --chown=node:node /app/.dist ./.dist
+COPY --from=setup --chown=node:node /app/dist ./dist
 
 RUN npm prune --production
 
@@ -38,7 +38,7 @@ RUN apk update && apk add nodejs
 
 WORKDIR /app
 
-COPY --from=production --chown=node:node /app/.dist ./.dist
+COPY --from=production --chown=node:node /app/dist ./dist
 COPY --from=production --chown=node:node /app/node_modules ./node_modules
 COPY --from=production --chown=node:node /app/package*.json .
 
@@ -48,6 +48,6 @@ ENV SERVER_HOST=0.0.0.0
 ENV SERVER_PORT=3000
 ENV SERVER_VERSION=1
 
-CMD [ "node", ".dist/index.js" ]
+CMD [ "node", "dist/index.js" ]
 
 EXPOSE 3000

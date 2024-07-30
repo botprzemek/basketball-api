@@ -8,15 +8,15 @@ const enum Position {
 
 type Player = {
     id?: number;
-    team_id: number;
+    team_id?: number;
     name: string;
     lastname: string;
     nationality: string;
     number: number;
     height: number;
-    weight: number;
-    wingspan: number;
+    weight?: number;
+    wingspan?: number;
     position: Position;
-    birth_date: Date;
+    birth_date?: Date;
     starter: boolean;
 };

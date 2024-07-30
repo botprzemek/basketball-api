@@ -1,29 +1,38 @@
-import capitalize from "@/utils/capitalize";
 import Config from "@/config/server";
 import Controller from "@/server/controllers";
 import Data from "@/services/data";
-import Resource from "@/models/resource";
-import { NoContent } from "@/server/router/error";
+import { InternalError, NoContentError } from "@/server/router/error";
 
 import { gzipSync } from "node:zlib";
-import { URL } from "node:url";
 
 import { Request, Response } from "express";
 
 export default class Handler {
-    private readonly controller: Controller;
+    protected readonly controller: Controller;
 
-    constructor(resource: Resource, data: Data) {
-        this.controller = new Controller(resource, data);
+    constructor(data: Data) {
+        this.controller = new Controller(data);
     }
 
     public get = async (
-        request: Request,
+        _request: Request,
         response: Response,
     ): Promise<void> => {
         const payload = await this.controller.get();
 
-        this.send(request, response.status(200), payload);
+        if (!payload) {
+            new InternalError(response, "Data source failure");
+            return;
+        }
+
+        if (payload.length === 0) {
+            new NoContentError(response);
+            return;
+        }
+
+        response.status(200);
+
+        this.send(response, payload);
     };
 
     public post = async (
@@ -32,7 +41,9 @@ export default class Handler {
     ): Promise<void> => {
         await this.controller.create(request.body);
 
-        this.send(request, response.status(201), []);
+        response.status(201);
+
+        this.send(response);
     };
 
     public put = async (
@@ -41,7 +52,9 @@ export default class Handler {
     ): Promise<void> => {
         await this.controller.update(request.body);
 
-        this.send(request, response.status(204), []);
+        response.status(204);
+
+        this.send(response);
     };
 
     public delete = async (
@@ -50,49 +63,19 @@ export default class Handler {
     ): Promise<void> => {
         await this.controller.delete(request.body);
 
-        this.send(request, response.status(204), []);
+        response.status(204);
+
+        this.send(response);
     };
 
-    private send = (
-        request: Request,
-        response: Response,
-        data?: any[],
-    ): void => {
-        if (!data) {
-            response.end();
-            return;
-        }
-
-        if (data.length === 0) {
-            throw new NoContent(capitalize(this.controller.getResource()));
-        }
-
-        const url = new URL(
-            `${request.protocol}://${request.get("host")}${request.originalUrl}`,
-        );
-
-        data.map((value: Object): Object => {
-            return {
-                ...value,
-                links: {
-                    self: {
-                        href: url,
-                    },
-                    idk: {
-                        href: `${url}/idk`,
-                    },
-                },
-            };
-        });
-
+    private send = (response: Response, data?: any[]): void => {
         const value: string = JSON.stringify(data);
-
-        let buffer: Buffer = Buffer.from(value);
+        const buffer: Buffer = Buffer.from(value);
 
         if (new Config().getCompression()) {
-            buffer = gzipSync(buffer);
+            response.end(gzipSync(buffer));
         }
 
-        response.set("Content-Length", buffer.length.toString()).end(buffer);
+        response.end(buffer);
     };
 }

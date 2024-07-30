@@ -42,8 +42,3 @@ volumes:
 networks:
   default:
     name: basketball-network
-    ipam:
-      config:
-        - subnet: 10.0.0.0/16
-          ip_range: 10.0.0.0/29
-          gateway: 10.0.0.1

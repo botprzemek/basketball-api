@@ -1,25 +1,30 @@
 import Data from "@/services/data";
 import Handler from "@/server/handlers";
-import Resource from "@/models/resource";
+import { Method, MethodKey } from "@/models/method";
 
 import { Router } from "express";
 
 export default class Route {
-    private readonly data: Data;
-    private readonly resource: Resource;
+    private readonly router: Router;
+    private readonly handler: Handler;
 
-    constructor(resource: Resource, data: Data) {
-        this.data = data;
-        this.resource = resource;
+    constructor(data: Data) {
+        this.router = Router();
+        this.handler = new Handler(data);
     }
 
-    public register = (): Router => {
-        const handler: Handler = new Handler(this.resource, this.data);
+    public register(path: string): Route {
+        Object.keys(Method).forEach((method: string): void => {
+            this.router[method as MethodKey](
+                path,
+                this.handler[method as MethodKey],
+            );
+        });
 
-        return Router()
-            .get("/", handler.get)
-            .post("/", handler.post)
-            .put("/", handler.put)
-            .delete("/", handler.delete);
-    };
+        return this;
+    }
+
+    public get(): Router {
+        return this.router;
+    }
 }

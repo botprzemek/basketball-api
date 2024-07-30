@@ -1,7 +1,7 @@
-.dist/
 .git/
 .github/
 .idea/
+dist/
 node_modules/
 
 .env

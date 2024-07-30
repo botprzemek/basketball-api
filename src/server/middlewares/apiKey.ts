@@ -1,11 +1,11 @@
 import Config from "@/config/server";
-import { Unauthorized } from "@/server/router/error";
+import { UnauthorizedError } from "@/server/router/error";
 
 import { NextFunction, Request, Response } from "express";
 
 export default (
     request: Request,
-    _response: Response,
+    response: Response,
     next: NextFunction,
 ): void => {
     const key: string | undefined = request.get("X-Api-Key");
@@ -14,5 +14,5 @@ export default (
         return next();
     }
 
-    throw new Unauthorized("Please provide a valid API Key.");
+    throw new UnauthorizedError(response, "Please provide a valid API Key.");
 };

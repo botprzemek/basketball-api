@@ -1,6 +1,5 @@
 import Data from "@/services/data";
-import Resource from "@/models/resource";
-import Route from "@/server/router/route";
+import Resources from "@/server/router/resources";
 
 import express, { Router as RouterInstance, RouterOptions } from "express";
 
@@ -15,24 +14,21 @@ export default class Router {
         this.data = new Data();
         this.router = RouterInstance(this.options);
 
-        this.router.use(express.json());
-
-        Object.keys(Resource)
-            .map(
-                (resource: string) =>
-                    Resource[resource as keyof typeof Resource],
-            )
-            .forEach(this.register);
+        this.register();
     }
 
-    public getInstance = (): RouterInstance => {
+    public get = (): RouterInstance => {
         return this.router;
     };
 
-    private register = (resource: Resource): void => {
-        this.router.use(
-            `/${resource}`,
-            new Route(resource, this.data).register(),
-        );
+    private register = (): void => {
+        this.router.use(express.json());
+
+        Object.keys(Resources).forEach((resource: string): void => {
+            this.router.use(
+                `/${resource}`,
+                Resources[resource as keyof typeof Resources](this.data),
+            );
+        });
     };
 }

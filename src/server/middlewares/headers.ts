@@ -1,5 +1,6 @@
-import { NextFunction, Request, Response } from "express";
 import Config from "@/config/server";
+
+import { NextFunction, Request, Response } from "express";
 
 const headers: Record<string, string> = {
     "Content-Security-Policy":
