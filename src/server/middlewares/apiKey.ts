@@ -10,9 +10,10 @@ export default (
 ): void => {
     const key: string | undefined = request.get("X-Api-Key");
 
-    if (key === new Config().getApiKey()) {
-        return next();
+    if (key !== new Config().getApiKey()) {
+        new UnauthorizedError(response, "Please provide a valid API Key.");
+        return;
     }
 
-    throw new UnauthorizedError(response, "Please provide a valid API Key.");
+    next();
 };

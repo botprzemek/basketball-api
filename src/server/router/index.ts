@@ -1,7 +1,7 @@
 import Data from "@/services/data";
 import Resources from "@/server/router/resources";
 
-import express, { Router as RouterInstance, RouterOptions } from "express";
+import { Router as RouterInstance, RouterOptions } from "express";
 
 export default class Router {
     private readonly data: Data;
@@ -22,8 +22,6 @@ export default class Router {
     };
 
     private register = (): void => {
-        this.router.use(express.json());
-
         Object.keys(Resources).forEach((resource: string): void => {
             this.router.use(
                 `/${resource}`,
