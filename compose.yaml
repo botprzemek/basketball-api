@@ -2,8 +2,6 @@ services:
   cockroach:
     image: "cockroachdb/cockroach:latest"
     restart: always
-    ports:
-      - "8080:8080"
     volumes:
       - type: volume
         source: cockroach

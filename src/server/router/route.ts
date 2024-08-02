@@ -8,9 +8,9 @@ export default class Route {
     private readonly handler: Handler;
     private readonly router: Router;
 
-    constructor(dataReference: Data, paths: string[] = ["/", "/:id"]) {
+    constructor(data: Data, paths: string[] = ["/", "/:id"]) {
         this.router = Router();
-        this.handler = new Handler(dataReference);
+        this.handler = new Handler(data);
 
         paths.forEach(this.register);
     }

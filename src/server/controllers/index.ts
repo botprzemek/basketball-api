@@ -1,25 +1,25 @@
 import Data from "@/services/data";
 
 export default class Controller {
-    private readonly dataReference: Data;
+    private readonly data: Data;
 
-    constructor(dataReference: Data) {
-        this.dataReference = dataReference;
+    constructor(data: Data) {
+        this.data = data;
     }
 
     public get = async (): Promise<any[]> => {
-        return this.dataReference.get();
+        return this.data.get();
     };
 
     public create = async (data: Object): Promise<any[]> => {
-        return this.dataReference.get();
+        return this.data.get();
     };
 
     public update = async (data: Object): Promise<any[]> => {
-        return this.dataReference.get();
+        return this.data.get();
     };
 
     public remove = async (data: Object): Promise<any[]> => {
-        return this.dataReference.get();
+        return this.data.get();
     };
 }

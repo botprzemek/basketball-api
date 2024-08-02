@@ -10,8 +10,8 @@ import { Request, Response } from "express";
 export default class Handler {
     protected readonly controller: Controller;
 
-    constructor(dataReference: Data) {
-        this.controller = new Controller(dataReference);
+    constructor(data: Data) {
+        this.controller = new Controller(data);
     }
 
     public get = async (

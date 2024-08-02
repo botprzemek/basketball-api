@@ -3,12 +3,7 @@ import Config from "@/config";
 import { URL } from "node:url";
 
 export default class Database extends Config {
-    private readonly DEFAULT: ConfigType.Database = {
-        host: "cockroach",
-        port: 26257,
-        user: "root",
-        name: "defaultdb",
-    };
+    private readonly DEFAULT: ConfigType.Database;
 
     constructor() {
         const DEFAULT: ConfigType.Database = {
