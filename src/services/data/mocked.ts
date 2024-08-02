@@ -7,7 +7,7 @@ const later = (delay: number): Promise<any> => {
 };
 
 export default async (): Promise<Player[]> => {
-    await later(1000);
+    await later(50);
 
     return players;
 };
