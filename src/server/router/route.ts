@@ -5,26 +5,28 @@ import { Method, MethodKey } from "@/models/method";
 import { Router } from "express";
 
 export default class Route {
-    private readonly router: Router;
     private readonly handler: Handler;
+    private readonly router: Router;
 
-    constructor(data: Data) {
+    constructor(dataReference: Data, paths: string[] = ["/", "/:id"]) {
         this.router = Router();
-        this.handler = new Handler(data);
+        this.handler = new Handler(dataReference);
+
+        paths.forEach(this.register);
     }
 
-    public register(path: string): Route {
-        Object.keys(Method).forEach((method: string): void => {
+    public get = (): Router => {
+        return this.router;
+    };
+
+    private register = (path: string): void => {
+        const methods: string[] = Object.keys(Method);
+
+        methods.forEach((method: string): void => {
             this.router[method as MethodKey](
                 path,
                 this.handler[method as MethodKey],
             );
         });
-
-        return this;
-    }
-
-    public get(): Router {
-        return this.router;
-    }
+    };
 }

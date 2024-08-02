@@ -9,13 +9,7 @@ export default class Database {
         this.instance = new Redis(new Config().get());
     }
 
-    public clear = (): void => {};
-
-    public connect = (): void => {};
-
     public get = (): Redis => {
         return this.instance;
     };
-
-    public initialize = (): void => {};
 }

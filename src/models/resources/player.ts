@@ -1,4 +1,4 @@
-const enum Position {
+export const enum Position {
     PG = "PG",
     SG = "SG",
     SF = "SF",
@@ -6,7 +6,7 @@ const enum Position {
     C = "C",
 }
 
-type Player = {
+export type Player = {
     id?: number;
     team_id?: number;
     name: string;

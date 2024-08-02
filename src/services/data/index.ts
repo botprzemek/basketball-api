@@ -1,6 +1,8 @@
 import Cache from "@/services/data/cache";
 import Database from "@/services/data/database";
 
+import mocked from "@/services/data/mocked";
+
 export default class Data {
     private readonly cache: Cache;
     private readonly database: Database;
@@ -10,11 +12,19 @@ export default class Data {
         this.database = new Database();
     }
 
-    public get = async (): Promise<[]> => {
-        let data: [] = [];
+    public get = async (): Promise<any[]> => {
+        const KEY: string = "players";
+        let data = [];
 
-        // this.cache.getModel(resource);
-        // await this.database.getModel(resource);
+        const cachedData: string | null = await this.cache.get().get(KEY);
+
+        if (cachedData) {
+            return JSON.parse(cachedData);
+        }
+
+        data = await mocked();
+
+        this.cache.get().set(KEY, JSON.stringify(data), "EX", 10);
 
         return data;
     };

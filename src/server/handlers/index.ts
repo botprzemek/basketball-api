@@ -10,8 +10,8 @@ import { Request, Response } from "express";
 export default class Handler {
     protected readonly controller: Controller;
 
-    constructor(data: Data) {
-        this.controller = new Controller(data);
+    constructor(dataReference: Data) {
+        this.controller = new Controller(dataReference);
     }
 
     public get = async (
@@ -61,7 +61,7 @@ export default class Handler {
         request: Request,
         response: Response,
     ): Promise<void> => {
-        await this.controller.delete(request.body);
+        await this.controller.remove(request.body);
 
         response.status(204);
 
@@ -69,6 +69,11 @@ export default class Handler {
     };
 
     private send = (response: Response, data?: any[]): void => {
+        if (!data) {
+            response.end();
+            return;
+        }
+
         const value: string = JSON.stringify(data);
         const buffer: Buffer = Buffer.from(value);
 

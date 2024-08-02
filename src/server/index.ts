@@ -15,12 +15,15 @@ export default class Server {
 
     constructor() {
         this.config = new Config();
+        const options = {
+            mergeParams: true,
+        };
 
         const api: express.Express = express()
             .use(Logger)
             .use(Headers)
             .use(ApiKey)
-            .use(`/v${this.config.getVersion()}`, new Router().get())
+            .use(`/v${this.config.getVersion()}`, new Router(options).get())
             .use(this.wildcard);
 
         this.server = createServer(api);

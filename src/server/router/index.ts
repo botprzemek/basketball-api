@@ -1,32 +1,26 @@
 import Data from "@/services/data";
-import Resources from "@/server/router/resources";
+import Route from "@/server/router/route";
 
 import { Router as RouterInstance, RouterOptions } from "express";
 
 export default class Router {
     private readonly data: Data;
     private readonly router: RouterInstance;
-    private readonly options: RouterOptions = {
-        mergeParams: true,
-    };
 
-    constructor() {
+    constructor(options: RouterOptions) {
         this.data = new Data();
-        this.router = RouterInstance(this.options);
+        this.router = RouterInstance(options);
 
-        this.register();
+        ["players"].forEach(this.register);
     }
 
     public get = (): RouterInstance => {
         return this.router;
     };
 
-    private register = (): void => {
-        Object.keys(Resources).forEach((resource: string): void => {
-            this.router.use(
-                `/${resource}`,
-                Resources[resource as keyof typeof Resources](this.data),
-            );
-        });
+    private register = (resource: string): void => {
+        const route: RouterInstance = new Route(this.data).get();
+
+        this.router.use(`/${resource}`, route);
     };
 }

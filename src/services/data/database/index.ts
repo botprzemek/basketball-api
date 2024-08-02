@@ -9,13 +9,7 @@ export default class Database {
         this.instance = new pg.Pool(new Config().getUrl());
     }
 
-    public clear = (): void => {};
-
-    public connect = (): void => {};
-
     public get = (): Promise<pg.PoolClient> => {
         return this.instance.connect();
     };
-
-    public initialize = (): void => {};
 }
