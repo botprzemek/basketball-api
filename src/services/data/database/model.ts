@@ -26,6 +26,6 @@ export default class PlayerModel {
             wingspan FLOAT,
             position basketball.POSITION_ENUM NOT NULL,
             birth_date DATE NOT NULL,
-            starter BOOLEAN NOT NULL DEFAULT FALSE );`);
+            starter BOOLEAN NOT NULL DEFAULT FALSE);`);
     };
 }
