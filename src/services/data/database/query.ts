@@ -14,7 +14,6 @@ class Insert {
         return this;
     }
 
-    // Method to set the name (used as column names in this context)
     setName(name: string): this {
         this.name = name;
         return this;
@@ -35,38 +34,88 @@ class Insert {
 }
 
 export class Create {
-    private fields;
+    private readonly name: string;
+    private fields: Field[];
 
-    constructor() {}
+    constructor(name: string) {
+        this.name = name;
+        this.fields = [];
+    }
+
+    public addFields = (...fields: Field[]): Create => {
+        this.fields.push(...fields);
+
+        return this;
+    };
+
+    public build = (): string => {
+        const query: string[] = ["CREATE TABLE IF NOT EXISTS", this.name];
+
+        const fields: string = this.fields
+            .map((field: Field) => field.build())
+            .join(",\n  ");
+
+        query.push(`(\n  ${fields}\n);`);
+
+        return query.join(" ");
+    };
 }
 
 export class Field {
     private readonly name: string;
-    private readonly type: string;
-    private isNull: boolean = false;
+    private type: string = "VARCHAR";
+    private isPrimary: boolean = false;
+    private isForeign: boolean = false;
+    private isNotNull: boolean = false;
     private hasDefault: string = "";
 
-    constructor(name: string, type: string) {
+    constructor(name: string, type: string = "VARCHAR") {
         this.name = name;
         this.type = type;
     }
 
-    public setNull(bool: boolean = true): this {
-        this.isNull = bool;
-        return this;
-    }
+    public setType = (type: string): this => {
+        this.type = type;
 
-    public setDefault(value: string): this {
+        return this;
+    };
+
+    public setPrimary = (bool: boolean = true): this => {
+        this.isPrimary = bool;
+
+        return this;
+    };
+
+    public setForeign = (bool: boolean = true): this => {
+        this.isForeign = bool;
+
+        return this;
+    };
+
+    public setNotNull = (bool: boolean = true): this => {
+        this.isNotNull = bool;
+
+        return this;
+    };
+
+    public setDefault = (value: string): this => {
         this.hasDefault = value.toString();
+
         return this;
-    }
+    };
 
-    public build(): string {
-        let query: string[] = [];
+    public build = (): string => {
+        const query: string[] = [this.name, this.type];
 
-        query.push(this.name, this.type);
+        if (this.isPrimary) {
+            query.push("PRIMARY KEY");
+        }
 
-        if (!this.isNull) {
+        if (this.isForeign) {
+            query.push("FOREIGN KEY");
+        }
+
+        if (this.isNotNull) {
             query.push("NOT NULL");
         }
 
@@ -75,5 +124,5 @@ export class Field {
         }
 
         return query.join(" ");
-    }
+    };
 }

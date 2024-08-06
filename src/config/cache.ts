@@ -8,6 +8,8 @@ export default class Cache extends Config {
             host: "redis",
             port: 6379,
             user: "default",
+            // TODO
+            expireTime: 4,
         };
 
         super("cache", DEFAULT);
@@ -20,6 +22,7 @@ export default class Cache extends Config {
             host: this.getHost(),
             port: this.getPort(),
             user: this.getUser(),
+            expireTime: this.getExpireTime(),
         };
     };
 
@@ -33,5 +36,11 @@ export default class Cache extends Config {
 
     public getUser = (): string => {
         return process.env.CACHE_USER ?? this.DEFAULT.user;
+    };
+
+    public getExpireTime = (): number => {
+        return parseInt(
+            process.env.CACHE_EXPIRE_TIME ?? `${this.DEFAULT.expireTime}`,
+        );
     };
 }

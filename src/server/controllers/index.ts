@@ -8,18 +8,18 @@ export default class Controller {
     }
 
     public get = async (): Promise<any[]> => {
-        return this.data.get();
+        return this.data.get("players");
     };
 
     public create = async (data: Object): Promise<any[]> => {
-        return this.data.get();
+        return this.data.get("players");
     };
 
     public update = async (data: Object): Promise<any[]> => {
-        return this.data.get();
+        return this.data.get("players");
     };
 
     public remove = async (data: Object): Promise<any[]> => {
-        return this.data.get();
+        return this.data.get("players");
     };
 }

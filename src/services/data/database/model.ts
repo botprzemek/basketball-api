@@ -1,31 +1,17 @@
-import Database from "@/services/data/database/index";
+import { PoolClient } from "pg";
 
-export default class PlayerModel {
-    constructor() {}
+export default class Model {
+    private readonly name: string;
+    private readonly instance: PoolClient;
 
-    public initialize = async () => {
-        const database: Database = new Database();
+    constructor(name: string, instance: PoolClient) {
+        this.name = name;
+        this.instance = instance;
+    }
 
-        const instance = await database.get();
-
-        await instance.query(`CREATE DATABASE IF NOT EXISTS basketball;`);
-
-        await instance.query(
-            `CREATE TYPE IF NOT EXISTS basketball.POSITION_ENUM AS ENUM ('PG', 'SG', 'SF', 'PF', 'C');`,
-        );
-
-        await instance.query(`CREATE TABLE IF NOT EXISTS basketball.players (
-            id SERIAL PRIMARY KEY,
-            team_id SERIAL,
-            name VARCHAR(255) NOT NULL,
-            lastname VARCHAR(255) NOT NULL,
-            nationality VARCHAR(8) NOT NULL,
-            number INT NOT NULL,
-            height FLOAT NOT NULL,
-            weight FLOAT,
-            wingspan FLOAT,
-            position basketball.POSITION_ENUM NOT NULL,
-            birth_date DATE NOT NULL,
-            starter BOOLEAN NOT NULL DEFAULT FALSE);`);
+    public getAll = async <Resource>(): Promise<Resource[]> => {
+        return (
+            await this.instance.query(`SELECT * FROM basketball.${this.name}`)
+        ).rows;
     };
 }

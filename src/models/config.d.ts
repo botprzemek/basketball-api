@@ -6,6 +6,7 @@ interface Connection {
 namespace ConfigType {
     interface Cache extends Connection {
         user: string;
+        expireTime: number;
     }
 
     interface Database extends Connection {
