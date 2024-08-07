@@ -11,6 +11,7 @@ export default (
         console.log(
             request.ip,
             `[${start.toLocaleString("pl-PL").replace(", ", "-")}]`,
+            response.statusCode,
             request.method.toUpperCase(),
             request.originalUrl,
             `(${new Date().getTime() - start.getTime()}ms)`,

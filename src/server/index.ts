@@ -1,13 +1,12 @@
-import ApiKey from "@/server/middlewares/apiKey";
 import Config from "@/config/server";
 import Headers from "@/server/middlewares/headers";
 import Logger from "@/server/middlewares/logger";
 import Router from "@/server/router";
+import { NotFoundError } from "@/server/router/error";
 
 import { createServer, Server as HttpServer } from "node:http";
 
-import express, { Request, Response } from "express";
-import { NotFoundError } from "@/server/router/error";
+import express, { Request, Response, RouterOptions } from "express";
 
 export default class Server {
     private readonly server: HttpServer;
@@ -15,29 +14,29 @@ export default class Server {
 
     constructor() {
         this.config = new Config();
-        const options = {
+        const options: RouterOptions = {
             mergeParams: true,
         };
 
         const api: express.Express = express()
+            .use(express.json())
             .use(Logger)
             .use(Headers)
-            .use(ApiKey)
             .use(`/v${this.config.getVersion()}`, new Router(options).get())
             .use(this.wildcard);
 
         this.server = createServer(api);
     }
 
-    public listen(): void {
+    public listen = (): void => {
         if (this.server.listening) {
             return;
         }
 
         this.server.listen(this.config.getPort(), this.config.getHost());
-    }
+    };
 
-    private wildcard(request: Request, response: Response): void {
+    private wildcard = (request: Request, response: Response): void => {
         new NotFoundError(response, request.originalUrl);
-    }
+    };
 }

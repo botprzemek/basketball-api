@@ -1,6 +1,5 @@
 import Cache from "@/services/data/cache";
 import Database from "@/services/data/database";
-import Model from "@/services/data/database/model";
 
 export default class Data {
     private readonly cache: Cache;
@@ -18,10 +17,7 @@ export default class Data {
             return cachedData;
         }
 
-        const data: Resource[] = await new Model(
-            key,
-            await this.database.get(),
-        ).getAll();
+        const data: Resource[] = await this.database.get(key);
 
         this.cache.set(key, data);
 

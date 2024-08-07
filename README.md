@@ -191,7 +191,7 @@ npm run dev
 To run the seeding script to fill your database, execute the following command:
 
 ```shell
-npm run seed
+npm run seedling
 ```
 
 To run the project in production mode (PM2 - daemonize app and logging), execute the following

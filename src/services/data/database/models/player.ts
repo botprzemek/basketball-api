@@ -1,4 +1,5 @@
-import { Create, Field } from "@/services/data/database/query";
+import Create from "@/services/data/database/statement/create";
+import Field from "@/services/data/database/statement/field";
 
 const fields: Field[] = [
     new Field("id").setType("SERIAL").setPrimary(),

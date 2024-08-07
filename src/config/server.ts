@@ -9,28 +9,14 @@ export default class Server extends Config {
             host:
                 process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
             port: 3000,
+            tokenKey: "your-token-key",
             version: 1,
-            apiKey: "your-secret-key",
         };
 
         super("server", DEFAULT);
 
         this.DEFAULT = DEFAULT;
     }
-
-    public get = (): ConfigType.Server => {
-        return {
-            compression: this.getCompression(),
-            host: this.getHost(),
-            port: this.getPort(),
-            version: this.getVersion(),
-            apiKey: this.getApiKey(),
-        };
-    };
-
-    public getApiKey = (): string => {
-        return process.env.SERVER_API_KEY ?? this.DEFAULT.apiKey;
-    };
 
     public getCompression = (): boolean => {
         return Boolean.apply(
@@ -44,6 +30,10 @@ export default class Server extends Config {
 
     public getPort = (): number => {
         return parseInt(process.env.SERVER_PORT ?? `${this.DEFAULT.port}`);
+    };
+
+    public getTokenKey = (): string => {
+        return process.env.SERVER_TOKEN_KEY ?? this.DEFAULT.tokenKey;
     };
 
     public getVersion = (): number => {

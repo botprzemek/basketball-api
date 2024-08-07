@@ -15,8 +15,8 @@ namespace ConfigType {
     }
 
     interface Server extends Connection {
-        apiKey: string;
         compression: boolean;
+        tokenKey: string;
         version: number;
     }
 }

@@ -2,6 +2,8 @@ import Config from "@/config";
 
 import { URL } from "node:url";
 
+import postgres from "postgres";
+
 export default class Database extends Config {
     private readonly DEFAULT: ConfigType.Database;
 
@@ -18,13 +20,18 @@ export default class Database extends Config {
         this.DEFAULT = DEFAULT;
     }
 
-    public getUrl = (): { connectionString: string } => {
-        const connectionString: string = new URL(
+    public getUrl = (): string => {
+        return new URL(
             `postgresql://${this.getUser()}@${this.getHost()}:${this.getPort()}/${this.getName()}?sslmode=disable&application_name=basketball`,
         ).toString();
+    };
 
+    public getOptions = () => {
         return {
-            connectionString,
+            onnotice: (): void => {},
+            types: {
+                bigint: postgres.BigInt,
+            },
         };
     };
 

@@ -20,11 +20,9 @@ const headers: Record<string, string> = {
 };
 
 export default (_request: Request, response: Response, next: NextFunction) => {
-    Object.keys(headers)
-        .filter((key: keyof typeof headers): boolean => !!headers[key])
-        .forEach((key: keyof typeof headers): void => {
-            response.setHeader(key, headers[key] as string);
-        });
+    Object.keys(headers).forEach((key: keyof typeof headers): void => {
+        response.setHeader(key, headers[key] as string);
+    });
 
     if (new Config().getCompression()) {
         response.set("Content-Encoding", "gzip");
