@@ -8,6 +8,8 @@ export default class Data {
     constructor() {
         this.cache = new Cache();
         this.database = new Database();
+
+        void this.database.initialize();
     }
 
     public get = async <Resource>(key: string): Promise<Resource[]> => {

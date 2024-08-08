@@ -28,6 +28,7 @@ export default class Database extends Config {
 
     public getOptions = () => {
         return {
+            debug: true,
             onnotice: (): void => {},
             types: {
                 bigint: postgres.BigInt,

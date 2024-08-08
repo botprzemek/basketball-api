@@ -26,6 +26,8 @@ export default class Server {
             .use(this.wildcard);
 
         this.server = createServer(api);
+
+        process.on("SIGINT", this.close);
     }
 
     public listen = (): void => {
@@ -34,6 +36,17 @@ export default class Server {
         }
 
         this.server.listen(this.config.getPort(), this.config.getHost());
+
+        setTimeout(this.close, 1000);
+    };
+
+    public close = (): void => {
+        console.log("\nClosing server...");
+        this.server.close((err) => {
+            console.log("Server closed...");
+
+            process.exit(err ? 1 : 0);
+        });
     };
 
     private wildcard = (request: Request, response: Response): void => {

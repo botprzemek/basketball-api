@@ -2,7 +2,7 @@ import Config from "@/config/cache";
 
 import { Redis } from "ioredis";
 
-export default class Database {
+export default class Cache {
     private readonly instance: Redis;
 
     constructor() {

@@ -1,4 +1,4 @@
-import { Position } from "@/models/resources/player";
+import { Player, Position } from "@/models/resources/player";
 
 export default [
     {
@@ -314,4 +314,4 @@ export default [
         birth_date: new Date("1995-03-15"),
         starter: false,
     },
-];
+] as Player[];

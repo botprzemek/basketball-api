@@ -1,4 +1,4 @@
-export const enum Position {
+export enum Position {
     PG = "PG",
     SG = "SG",
     SF = "SF",

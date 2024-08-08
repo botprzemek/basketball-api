@@ -16,7 +16,8 @@ namespace ConfigType {
 
     interface Server extends Connection {
         compression: boolean;
-        tokenKey: string;
+        expireTime: string;
+        tokenKey: Secret;
         version: number;
     }
 }

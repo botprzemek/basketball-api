@@ -4,6 +4,7 @@ export default class Field {
     private isPrimary: boolean = false;
     private isForeign: boolean = false;
     private isNotNull: boolean = false;
+    private isUnique: boolean = false;
     private hasDefault: string = "";
 
     constructor(name: string, type: string = "VARCHAR") {
@@ -12,25 +13,31 @@ export default class Field {
     }
 
     public setType = (type: string): this => {
-        this.type = type;
+        this.type = type.toUpperCase();
 
         return this;
     };
 
-    public setPrimary = (bool: boolean = true): this => {
-        this.isPrimary = bool;
+    public setPrimary = (primary: boolean = true): this => {
+        this.isPrimary = primary;
 
         return this;
     };
 
-    public setForeign = (bool: boolean = true): this => {
-        this.isForeign = bool;
+    public setForeign = (foreign: boolean = true): this => {
+        this.isForeign = foreign;
 
         return this;
     };
 
-    public setNotNull = (bool: boolean = true): this => {
-        this.isNotNull = bool;
+    public setNotNull = (notNull: boolean = true): this => {
+        this.isNotNull = notNull;
+
+        return this;
+    };
+
+    public setUnique = (unique: boolean = true): this => {
+        this.isUnique = unique;
 
         return this;
     };
@@ -39,6 +46,10 @@ export default class Field {
         this.hasDefault = value.toString();
 
         return this;
+    };
+
+    public getName = (): string => {
+        return this.name;
     };
 
     public build = (): string => {
@@ -54,6 +65,10 @@ export default class Field {
 
         if (this.isNotNull) {
             query.push("NOT NULL");
+        }
+
+        if (this.isUnique) {
+            query.push("UNIQUE");
         }
 
         if (this.hasDefault !== "") {
