@@ -32,9 +32,9 @@ RUN npm prune --production
 
 # Create a clean environment
 
-FROM cgr.dev/chainguard/wolfi-base AS runner
+FROM alpine AS runner
 
-RUN apk update && apk add nodejs
+RUN apk add --update nodejs
 
 WORKDIR /app
 

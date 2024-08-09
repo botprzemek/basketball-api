@@ -7,7 +7,7 @@ import { gzipSync } from "node:zlib";
 
 import { Request, Response } from "express";
 
-export default class Handler {
+export default class ResourceHandler {
     protected readonly controller: Controller;
 
     constructor(data: Data) {
@@ -25,7 +25,7 @@ export default class Handler {
             return;
         }
 
-        if (payload.length === 0) {
+        if (!payload.length) {
             new NoContentError(response);
             return;
         }
@@ -78,7 +78,7 @@ export default class Handler {
         const buffer: Buffer = Buffer.from(value);
 
         if (new Config().getCompression()) {
-            response.end(gzipSync(buffer));
+            response.set("Content-Encoding", "gzip").end(gzipSync(buffer));
         }
 
         response.end(buffer);

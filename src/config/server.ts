@@ -30,22 +30,17 @@ export default class Server extends Config {
     }
 
     public getCompression = (): boolean => {
-        return Boolean.apply(
-            process.env.SERVER_COMPRESSION ?? this.DEFAULT.compression,
+        return (
+            String(process.env.SERVER_COMPRESSION).toLowerCase() === "true" ??
+            this.DEFAULT.compression
         );
     };
 
     public getCookieOptions = (): Cookie => {
-        console.log(
-            Boolean.apply(process.env.SERVER_COOKIE_HTTP_ONLY) ??
-                this.DEFAULT.cookie.httpOnly,
-        );
-
         return <Cookie>{
-            httpOnly: Boolean.apply(
-                process.env.SERVER_COOKIE_HTTP_ONLY ??
-                    this.DEFAULT.cookie.httpOnly,
-            ),
+            httpOnly:
+                String(process.env.SERVER_COOKIE_HTTP_ONLY).toLowerCase() ===
+                    "true" ?? this.DEFAULT.cookie.httpOnly,
             maxAge: parseInt(
                 process.env.SERVER_COOKIE_MAX_AGE ??
                     `${this.DEFAULT.cookie.maxAge}`,
@@ -53,9 +48,9 @@ export default class Server extends Config {
             sameSite:
                 process.env.SERVER_COOKIE_SAME_SITE ??
                 this.DEFAULT.cookie.sameSite,
-            secure: Boolean.apply(
-                process.env.SERVER_COOKIE_SECURE ?? this.DEFAULT.cookie.secure,
-            ),
+            secure:
+                String(process.env.SERVER_COOKIE_SECURE).toLowerCase() ===
+                    "true" ?? this.DEFAULT.cookie.secure,
         };
     };
 

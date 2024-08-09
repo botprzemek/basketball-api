@@ -2,6 +2,9 @@ services:
   cockroach:
     image: "cockroachdb/cockroach:latest"
     restart: always
+    ports:
+      - "8080:8080"
+      - "26257:26257"
     volumes:
       - type: volume
         source: cockroach
@@ -12,6 +15,8 @@ services:
   redis:
     image: "redis:alpine"
     restart: always
+    ports:
+      - "6379:6379"
     volumes:
       - type: volume
         source: redis

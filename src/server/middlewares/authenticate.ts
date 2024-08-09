@@ -33,7 +33,7 @@ export default (
 
     jwt.verify(
         token,
-        new Config().getTokenKey(),
+        new Config().getTokenSecret(),
         new Config().getTokenOptions(),
         (_error, _decoded) => {
             new UnauthorizedError(

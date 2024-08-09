@@ -1,7 +1,6 @@
 import Authenticate from "@/server/middlewares/authenticate";
+import AuthenticationHandler from "@/server/handlers/authentication";
 import Data from "@/services/data";
-import Login from "@/server/handlers/auth/login";
-import Register from "@/server/handlers/auth/register";
 import Route from "@/server/router/route";
 
 import { Router as RouterInstance, RouterOptions } from "express";
@@ -14,8 +13,18 @@ export default class Router {
         this.data = new Data();
         this.router = RouterInstance(options);
 
-        this.router.post("/auth/register", Register);
-        this.router.post("/auth/login", Login);
+        this.router.post(
+            "/auth/register",
+            new AuthenticationHandler(this.data).register,
+        );
+        this.router.post(
+            "/auth/login",
+            new AuthenticationHandler(this.data).login,
+        );
+        this.router.get(
+            "/auth/verify",
+            new AuthenticationHandler(this.data).verify,
+        );
 
         ["players"].forEach(this.register);
     }

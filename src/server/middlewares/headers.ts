@@ -1,11 +1,10 @@
-import Config from "@/config/server";
-
 import { NextFunction, Request, Response } from "express";
 
 const headers: Record<string, string> = {
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Origin": "http://localhost:63342",
     "Access-Control-Allow-Headers": "Set-Cookie",
+    "Accept-Encoding": "gzip, deflate, identity",
     "Content-Security-Policy":
         "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
     "Cross-Origin-Opener-Policy": "same-origin",
@@ -26,10 +25,6 @@ export default (_request: Request, response: Response, next: NextFunction) => {
     Object.keys(headers).forEach((key: keyof typeof headers): void => {
         response.setHeader(key, headers[key] as string);
     });
-
-    if (new Config().getCompression()) {
-        response.set("Content-Encoding", "gzip");
-    }
 
     response.removeHeader("X-Powered-By");
 

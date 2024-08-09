@@ -25,4 +25,8 @@ export default class Data {
 
         return data;
     };
+
+    public getDatabase = (): Database => {
+        return this.database;
+    };
 }

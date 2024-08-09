@@ -1,16 +1,16 @@
 import Data from "@/services/data";
-import Handler from "@/server/handlers";
+import ResourceHandler from "@/server/handlers";
 import { Method, MethodKey } from "@/models/method";
 
 import { Router } from "express";
 
 export default class Route {
-    private readonly handler: Handler;
+    private readonly handler: ResourceHandler;
     private readonly router: Router;
 
     constructor(data: Data, paths: string[] = ["/", "/:id"]) {
         this.router = Router();
-        this.handler = new Handler(data);
+        this.handler = new ResourceHandler(data);
 
         paths.forEach(this.register);
     }
