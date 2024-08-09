@@ -30,9 +30,6 @@
   "license": "Apache-2.0",
   "main": "./src",
   "name": "basketball",
-  "overrides": {
-    "eslint": "^9.6.0"
-  },
   "prettier": {
     "tabWidth": 4
   },

@@ -8,11 +8,19 @@ export default class Server extends Config {
     constructor() {
         const DEFAULT: ConfigType.Server = {
             compression: true,
-            expireTime: "30m",
+            cookie: {
+                httpOnly: true,
+                maxAge: 60 * 60 * 24,
+                sameSite: "strict",
+                secure: true,
+            },
             host:
                 process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
             port: 3000,
-            tokenKey: "your-token-key",
+            token: {
+                secret: "your-token-secret",
+                expiresIn: "1d",
+            },
             version: 1,
         };
 
@@ -27,6 +35,30 @@ export default class Server extends Config {
         );
     };
 
+    public getCookieOptions = (): Cookie => {
+        console.log(
+            Boolean.apply(process.env.SERVER_COOKIE_HTTP_ONLY) ??
+                this.DEFAULT.cookie.httpOnly,
+        );
+
+        return <Cookie>{
+            httpOnly: Boolean.apply(
+                process.env.SERVER_COOKIE_HTTP_ONLY ??
+                    this.DEFAULT.cookie.httpOnly,
+            ),
+            maxAge: parseInt(
+                process.env.SERVER_COOKIE_MAX_AGE ??
+                    `${this.DEFAULT.cookie.maxAge}`,
+            ),
+            sameSite:
+                process.env.SERVER_COOKIE_SAME_SITE ??
+                this.DEFAULT.cookie.sameSite,
+            secure: Boolean.apply(
+                process.env.SERVER_COOKIE_SECURE ?? this.DEFAULT.cookie.secure,
+            ),
+        };
+    };
+
     public getHost = (): string => {
         return process.env.SERVER_HOST ?? this.DEFAULT.host;
     };
@@ -35,14 +67,15 @@ export default class Server extends Config {
         return parseInt(process.env.SERVER_PORT ?? `${this.DEFAULT.port}`);
     };
 
-    public getTokenKey = (): jwt.Secret => {
-        return process.env.SERVER_TOKEN_KEY ?? this.DEFAULT.tokenKey;
+    public getTokenSecret = (): jwt.Secret => {
+        return process.env.SERVER_TOKEN_SECRET ?? this.DEFAULT.token.secret;
     };
 
     public getTokenOptions = (): jwt.SignOptions => {
         return {
             expiresIn:
-                process.env.SERVER_EXPIRE_TIME ?? this.DEFAULT.expireTime,
+                process.env.SERVER_TOKEN_EXPIRES_IN ??
+                this.DEFAULT.token.expiresIn,
         };
     };
 

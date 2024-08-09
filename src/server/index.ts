@@ -36,8 +36,6 @@ export default class Server {
         }
 
         this.server.listen(this.config.getPort(), this.config.getHost());
-
-        setTimeout(this.close, 1000);
     };
 
     public close = (): void => {

@@ -3,6 +3,18 @@ interface Connection {
     port: number;
 }
 
+interface Cookie {
+    httpOnly: boolean;
+    maxAge: number;
+    sameSite: "strict" | "lax" | "none";
+    secure: boolean;
+}
+
+interface Token {
+    secret: Secret;
+    expiresIn: string;
+}
+
 namespace ConfigType {
     interface Cache extends Connection {
         user: string;
@@ -16,8 +28,8 @@ namespace ConfigType {
 
     interface Server extends Connection {
         compression: boolean;
-        expireTime: string;
-        tokenKey: Secret;
+        cookie: Cookie;
+        token: Token;
         version: number;
     }
 }

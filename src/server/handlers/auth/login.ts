@@ -1,10 +1,10 @@
 import Config from "@/config/server";
 import Database from "@/services/data/database";
 import { UnauthorizedError } from "@/server/router/error";
+import { User } from "@/models/resources/user";
 
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { User } from "@/models/resources/user";
 
 export default async (request: Request, response: Response): Promise<void> => {
     const { email, password } = request.body;
@@ -28,23 +28,34 @@ export default async (request: Request, response: Response): Promise<void> => {
             {
                 email,
             },
-            new Config().getTokenKey(),
-            new Config().getTokenOptions(),
+            new Config().getTokenSecret(),
+            {
+                expiresIn: "1m",
+            },
         ),
         refresh: jwt.sign(
             {
                 email,
             },
-            new Config().getTokenKey(),
+            new Config().getTokenSecret(),
             new Config().getTokenOptions(),
         ),
     };
 
-    const json: string = JSON.stringify(tokens);
+    response
+        .status(302)
+        .cookie("access_token", tokens.access, new Config().getCookieOptions())
+        .cookie(
+            "refresh_token",
+            tokens.refresh,
+            new Config().getCookieOptions(),
+        );
 
-    response.status(200);
-
-    response.write(json);
+    response.write(
+        JSON.stringify({
+            message: "Log in successfully",
+        }),
+    );
 
     response.end();
 };

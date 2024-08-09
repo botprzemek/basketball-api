@@ -22,7 +22,7 @@ export default class Config {
         this.load();
     }
 
-    private load(): void {
+    private load = (): void => {
         const buffer: Buffer = this.read();
         const variables: Record<string, string> = this.parse(buffer);
 
@@ -33,19 +33,36 @@ export default class Config {
 
             this.set(`${this.name}_${key}`.toUpperCase(), value);
         });
-    }
+    };
 
-    private generate(config: ConfigTypeType): string[] {
-        return Object.entries(config).map(([key, value]): string =>
-            this.format(key, value),
-        );
-    }
+    private generate = (config: ConfigTypeType): string[] => {
+        const result: string[] = [];
+        const stack: Array<{ obj: any; parentKey: string }> = [
+            { obj: config, parentKey: "" },
+        ];
+
+        while (stack.length > 0) {
+            const { obj, parentKey } = stack.pop()!;
+
+            for (const [key, value] of Object.entries(obj)) {
+                const fullKey = parentKey ? `${parentKey}_${key}` : key;
+
+                if (typeof value === "object" && value !== null) {
+                    stack.push({ obj: value, parentKey: fullKey });
+                } else {
+                    result.push(this.format(fullKey, value as string));
+                }
+            }
+        }
+
+        return result;
+    };
 
     private format(key: string, value: string | number): string {
-        return `${key.toUpperCase()}=${value}\n`;
+        return `${key.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase()}=${value}\n`;
     }
 
-    private match(variables: Record<string, string>, line: string) {
+    private match = (variables: Record<string, string>, line: string): void => {
         const matches: RegExpMatchArray | null = line.match(this.VALUE_MATCH);
 
         if (!(matches && matches[1] && matches[2])) {
@@ -53,9 +70,9 @@ export default class Config {
         }
 
         variables[matches[1]] = matches[2];
-    }
+    };
 
-    private read(): Buffer {
+    private read = (): Buffer => {
         const path: string = join(
             dirname(fileURLToPath(import.meta.url)),
             "../..",
@@ -71,17 +88,17 @@ export default class Config {
         }
 
         return readFileSync(path);
-    }
+    };
 
-    private set(key: string, value: string): void {
+    private set = (key: string, value: string): void => {
         if (process.env[key] || process.env[key] === value) {
             return;
         }
 
         process.env[key] = value.toString();
-    }
+    };
 
-    private parse(source: Buffer): Record<string, string> {
+    private parse = (source: Buffer): Record<string, string> => {
         const variables: Record<string, string> = {};
 
         source
@@ -90,5 +107,5 @@ export default class Config {
             .forEach((line: string) => this.match(variables, line));
 
         return variables;
-    }
+    };
 }
