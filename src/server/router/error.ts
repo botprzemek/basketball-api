@@ -27,7 +27,7 @@ export class HttpError extends Error {
 export class BadRequestError extends HttpError {
     constructor(response: Response, description: string) {
         const payload: ErrorPayload = {
-            code: 204,
+            code: 400,
         };
 
         super(response, payload);
@@ -37,7 +37,7 @@ export class BadRequestError extends HttpError {
 export class ForbiddenError extends HttpError {
     constructor(response: Response, description: string) {
         const payload: ErrorPayload = {
-            code: 204,
+            code: 403,
         };
 
         super(response, payload);
@@ -47,18 +47,7 @@ export class ForbiddenError extends HttpError {
 export class GoneError extends HttpError {
     constructor(response: Response, description: string) {
         const payload: ErrorPayload = {
-            code: 204,
-        };
-
-        super(response, payload);
-    }
-}
-
-export class InternalError extends HttpError {
-    constructor(response: Response, description: string) {
-        const payload: ErrorPayload = {
-            code: 500,
-            message: `Internal error - ${description}`,
+            code: 410,
         };
 
         super(response, payload);
@@ -101,6 +90,28 @@ export class UnauthorizedError extends HttpError {
         const payload: ErrorPayload = {
             code: 401,
             message: `Unauthorized - ${description}`,
+        };
+
+        super(response, payload);
+    }
+}
+
+export class ConflictError extends HttpError {
+    constructor(response: Response, description: string) {
+        const payload: ErrorPayload = {
+            code: 409,
+            message: `Conflict error - ${description}`,
+        };
+
+        super(response, payload);
+    }
+}
+
+export class InternalError extends HttpError {
+    constructor(response: Response, description: string) {
+        const payload: ErrorPayload = {
+            code: 500,
+            message: `Internal error - ${description}`,
         };
 
         super(response, payload);

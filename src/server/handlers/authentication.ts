@@ -1,5 +1,5 @@
 import { User } from "@/models/resources/user";
-import { UnauthorizedError } from "@/server/router/error";
+import { ConflictError, UnauthorizedError } from "@/server/router/error";
 import Config from "@/config/server";
 
 import { Request, Response } from "express";
@@ -19,9 +19,10 @@ export default class AuthenticationHandler {
     ): Promise<void> => {
         const { email, password } = request.body;
 
-        const [user]: [User?] = await this.data
-            .getDatabase()
-            .test()`SELECT * FROM basketball.users WHERE basketball.users.email = ${email}`;
+        const sql = this.data.getDatabase().test();
+
+        const [user]: [User?] =
+            await sql`SELECT * FROM basketball.users WHERE basketball.users.email = ${email}`;
 
         if (!user || user.password !== password) {
             new UnauthorizedError(
@@ -62,21 +63,36 @@ export default class AuthenticationHandler {
                 "refresh_token",
                 tokens.refresh,
                 new Config().getCookieOptions(),
+            )
+            .end(
+                JSON.stringify({
+                    message: "Logged in successfully.",
+                }),
             );
-
-        response.end(
-            JSON.stringify({
-                message: "Logged in successfully.",
-            }),
-        );
     };
 
     logout = async (request: Request, response: Response): Promise<void> => {};
 
-    register = async (
-        request: Request,
-        response: Response,
-    ): Promise<void> => {};
+    register = async (request: Request, response: Response): Promise<void> => {
+        const { email, password } = request.body;
+
+        const sql = this.data.getDatabase().test();
+
+        const [user]: User[] =
+            await sql`INSERT INTO basketball.users ${sql({ email, password })} ON CONFLICT (email) DO NOTHING RETURNING *`;
+
+        if (!user) {
+            new ConflictError(response, "This e-mail are already used.");
+
+            return;
+        }
+
+        response.status(200).end(
+            JSON.stringify({
+                message: "Registered successfully.",
+            }),
+        );
+    };
 
     verify = async (request: Request, response: Response): Promise<void> => {};
 }

@@ -11,6 +11,7 @@ type ConfigTypeType =
 export default class Config {
     private readonly NEWLINES_MATCH: RegExp = /\r\n|\n|\r/;
     private readonly VALUE_MATCH: RegExp = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/;
+    private readonly ENV_FORMAT: RegExp = /([a-z])([A-Z])/g;
 
     private readonly name: string;
     private readonly config: ConfigTypeType;
@@ -59,7 +60,7 @@ export default class Config {
     };
 
     private format(key: string, value: string | number): string {
-        return `${key.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase()}=${value}\n`;
+        return `${key.replace(this.ENV_FORMAT, "$1_$2").toUpperCase()}=${value}\n`;
     }
 
     private match = (variables: Record<string, string>, line: string): void => {

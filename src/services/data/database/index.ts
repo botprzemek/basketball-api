@@ -32,7 +32,9 @@ export default class Database {
             new Field("updated_at").setType("date"),
         ];
 
-        const userModel: Model = new Model("users").addFields(...userFields);
+        const userModel: Model = new Model(this.sql, "users").addFields(
+            ...userFields,
+        );
 
         const playerFields: Field[] = [
             new Field("id").setType("serial").setPrimary(),
@@ -54,7 +56,7 @@ export default class Database {
                 .setDefault("false"),
         ];
 
-        const playerModel: Model = new Model("players").addFields(
+        const playerModel: Model = new Model(this.sql, "players").addFields(
             ...playerFields,
         );
 

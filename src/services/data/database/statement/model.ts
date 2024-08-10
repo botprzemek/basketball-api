@@ -5,9 +5,11 @@ export default class Model {
     private readonly name: string;
     private readonly fields: Field[];
 
-    constructor(name: string) {
+    constructor(sql: Sql, name: string) {
         this.name = name;
         this.fields = [];
+
+        void sql`CREATE IF NOT EXISTS NAMESPACE basketball`;
     }
 
     public addFields = (...fields: Field[]): Model => {
@@ -24,10 +26,8 @@ export default class Model {
         return this;
     };
 
-    public insert = async (sql: Sql): Promise<Model> => {
-        await sql.unsafe(``);
-
-        return this;
+    public insert = async (sql: Sql, payload: any): Promise<any> => {
+        return sql`INSERT INTO basketball.users ${sql(payload)} RETURNING *`;
     };
 
     public drop = async (sql: Sql): Promise<Model> => {
