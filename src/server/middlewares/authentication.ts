@@ -12,10 +12,7 @@ export default (
     const header: string | undefined = request.headers.authorization;
 
     if (!header) {
-        new UnauthorizedError(
-            response,
-            "Please provide a valid authorization token.",
-        );
+        new UnauthorizedError(response, "Please provide a valid access token.");
 
         return;
     }
@@ -23,10 +20,7 @@ export default (
     const token = header.split(" ")[1];
 
     if (!token) {
-        new UnauthorizedError(
-            response,
-            "Please provide a valid authorization token.",
-        );
+        new UnauthorizedError(response, "Please provide a valid access token.");
 
         return;
     }
@@ -35,13 +29,15 @@ export default (
         token,
         new Config().getTokenSecret(),
         new Config().getTokenOptions(),
-        (_error, _decoded) => {
+        (error, _decoded) => {
+            if (!error) {
+                return;
+            }
+
             new UnauthorizedError(
                 response,
-                "Please provide a valid authorization token.",
+                "Please provide a valid access token.",
             );
-
-            return;
         },
     );
 

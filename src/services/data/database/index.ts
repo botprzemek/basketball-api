@@ -71,9 +71,7 @@ export default class Database {
         await userModel.create(this.sql);
         await playerModel.create(this.sql);
 
-        await this.sql.begin(async (sql: Sql): Promise<void> => {
-            await sql`INSERT INTO basketball.users ${this.sql(users)};`;
-            await sql`INSERT INTO basketball.players ${this.sql(players)};`;
-        });
+        await userModel.insert(this.sql, users);
+        await playerModel.insert(this.sql, players);
     };
 }

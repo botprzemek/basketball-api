@@ -27,7 +27,7 @@ export default class AuthenticationHandler {
         if (!user || user.password !== password) {
             new UnauthorizedError(
                 response,
-                "Please provide a valid login credentials (Email and password).",
+                "Please provide a valid login credentials (E-mail and password).",
             );
 
             return;
@@ -71,9 +71,15 @@ export default class AuthenticationHandler {
             );
     };
 
-    logout = async (request: Request, response: Response): Promise<void> => {};
+    public logout = async (
+        request: Request,
+        response: Response,
+    ): Promise<void> => {};
 
-    register = async (request: Request, response: Response): Promise<void> => {
+    public register = async (
+        request: Request,
+        response: Response,
+    ): Promise<void> => {
         const { email, password } = request.body;
 
         const sql = this.data.getDatabase().test();
@@ -94,5 +100,73 @@ export default class AuthenticationHandler {
         );
     };
 
-    verify = async (request: Request, response: Response): Promise<void> => {};
+    public verify = async (
+        request: Request,
+        response: Response,
+    ): Promise<void> => {
+        const header: string | undefined = request.headers.authorization;
+
+        if (!header) {
+            new UnauthorizedError(
+                response,
+                "Please provide a valid authorization token.",
+            );
+
+            return;
+        }
+
+        const token = header.split(" ")[1];
+
+        if (!token) {
+            new UnauthorizedError(
+                response,
+                "Please provide a valid refresh token.",
+            );
+
+            return;
+        }
+
+        jwt.verify(
+            token,
+            new Config().getTokenSecret(),
+            new Config().getTokenOptions(),
+            (error, decoded) => {
+                if (error || !decoded) {
+                    new UnauthorizedError(
+                        response,
+                        "Please provide a valid refresh token.",
+                    );
+
+                    return;
+                }
+
+                // TODO Decoding of Authorization
+
+                const tokens = {
+                    access: jwt.sign(
+                        {
+                            email: decoded.email,
+                        },
+                        new Config().getTokenSecret(),
+                        {
+                            expiresIn: "1m",
+                        },
+                    ),
+                };
+
+                response
+                    .status(200)
+                    .cookie(
+                        "access_token",
+                        tokens.access,
+                        new Config().getCookieOptions(),
+                    )
+                    .end(
+                        JSON.stringify({
+                            message: "Signed new access token successfully.",
+                        }),
+                    );
+            },
+        );
+    };
 }

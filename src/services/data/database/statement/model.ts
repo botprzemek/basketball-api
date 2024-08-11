@@ -27,7 +27,9 @@ export default class Model {
     };
 
     public insert = async (sql: Sql, payload: any): Promise<any> => {
-        return sql`INSERT INTO basketball.users ${sql(payload)} RETURNING *`;
+        return sql.begin(async (sql: Sql): Promise<void> => {
+            sql`INSERT INTO basketball.${this.name} ${sql(payload)} ON CONFLICT DO NOTHING`;
+        });
     };
 
     public drop = async (sql: Sql): Promise<Model> => {

@@ -1,4 +1,4 @@
-import Authenticate from "@/server/middlewares/authenticate";
+import Authentication from "@/server/middlewares/authentication";
 import AuthenticationHandler from "@/server/handlers/authentication";
 import Data from "@/services/data";
 import Route from "@/server/router/route";
@@ -36,6 +36,6 @@ export default class Router {
     private register = (resource: string): void => {
         const route: RouterInstance = new Route(this.data).get();
 
-        this.router.use(`/${resource}`, Authenticate, route);
+        this.router.use(`/${resource}`, Authentication, route);
     };
 }
