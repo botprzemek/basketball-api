@@ -19,11 +19,7 @@ export default class Data {
             return cachedData;
         }
 
-        const data: Resource[] = await this.database.get(key);
-
-        this.cache.set(key, data);
-
-        return data;
+        return this.cache.set(key, await this.database.get(key));
     };
 
     public getDatabase = (): Database => {

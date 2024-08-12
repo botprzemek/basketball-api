@@ -10,8 +10,7 @@ export default class Database {
     private readonly sql: Sql;
 
     constructor() {
-        const config: Config = new Config();
-        this.sql = postgres(config.getUrl(), config.getOptions());
+        this.sql = postgres(new Config().getUrl(), new Config().getOptions());
     }
 
     public test = (): Sql => {
@@ -19,24 +18,28 @@ export default class Database {
     };
 
     public get = async (name: string): Promise<any[]> => {
-        return this.sql`SELECT * FROM basketball.${this.sql(name)}`;
+        return new Model(name, this.sql).get();
     };
 
     public initialize = async (): Promise<void> => {
-        const userFields: Field[] = [
+        await this.sql`
+            DROP SCHEMA IF EXISTS basketball CASCADE;
+            CREATE SCHEMA IF NOT EXISTS basketball;
+            CREATE TYPE basketball.position_enum AS ENUM ('PG', 'SG', 'SF', 'PF', 'C');
+        `.simple();
+
+        const userModel: Model = new Model("users", this.sql).addFields(
             new Field("id").setType("serial").setPrimary(),
             new Field("email").setType("varchar").setNotNull().setUnique(),
             new Field("password").setType("varchar").setNotNull(),
             new Field("last_login").setType("date"),
             new Field("created_at").setType("date").setDefault("now()"),
             new Field("updated_at").setType("date"),
-        ];
-
-        const userModel: Model = new Model(this.sql, "users").addFields(
-            ...userFields,
         );
+        await userModel.create();
+        await userModel.insert(users);
 
-        const playerFields: Field[] = [
+        const playerModel: Model = new Model("players", this.sql).addFields(
             new Field("id").setType("serial").setPrimary(),
             new Field("team_id").setType("serial"),
             new Field("name").setType("varchar").setNotNull(),
@@ -54,24 +57,8 @@ export default class Database {
                 .setType("boolean")
                 .setNotNull()
                 .setDefault("false"),
-        ];
-
-        const playerModel: Model = new Model(this.sql, "players").addFields(
-            ...playerFields,
         );
-
-        await userModel.drop(this.sql);
-        await playerModel.drop(this.sql);
-
-        await this.sql`
-            DROP TYPE IF EXISTS basketball.position_enum;
-            CREATE TYPE basketball.position_enum AS ENUM ('PG', 'SG', 'SF', 'PF', 'C');
-        `.simple();
-
-        await userModel.create(this.sql);
-        await playerModel.create(this.sql);
-
-        await userModel.insert(this.sql, users);
-        await playerModel.insert(this.sql, players);
+        await playerModel.create();
+        await playerModel.insert(players);
     };
 }

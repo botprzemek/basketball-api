@@ -2,6 +2,8 @@ import { User } from "@/models/resources/user";
 import { ConflictError, UnauthorizedError } from "@/server/router/error";
 import Config from "@/config/server";
 
+import { hash } from "node:crypto";
+
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import Data from "@/services/data";
@@ -24,12 +26,11 @@ export default class AuthenticationHandler {
         const [user]: [User?] =
             await sql`SELECT * FROM basketball.users WHERE basketball.users.email = ${email}`;
 
-        if (!user || user.password !== password) {
+        if (!user || unhashuser.password !== password) {
             new UnauthorizedError(
                 response,
                 "Please provide a valid login credentials (E-mail and password).",
             );
-
             return;
         }
 
@@ -71,11 +72,6 @@ export default class AuthenticationHandler {
             );
     };
 
-    public logout = async (
-        request: Request,
-        response: Response,
-    ): Promise<void> => {};
-
     public register = async (
         request: Request,
         response: Response,
@@ -84,12 +80,16 @@ export default class AuthenticationHandler {
 
         const sql = this.data.getDatabase().test();
 
+        const data = {
+            email,
+            password: hash("SHA-512", password),
+        };
+
         const [user]: User[] =
-            await sql`INSERT INTO basketball.users ${sql({ email, password })} ON CONFLICT (email) DO NOTHING RETURNING *`;
+            await sql`INSERT INTO basketball.users ${sql(data)} ON CONFLICT (email) DO NOTHING RETURNING *`;
 
         if (!user) {
-            new ConflictError(response, "This e-mail are already used.");
-
+            new ConflictError(response, "These credentials are already used.");
             return;
         }
 
@@ -104,69 +104,71 @@ export default class AuthenticationHandler {
         request: Request,
         response: Response,
     ): Promise<void> => {
-        const header: string | undefined = request.headers.authorization;
+        const cookies = request.cookies;
 
-        if (!header) {
+        if (!cookies) {
             new UnauthorizedError(
                 response,
                 "Please provide a valid authorization token.",
             );
-
             return;
         }
 
-        const token = header.split(" ")[1];
+        const refreshToken: string | undefined = cookies.refresh_token;
 
-        if (!token) {
+        if (!refreshToken) {
             new UnauthorizedError(
                 response,
                 "Please provide a valid refresh token.",
             );
-
             return;
         }
 
-        jwt.verify(
-            token,
+        let payload: JwtPayload | undefined;
+
+        try {
+            payload = jwt.verify(
+                refreshToken,
+                new Config().getTokenSecret(),
+                new Config().getTokenOptions(),
+            ) as JwtPayload;
+        } catch (error) {
+            new UnauthorizedError(
+                response,
+                "Please provide a valid refresh token.",
+            );
+            return;
+        }
+
+        if (!payload || !payload.email) {
+            new UnauthorizedError(
+                response,
+                "Please provide a valid refresh token.",
+            );
+            return;
+        }
+
+        const accessToken: string = jwt.sign(
+            {
+                email: payload.email,
+            },
             new Config().getTokenSecret(),
-            new Config().getTokenOptions(),
-            (error, decoded) => {
-                if (error || !decoded) {
-                    new UnauthorizedError(
-                        response,
-                        "Please provide a valid refresh token.",
-                    );
-
-                    return;
-                }
-
-                // TODO Decoding of Authorization
-
-                const tokens = {
-                    access: jwt.sign(
-                        {
-                            email: decoded.email,
-                        },
-                        new Config().getTokenSecret(),
-                        {
-                            expiresIn: "1m",
-                        },
-                    ),
-                };
-
-                response
-                    .status(200)
-                    .cookie(
-                        "access_token",
-                        tokens.access,
-                        new Config().getCookieOptions(),
-                    )
-                    .end(
-                        JSON.stringify({
-                            message: "Signed new access token successfully.",
-                        }),
-                    );
+            {
+                expiresIn: "1m",
             },
         );
+
+        response
+            .status(200)
+            .cookie(
+                "access_token",
+                accessToken,
+                new Config().getCookieOptions(),
+            )
+            .end(
+                JSON.stringify({
+                    message: "Signed new access token successfully.",
+                }),
+            );
     };
 }

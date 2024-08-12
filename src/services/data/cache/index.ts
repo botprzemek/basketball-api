@@ -20,5 +20,6 @@ export default class Cache {
             "EX",
             new Config().getExpireTime(),
         );
+        return data;
     };
 }

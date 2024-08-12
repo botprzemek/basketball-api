@@ -1,5 +1,4 @@
 import Config from "@/config/server";
-import Controller from "@/server/controllers";
 import Data from "@/services/data";
 import { InternalError, NoContentError } from "@/server/router/error";
 
@@ -8,17 +7,17 @@ import { gzipSync } from "node:zlib";
 import { Request, Response } from "express";
 
 export default class ResourceHandler {
-    protected readonly controller: Controller;
+    protected readonly data: Data;
 
     constructor(data: Data) {
-        this.controller = new Controller(data);
+        this.data = data;
     }
 
     public get = async (
         _request: Request,
         response: Response,
     ): Promise<void> => {
-        const payload = await this.controller.get();
+        const payload = await this.data.get("players");
 
         if (!payload) {
             new InternalError(response, "Data source failure");
@@ -39,7 +38,7 @@ export default class ResourceHandler {
         request: Request,
         response: Response,
     ): Promise<void> => {
-        await this.controller.create(request.body);
+        // await this.controller.create(request.body);
 
         response.status(201);
 
@@ -50,7 +49,7 @@ export default class ResourceHandler {
         request: Request,
         response: Response,
     ): Promise<void> => {
-        await this.controller.update(request.body);
+        // await this.controller.update(request.body);
 
         response.status(204);
 
@@ -61,7 +60,7 @@ export default class ResourceHandler {
         request: Request,
         response: Response,
     ): Promise<void> => {
-        await this.controller.remove(request.body);
+        // await this.controller.remove(request.body);
 
         response.status(204);
 
@@ -79,6 +78,7 @@ export default class ResourceHandler {
 
         if (new Config().getCompression()) {
             response.set("Content-Encoding", "gzip").end(gzipSync(buffer));
+            return;
         }
 
         response.end(buffer);

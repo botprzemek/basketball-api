@@ -6,18 +6,61 @@
 </head>
 <body>
 <h1>Hello!</h1>
+
+<button class="register">Register</button>
+<button class="login">Login</button>
+
+<p class="players">Unauthorized (Need to log in)</p>
+
 <script>
-    fetch("http://localhost:3000/v1/auth/register", {
-        method: "POST",
+    const url = "http://localhost:3000/v1";
+    const options = {
         credentials: "include",
+        mode: "cors",
         headers: {
             "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            email: "test@test.com",
-            password: "Test123"
-        })
+        }
+    };
+    const body = JSON.stringify({
+        email: "brah@brah.com",
+        password: "Brah123"
     });
+
+    const register = document.querySelector(".register");
+    const login = document.querySelector(".login");
+
+    const getPlayers = async () => {
+        const verified = await fetch(`${url}/auth/verify`, {
+            method: "GET",
+            ...options
+        });
+
+        if (verified.status === 401) {
+            return;
+        }
+
+
+        const response = await fetch(`${url}/players`, {
+            method: "GET",
+            ...options
+        });
+
+        console.table(await response.json());
+    };
+
+    getPlayers();
+
+    register.addEventListener("click", () => fetch(`${url}/auth/register`, {
+        method: "POST",
+        body,
+        ...options
+    }));
+
+    login.addEventListener("click", () => fetch(`${url}/auth/login`, {
+        method: "POST",
+        body,
+        ...options
+    }));
 </script>
 </body>
 </html>

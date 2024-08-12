@@ -12,7 +12,7 @@ export default class Server extends Config {
                 httpOnly: true,
                 maxAge: 60 * 60 * 24,
                 sameSite: "strict",
-                secure: true,
+                secure: false,
             },
             host:
                 process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",

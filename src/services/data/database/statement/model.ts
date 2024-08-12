@@ -4,38 +4,32 @@ import Field from "@/services/data/database/statement/field";
 export default class Model {
     private readonly name: string;
     private readonly fields: Field[];
+    private readonly sql: Sql;
 
-    constructor(sql: Sql, name: string) {
+    constructor(name: string, sql: Sql) {
         this.name = name;
         this.fields = [];
-
-        void sql`CREATE IF NOT EXISTS NAMESPACE basketball`;
+        this.sql = sql;
     }
 
     public addFields = (...fields: Field[]): Model => {
         this.fields.push(...fields);
-
         return this;
     };
 
-    public create = async (sql: Sql): Promise<Model> => {
-        await sql.unsafe(
+    public create = async (): Promise<void> => {
+        await this.sql.unsafe(
             `CREATE TABLE IF NOT EXISTS basketball.${this.name} (${this.transformFields()})`,
         );
-
-        return this;
     };
 
-    public insert = async (sql: Sql, payload: any): Promise<any> => {
-        return sql.begin(async (sql: Sql): Promise<void> => {
-            sql`INSERT INTO basketball.${this.name} ${sql(payload)} ON CONFLICT DO NOTHING`;
-        });
+    public insert = async (payload: any): Promise<void> => {
+        await this
+            .sql`INSERT INTO basketball.${this.sql(this.name)} ${this.sql(payload)}`;
     };
 
-    public drop = async (sql: Sql): Promise<Model> => {
-        await sql`DROP TABLE IF EXISTS basketball.${sql(this.name)}`;
-
-        return this;
+    public get = async (): Promise<any[]> => {
+        return this.sql`SELECT * FROM basketball.${this.sql(this.name)}`;
     };
 
     private transformFields = (): string => {
