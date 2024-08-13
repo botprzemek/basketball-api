@@ -3,7 +3,6 @@ import Model from "@/services/data/database/statement/model";
 
 import postgres, { Sql } from "postgres";
 import Field from "@/services/data/database/statement/field";
-import users from "@/services/data/database/mocked/users";
 import players from "@/services/data/database/mocked/players";
 
 export default class Database {
@@ -37,7 +36,6 @@ export default class Database {
             new Field("updated_at").setType("date"),
         );
         await userModel.create();
-        await userModel.insert(users);
 
         const playerModel: Model = new Model("players", this.sql).addFields(
             new Field("id").setType("serial").setPrimary(),

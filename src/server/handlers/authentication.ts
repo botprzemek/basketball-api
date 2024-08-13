@@ -2,11 +2,10 @@ import { User } from "@/models/resources/user";
 import { ConflictError, UnauthorizedError } from "@/server/router/error";
 import Config from "@/config/server";
 
-import { hash } from "node:crypto";
-
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import Data from "@/services/data";
+import Password from "@/models/password";
 
 export default class AuthenticationHandler {
     private readonly data: Data;
@@ -26,7 +25,7 @@ export default class AuthenticationHandler {
         const [user]: [User?] =
             await sql`SELECT * FROM basketball.users WHERE basketball.users.email = ${email}`;
 
-        if (!user || unhashuser.password !== password) {
+        if (!user || !user.password || !Password.compare(user.password, password)) {
             new UnauthorizedError(
                 response,
                 "Please provide a valid login credentials (E-mail and password).",
@@ -82,7 +81,7 @@ export default class AuthenticationHandler {
 
         const data = {
             email,
-            password: hash("SHA-512", password),
+            password: Password.hash(password),
         };
 
         const [user]: User[] =

@@ -1,24 +1,32 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 
 export default class Password {
-    public hash = async (password: string): string => {
-        const salt = randomBytes(16).toString("hex");
-        const buf = scryptSync(password, salt, 64) as Buffer;
+    private static KEY_LENGTH: number = 64;
+    private static ENCODING: BufferEncoding = "hex";
+
+    public static hash = (password: string): string => {
+        const salt = randomBytes(16).toString(this.ENCODING);
+        const buf = scryptSync(password, salt, this.KEY_LENGTH);
         return `${buf.toString("hex")}.${salt}`;
     };
 
-    public compare = async (
-        storedPassword: string,
-        suppliedPassword: string,
-    ): Promise<boolean> => {
-        const [hashedPassword, salt] = storedPassword.split(".");
-        const hashedPasswordBuf = Buffer.from(hashedPassword, "hex");
-        const suppliedPasswordBuf = scryptSync(
-            suppliedPassword,
-            salt,
-            64,
-        ) as Buffer;
+    public static compare = (
+        hash: string,
+        supplied: string,
+    ): boolean => {
+        const [hashed, salt] = hash.split(".");
 
-        return timingSafeEqual(hashedPasswordBuf, suppliedPasswordBuf);
+        if (!hashed || !salt) {
+            return false;
+        }
+
+        const hashedBuf: Buffer = Buffer.from(hashed, this.ENCODING);
+        const suppliedBuf: Buffer = scryptSync(
+            supplied,
+            salt,
+            this.KEY_LENGTH,
+        );
+
+        return timingSafeEqual(hashedBuf, suppliedBuf);
     };
 }
