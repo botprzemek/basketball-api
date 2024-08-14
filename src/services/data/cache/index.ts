@@ -2,6 +2,11 @@ import Config from "@/config/cache";
 
 import { Redis } from "ioredis";
 
+// @ts-ignore
+BigInt.prototype.toJSON = function() {
+    return this.toString()
+}
+
 export default class Cache {
     private readonly instance: Redis;
 
