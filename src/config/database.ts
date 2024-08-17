@@ -11,8 +11,8 @@ export default class Database extends Config {
         const DEFAULT: ConfigType.Database = {
             host: "cockroach",
             port: 26257,
-            user: "root",
-            name: "defaultdb",
+            user: "basketball",
+            name: "basketball"
         };
 
         super("database", DEFAULT);
@@ -22,7 +22,7 @@ export default class Database extends Config {
 
     public getUrl = (): string => {
         return new URL(
-            `postgresql://${this.getUser()}@${this.getHost()}:${this.getPort()}/${this.getName()}?sslmode=disable&application_name=basketball`,
+            `postgresql://${this.getUser()}@${this.getHost()}:${this.getPort()}/${this.getName()}?sslmode=disable&application_name=basketball`
         ).toString();
     };
 

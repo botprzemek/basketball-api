@@ -77,6 +77,12 @@ export default class AuthenticationHandler {
     ): Promise<void> => {
         const { email, password } = request.body;
 
+        const users = await this.data.getCache().get<User>("users");
+
+        if (users) {
+            await this.data.getCache().get<User>("users");
+        }
+
         const sql = this.data.getDatabase().test();
 
         const data = {

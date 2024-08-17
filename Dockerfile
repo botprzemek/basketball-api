@@ -30,7 +30,7 @@ COPY --from=setup --chown=node:node /app/dist ./dist
 
 RUN npm prune --production
 
-# Create a clean environment
+# Run in an clean environment
 
 FROM alpine AS runner
 
@@ -43,10 +43,6 @@ COPY --from=production --chown=node:node /app/node_modules ./node_modules
 COPY --from=production --chown=node:node /app/package*.json .
 
 ENV NODE_ENV=production
-
-ENV SERVER_HOST=0.0.0.0
-ENV SERVER_PORT=3000
-ENV SERVER_VERSION=1
 
 CMD [ "node", "dist/index.js" ]
 

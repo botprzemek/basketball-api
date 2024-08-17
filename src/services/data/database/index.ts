@@ -22,9 +22,8 @@ export default class Database {
 
     public initialize = async (): Promise<void> => {
         await this.sql`
-            DROP SCHEMA IF EXISTS basketball CASCADE;
-            CREATE SCHEMA IF NOT EXISTS basketball;
-            CREATE TYPE basketball.position_enum AS ENUM ('PG', 'SG', 'SF', 'PF', 'C');
+            DROP TYPE basketball.position_enum;
+            CREATE TYPE IF basketball.position_enum AS ENUM ('PG', 'SG', 'SF', 'PF', 'C');
         `.simple();
 
         const userModel: Model = new Model("users", this.sql).addFields(

@@ -22,6 +22,10 @@ export default class Data {
         return this.cache.set(key, await this.database.get(key));
     };
 
+    public getCache = (): Cache => {
+        return this.cache;
+    };
+
     public getDatabase = (): Database => {
         return this.database;
     };

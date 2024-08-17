@@ -8,8 +8,7 @@ export default class Cache extends Config {
             host: "redis",
             port: 6379,
             user: "default",
-            // TODO
-            expireTime: 4,
+            expireTime: 60 * 60
         };
 
         super("cache", DEFAULT);
