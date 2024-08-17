@@ -1,3 +1,6 @@
-/node_modules/
-/prisma/migrations/
+.idea/
+dist/
+node_modules/
+
 .env
+.env.*
