@@ -1,47 +1,20 @@
 services:
-  cockroach:
-    image: "cockroachdb/cockroach:latest"
+  api:
     restart: always
-    ports:
-      - "8080:8080"
-      - "26257:26257"
-    volumes:
-      - type: volume
-        source: cockroach
-        target: /cockroach/cockroach-data
-        volume:
-          nocopy: true
-    command: start-single-node --insecure
-  redis:
-    image: "redis:alpine"
-    restart: always
-    ports:
-      - "6379:6379"
-    volumes:
-      - type: volume
-        source: redis
-        target: /data
-        volume:
-          nocopy: true
-  server:
-    image: "server"
-    restart: always
-    ports:
-      - "3000:3000"
+    networks:
+      - cache
+      - database
+      - gateway
+    image: "basketball-api:latest"
+    container_name: basketball-api
     build: .
-    depends_on:
-      - cockroach
-      - redis
-    links:
-      - cockroach
-      - redis
-
-volumes:
-  cockroach:
-    name: basketball-cockroach
-  redis:
-    name: basketball-redis
+    develop:
+      watch:
+        - action: rebuild
+          path: /src
+    ports:
+      - "0.0.0.0:3000:3000"
 
 networks:
-  default:
-    name: basketball-network
+  gateway:
+    name: basketball-gateway

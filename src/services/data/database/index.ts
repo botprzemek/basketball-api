@@ -21,11 +21,6 @@ export default class Database {
     };
 
     public initialize = async (): Promise<void> => {
-        await this.sql`
-            DROP TYPE basketball.position_enum;
-            CREATE TYPE IF basketball.position_enum AS ENUM ('PG', 'SG', 'SF', 'PF', 'C');
-        `.simple();
-
         const userModel: Model = new Model("users", this.sql).addFields(
             new Field("id").setType("serial").setPrimary(),
             new Field("email").setType("varchar").setNotNull().setUnique(),

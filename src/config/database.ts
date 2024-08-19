@@ -9,10 +9,10 @@ export default class Database extends Config {
 
     constructor() {
         const DEFAULT: ConfigType.Database = {
-            host: "cockroach",
+            host: "basketball-database-1",
             port: 26257,
             user: "basketball",
-            name: "basketball"
+            name: "basketball",
         };
 
         super("database", DEFAULT);
@@ -22,7 +22,7 @@ export default class Database extends Config {
 
     public getUrl = (): string => {
         return new URL(
-            `postgresql://${this.getUser()}@${this.getHost()}:${this.getPort()}/${this.getName()}?sslmode=disable&application_name=basketball`
+            `postgresql://${this.getUser()}@${this.getHost()}:${this.getPort()}/${this.getName()}?sslmode=disable&application_name=basketball`,
         ).toString();
     };
 

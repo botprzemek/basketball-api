@@ -14,6 +14,42 @@ export default class AuthenticationHandler {
         this.data = data;
     }
 
+    public register = async (
+        request: Request,
+        response: Response,
+    ): Promise<void> => {
+        const { email, password } = request.body;
+
+        if (!email || !password) {
+            new UnauthorizedError(
+                response,
+                "Please provide a valid register credentials (E-mail and password).",
+            );
+            return;
+        }
+
+        const sql = this.data.getDatabase().test();
+
+        const data = {
+            email,
+            password: Password.hash(password),
+        };
+
+        const [user]: User[] =
+            await sql`INSERT INTO basketball.users ${sql(data)} ON CONFLICT (email) DO NOTHING RETURNING *`;
+
+        if (!user) {
+            new ConflictError(response, "These credentials are already used.");
+            return;
+        }
+
+        response.status(200).end(
+            JSON.stringify({
+                message: "Registered successfully.",
+            }),
+        );
+    };
+
     public login = async (
         request: Request,
         response: Response,
@@ -25,7 +61,11 @@ export default class AuthenticationHandler {
         const [user]: [User?] =
             await sql`SELECT * FROM basketball.users WHERE basketball.users.email = ${email}`;
 
-        if (!user || !user.password || !Password.compare(user.password, password)) {
+        if (
+            !user ||
+            !user.password ||
+            !Password.compare(user.password, password)
+        ) {
             new UnauthorizedError(
                 response,
                 "Please provide a valid login credentials (E-mail and password).",
@@ -55,12 +95,12 @@ export default class AuthenticationHandler {
         response
             .status(200)
             .cookie(
-                "access_token",
+                "access-token",
                 tokens.access,
                 new Config().getCookieOptions(),
             )
             .cookie(
-                "refresh_token",
+                "refresh-token",
                 tokens.refresh,
                 new Config().getCookieOptions(),
             )
@@ -69,40 +109,6 @@ export default class AuthenticationHandler {
                     message: "Logged in successfully.",
                 }),
             );
-    };
-
-    public register = async (
-        request: Request,
-        response: Response,
-    ): Promise<void> => {
-        const { email, password } = request.body;
-
-        const users = await this.data.getCache().get<User>("users");
-
-        if (users) {
-            await this.data.getCache().get<User>("users");
-        }
-
-        const sql = this.data.getDatabase().test();
-
-        const data = {
-            email,
-            password: Password.hash(password),
-        };
-
-        const [user]: User[] =
-            await sql`INSERT INTO basketball.users ${sql(data)} ON CONFLICT (email) DO NOTHING RETURNING *`;
-
-        if (!user) {
-            new ConflictError(response, "These credentials are already used.");
-            return;
-        }
-
-        response.status(200).end(
-            JSON.stringify({
-                message: "Registered successfully.",
-            }),
-        );
     };
 
     public verify = async (
@@ -119,7 +125,7 @@ export default class AuthenticationHandler {
             return;
         }
 
-        const refreshToken: string | undefined = cookies.refresh_token;
+        const refreshToken: string | undefined = cookies["refresh-token"];
 
         if (!refreshToken) {
             new UnauthorizedError(
@@ -166,7 +172,7 @@ export default class AuthenticationHandler {
         response
             .status(200)
             .cookie(
-                "access_token",
+                "access-token",
                 accessToken,
                 new Config().getCookieOptions(),
             )

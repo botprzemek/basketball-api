@@ -7,6 +7,7 @@ import { NotFoundError } from "@/server/router/error";
 import { createServer, Server as HttpServer } from "node:http";
 
 import express, { json, Request, Response, RouterOptions } from "express";
+import CookieParser from "cookie-parser";
 
 export default class Server {
     private readonly server: HttpServer;
@@ -19,6 +20,7 @@ export default class Server {
         };
 
         const api: express.Express = express()
+            .use(CookieParser())
             .use(json())
             .use(Logger)
             .use(Headers)

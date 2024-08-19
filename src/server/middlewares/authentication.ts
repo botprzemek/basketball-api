@@ -16,7 +16,7 @@ export default (
         return;
     }
 
-    const accessToken: string | undefined = cookies.access_token;
+    const accessToken: string | undefined = cookies["access-token"];
 
     if (!accessToken) {
         new UnauthorizedError(response, "Please provide a valid access token.");

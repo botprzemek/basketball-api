@@ -5,10 +5,10 @@ export default class Cache extends Config {
 
     constructor() {
         const DEFAULT: ConfigType.Cache = {
-            host: "redis",
+            host: "basketball-cache",
             port: 6379,
             user: "default",
-            expireTime: 60 * 60
+            expireTime: 60 * 60,
         };
 
         super("cache", DEFAULT);
