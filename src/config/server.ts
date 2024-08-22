@@ -11,7 +11,7 @@ export default class Server extends Config {
             cookie: {
                 httpOnly: true,
                 maxAge: 60 * 60 * 24,
-                sameSite: "strict",
+                sameSite: "lax",
                 secure: false,
             },
             host:
