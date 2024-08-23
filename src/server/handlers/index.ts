@@ -15,7 +15,7 @@ export default class ResourceHandler {
 
     public get = async (
         _request: Request,
-        response: Response,
+        response: Response
     ): Promise<void> => {
         const payload = await this.data.get("players");
 
@@ -36,7 +36,7 @@ export default class ResourceHandler {
 
     public post = async (
         request: Request,
-        response: Response,
+        response: Response
     ): Promise<void> => {
         // await this.controller.create(request.body);
 
@@ -47,7 +47,7 @@ export default class ResourceHandler {
 
     public put = async (
         request: Request,
-        response: Response,
+        response: Response
     ): Promise<void> => {
         // await this.controller.update(request.body);
 
@@ -58,7 +58,7 @@ export default class ResourceHandler {
 
     public delete = async (
         request: Request,
-        response: Response,
+        response: Response
     ): Promise<void> => {
         // await this.controller.remove(request.body);
 
