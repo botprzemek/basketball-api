@@ -1,16 +1,10 @@
 {
-  "author": "botprzemek",
-  "bugs": {
-    "url": "https://github.com/botprzemek/basketball/issues"
-  },
   "dependencies": {
-    "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
     "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
     "postgres": "^3.4.4"
   },
-  "description": "> [!Caution]\r > <span id=\"status\">Project is still work in progress</span>",
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "^4.17.21",
@@ -21,29 +15,12 @@
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"
   },
-  "engines": {
-    "node": ">=16.0.0"
-  },
-  "homepage": "https://github.com/botprzemek/basketball#readme",
-  "keywords": [
-    "api",
-    "rest"
-  ],
-  "license": "Apache-2.0",
-  "main": "./src",
-  "name": "basketball",
   "prettier": {
     "tabWidth": 4
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/botprzemek/basketball.git"
-  },
   "scripts": {
     "build": "tsc && tsc-alias",
-    "dev": "NODE_ENV=dev tsx watch .",
-    "start": "NODE_ENV=production node ./dist/index.js"
+    "dev": "NODE_ENV=dev tsx watch ."
   },
-  "type": "module",
-  "version": "1.0.0"
+  "type": "module"
 }

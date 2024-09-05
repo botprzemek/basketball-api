@@ -3,6 +3,7 @@
 .idea/
 dist/
 node_modules/
+requests/
 
 .env
 .env.*
