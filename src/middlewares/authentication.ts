@@ -1,5 +1,5 @@
 import Config from "@/config/server";
-import { UnauthorizedError } from "@/server/router/error";
+import { UnauthorizedError } from "@/routes/error";
 
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";

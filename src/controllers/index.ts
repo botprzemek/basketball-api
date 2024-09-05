@@ -1,6 +1,6 @@
 import Config from "@/config/server";
 import Data from "@/services/data";
-import { InternalError, NoContentError } from "@/server/router/error";
+import { InternalError, NoContentError } from "@/routes/error";
 
 import { gzipSync } from "node:zlib";
 

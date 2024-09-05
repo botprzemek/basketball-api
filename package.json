@@ -15,6 +15,7 @@
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"
   },
+  "main": "./src",
   "prettier": {
     "tabWidth": 4
   },

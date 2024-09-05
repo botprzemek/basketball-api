@@ -1,7 +1,7 @@
-import Authentication from "@/server/middlewares/authentication";
-import AuthenticationHandler from "@/server/handlers/authentication";
+import Authentication from "@/middlewares/authentication";
+import AuthenticationHandler from "@/middlewares/authentication";
 import Data from "@/services/data";
-import Route from "@/server/router/route";
+import Route from "@/routes/route";
 
 import { Router as RouterInstance, RouterOptions } from "express";
 
