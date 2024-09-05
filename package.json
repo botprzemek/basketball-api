@@ -12,7 +12,7 @@
     "@types/node": "^22.4.1",
     "prettier": "^3.3.2",
     "tsc-alias": "^1.8.10",
-    "tsx": "^4.17.0",
+    "tsx": "^4.19.0",
     "typescript": "^5.5.4"
   },
   "main": "./src",
