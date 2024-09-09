@@ -1,8 +1,8 @@
 import Config from "@/config/server";
 import Headers from "@/middlewares/headers";
 import Logger from "@/middlewares/logger";
-import Router from "@/routes";
-import { NotFoundError } from "@/routes/error";
+import Router from "@/server/router";
+import { NotFoundError } from "@/handlers/error";
 
 import { createServer, Server as HttpServer } from "node:http";
 

@@ -12,5 +12,4 @@ requests/
 .gitignore
 .prettierignore
 Dockerfile
-LICENSE
 README.md
