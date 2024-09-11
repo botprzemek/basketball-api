@@ -22,14 +22,18 @@ export default class Database extends Config {
 
     public getUrl = (): string => {
         return new URL(
-            `postgresql://${this.getUser()}@${this.getHost()}:${this.getPort()}/${this.getName()}?sslmode=disable&application_name=basketball`,
+            `postgresql://${this.getUser()}@${this.getHost()}:${this.getPort()}/${this.getName()}`,
         ).toString();
     };
 
     public getOptions = () => {
         return {
+            connection: {
+                application_name: this.getName(),
+            },
             debug: true,
             onnotice: (): void => {},
+            ssl: false,
             types: {
                 bigint: postgres.BigInt,
             },

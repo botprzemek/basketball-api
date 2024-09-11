@@ -1,3 +1,8 @@
-import Server from "@/server";
+import query from "@/services/database/query";
 
-new Server().listen();
+const test = async () => {
+    const tested = await query`SHOW TABLES`;
+    console.log(tested);
+}
+
+test();
