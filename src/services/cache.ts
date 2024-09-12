@@ -1,30 +1,15 @@
-import Config from "@/config/cache";
+import { getExpireTime, getUrl } from "@/config/types/cache";
 
 import { Redis } from "ioredis";
 
 // @ts-ignore
-BigInt.prototype.toJSON = function() {
-    return this.toString()
-}
+BigInt.prototype.toJSON = function () {
+    return this.toString();
+};
 
-export default class Cache {
-    private readonly instance: Redis;
+const instance: Redis = new Redis(getUrl());
 
-    constructor() {
-        this.instance = new Redis(new Config().get());
-    }
+export const get = async (key: string): Promise<any[]> => JSON.parse(`${await instance.get(key)}`);
 
-    public get = async <Resource>(key: string): Promise<Resource[]> => {
-        return JSON.parse(`${await this.instance.get(key)}`);
-    };
-
-    public set = (key: string, data: any[]) => {
-        this.instance.set(
-            key,
-            JSON.stringify(data),
-            "EX",
-            new Config().getExpireTime(),
-        );
-        return data;
-    };
-}
+export const set = async (key: string, data: any[]): Promise<"OK"> =>
+    instance.set(key, JSON.stringify(data), "EX", getExpireTime());

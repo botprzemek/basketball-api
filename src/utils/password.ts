@@ -1,32 +1,32 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 
-export default class Password {
-    private static KEY_LENGTH: number = 64;
-    private static ENCODING: BufferEncoding = "hex";
+const KEY_LENGTH: number = 64;
+const ENCODING: BufferEncoding = "hex";
+const OPTIONS: PasswordOptions = {
+    keyLength: KEY_LENGTH,
+    encoding: ENCODING,
+};
 
-    public static hash = (password: string): string => {
-        const salt = randomBytes(16).toString(this.ENCODING);
-        const buf = scryptSync(password, salt, this.KEY_LENGTH);
-        return `${buf.toString("hex")}.${salt}`;
-    };
+const generateSalt = ({ keyLength, encoding }: PasswordOptions = OPTIONS): string =>
+    randomBytes(keyLength * 0.25).toString(encoding);
 
-    public static compare = (
-        hash: string,
-        supplied: string,
-    ): boolean => {
-        const [hashed, salt] = hash.split(".");
+const generateHash = (password: string, salt: string, { keyLength, encoding }: PasswordOptions = OPTIONS): string =>
+    scryptSync(password, salt, keyLength).toString(encoding);
 
-        if (!hashed || !salt) {
-            return false;
-        }
+export const generate = (password: string): string => {
+    const salt: string = generateSalt();
+    return `${generateHash(password, salt)}.${salt}`;
+};
 
-        const hashedBuf: Buffer = Buffer.from(hashed, this.ENCODING);
-        const suppliedBuf: Buffer = scryptSync(
-            supplied,
-            salt,
-            this.KEY_LENGTH,
-        );
+export const compare = (storedHash: string, suppliedPassword: string): boolean => {
+    const [password, salt] = storedHash.split(".");
 
-        return timingSafeEqual(hashedBuf, suppliedBuf);
-    };
-}
+    if (!password || !salt) {
+        return false;
+    }
+
+    const storedBuf: Buffer = Buffer.from(password, ENCODING);
+    const suppliedBuf: Buffer = scryptSync(suppliedPassword, salt, KEY_LENGTH);
+
+    return timingSafeEqual(storedBuf, suppliedBuf);
+};

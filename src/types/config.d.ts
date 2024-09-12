@@ -10,12 +10,16 @@ interface Cookie {
     secure: boolean;
 }
 
+interface Router {
+    mergeParams: boolean;
+}
+
 interface Token {
     secret: Secret;
     expiresIn: string;
 }
 
-namespace ConfigType {
+namespace Config {
     interface Cache extends Connection {
         user: string;
         expireTime: number;
@@ -29,6 +33,7 @@ namespace ConfigType {
     interface Server extends Connection {
         compression: boolean;
         cookie: Cookie;
+        router: Router;
         token: Token;
         version: number;
     }

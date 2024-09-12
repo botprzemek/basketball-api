@@ -3,110 +3,79 @@ import { dirname, join } from "node:path";
 import * as process from "node:process";
 import { fileURLToPath } from "node:url";
 
-type ConfigTypeType =
-    | ConfigType.Cache
-    | ConfigType.Database
-    | ConfigType.Server;
+type ConfigType = Config.Cache | Config.Database | Config.Server;
 
-export default class Config {
-    private readonly NEWLINES_MATCH: RegExp = /\r\n|\n|\r/;
-    private readonly VALUE_MATCH: RegExp = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/;
-    private readonly ENV_FORMAT: RegExp = /([a-z])([A-Z])/g;
+const NEWLINES_MATCH: RegExp = /\r\n|\n|\r/;
+const VALUE_MATCH: RegExp = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/;
+const ENV_FORMAT: RegExp = /([a-z])([A-Z])/g;
 
-    private readonly name: string;
-    private readonly config: ConfigTypeType;
+const format = (key: string, value: string | number, format: RegExp): string =>
+    `${key.replace(format, "$1_$2").toUpperCase()}=${value}\n`;
 
-    constructor(name: string, config: ConfigTypeType) {
-        this.name = name.toLowerCase();
-        this.config = config;
+const generate = (config: ConfigType): string[] => {
+    const result: string[] = [];
+    const stack: Array<{ obj: any; parentKey: string }> = [{ obj: config, parentKey: "" }];
 
-        this.load();
-    }
+    while (stack.length > 0) {
+        const { obj, parentKey } = stack.pop()!;
 
-    private load = (): void => {
-        const buffer: Buffer = this.read();
-        const variables: Record<string, string> = this.parse(buffer);
+        Object.entries(obj).map(([key, value]): void => {
+            const fullKey = parentKey ? `${parentKey}_${key}` : key;
 
-        Object.entries(variables).forEach(([key, value]) => {
-            if (!value) {
+            if (typeof value === "object" && value !== null) {
+                stack.push({ obj: value, parentKey: fullKey });
                 return;
             }
 
-            this.set(`${this.name}_${key}`.toUpperCase(), value);
+            result.push(format(fullKey, value as string, ENV_FORMAT));
         });
-    };
-
-    private generate = (config: ConfigTypeType): string[] => {
-        const result: string[] = [];
-        const stack: Array<{ obj: any; parentKey: string }> = [
-            { obj: config, parentKey: "" },
-        ];
-
-        while (stack.length > 0) {
-            const { obj, parentKey } = stack.pop()!;
-
-            for (const [key, value] of Object.entries(obj)) {
-                const fullKey = parentKey ? `${parentKey}_${key}` : key;
-
-                if (typeof value === "object" && value !== null) {
-                    stack.push({ obj: value, parentKey: fullKey });
-                } else {
-                    result.push(this.format(fullKey, value as string));
-                }
-            }
-        }
-
-        return result;
-    };
-
-    private format(key: string, value: string | number): string {
-        return `${key.replace(this.ENV_FORMAT, "$1_$2").toUpperCase()}=${value}\n`;
     }
 
-    private match = (variables: Record<string, string>, line: string): void => {
-        const matches: RegExpMatchArray | null = line.match(this.VALUE_MATCH);
+    return result;
+};
 
-        if (!(matches && matches[1] && matches[2])) {
-            return;
-        }
+const read = (name: string, config: ConfigType): Buffer => {
+    const path: string = join(dirname(fileURLToPath(import.meta.url)), "../..", `.env.${name}`);
 
-        variables[matches[1]] = matches[2];
-    };
-
-    private read = (): Buffer => {
-        const path: string = join(
-            dirname(fileURLToPath(import.meta.url)),
-            "../..",
-            `.env.${this.name}`,
-        );
-
-        if (!existsSync(path)) {
-            const generated: string = this.generate(this.config).join("");
-
-            writeFileSync(path, generated);
-
-            return Buffer.from(generated);
-        }
-
+    if (existsSync(path)) {
         return readFileSync(path);
-    };
+    }
 
-    private set = (key: string, value: string): void => {
-        if (process.env[key] || process.env[key] === value) {
-            return;
-        }
+    const generated: string = generate(config).join("");
 
-        process.env[key] = value.toString();
-    };
+    writeFileSync(path, generated);
 
-    private parse = (source: Buffer): Record<string, string> => {
-        const variables: Record<string, string> = {};
+    return Buffer.from(generated);
+};
 
-        source
-            .toString()
-            .split(this.NEWLINES_MATCH)
-            .forEach((line: string) => this.match(variables, line));
+const set = (key: string, value: string): string => (process.env[key] = value.toString());
 
-        return variables;
-    };
-}
+const match = (variables: Record<string, string>, line: string, value: RegExp): void => {
+    const matches: RegExpMatchArray | null = line.match(value);
+
+    if (!(matches && matches[1] && matches[2])) {
+        return;
+    }
+
+    variables[matches[1]] = matches[2];
+};
+
+const parse = (source: Buffer, splitter: RegExp): Record<string, string> => {
+    const variables: Record<string, string> = {};
+
+    source
+        .toString()
+        .split(splitter)
+        .forEach((line: string) => match(variables, line, VALUE_MATCH));
+
+    return variables;
+};
+
+export const load = (name: string, config: ConfigType): void => {
+    const buffer: Buffer = read(name, config);
+    const variables: Record<string, string> = parse(buffer, NEWLINES_MATCH);
+
+    Object.entries(variables)
+        .filter(([key, value]) => value && !process.env[key])
+        .map(([key, value]) => set(`${name}_${key}`.toUpperCase(), value));
+};

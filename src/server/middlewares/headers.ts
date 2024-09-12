@@ -23,11 +23,10 @@ const headers: Record<string, string> = {
 };
 
 export default (_request: Request, response: Response, next: NextFunction) => {
+    response.removeHeader("X-Powered-By");
     Object.keys(headers).forEach((key: keyof typeof headers): void => {
         response.setHeader(key, headers[key] as string);
     });
-
-    response.removeHeader("X-Powered-By");
 
     next();
 };

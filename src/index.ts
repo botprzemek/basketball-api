@@ -1,8 +1,3 @@
-import query from "@/services/database/query";
+import { listen } from "@/server";
 
-const test = async () => {
-    const tested = await query`SHOW TABLES`;
-    console.log(tested);
-}
-
-test();
+listen();
