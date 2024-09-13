@@ -1,18 +1,18 @@
-POST http://localhost:3000/
+POST http://localhost:3000/v1/users
 Content-Type: application/json
 
 {
-  "users": [
+  "data": [
     {
-      "email": "name@example.com",
+      "email": "james@example.com",
       "password": "my-secret-password"
     },
     {
-      "email": "name@example.com",
+      "email": "monica@example.com",
       "password": "my-secret-password"
     },
     {
-      "email": "name@example.com",
+      "email": "drake@example.com",
       "password": "my-secret-password"
     }
   ]
