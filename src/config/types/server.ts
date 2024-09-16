@@ -44,7 +44,7 @@ const getConfig = (env: NodeJS.ProcessEnv = process.env): Config.Server => ({
 
 load("server", getConfig());
 
-export const getCompression = (): boolean => getConfig().compression;
+export const useCompression = (): boolean => getConfig().compression;
 
 export const getCookie = (): Cookie => getConfig().cookie;
 

@@ -1,20 +1,28 @@
-import { getCompression } from "@/config/types/server";
-import * as controller from "@/server/controllers/v1/users";
+import { useCompression } from "@/config/types/server";
+import * as controller from "@/server/controllers/users";
 
 import { gzipSync } from "node:zlib";
 
 import express from "express";
+import { isFailure } from "@/utils/error";
 
 export const get = async (
     _request: express.Request,
     response: express.Response,
 ): Promise<void> => {
-    const result = await controller.get();
+    const result: Data<User[]> = await controller.get();
 
     const value: string = JSON.stringify(result);
+
+    if (isFailure(result)) {
+        response.status(result.error.status).end(value);
+        return;
+    }
+
     const buffer: Buffer = Buffer.from(value);
 
-    if (getCompression()) {
+    if (useCompression()) {
+        gzipSync(value);
         response.set("Content-Encoding", "gzip").end(gzipSync(buffer));
         return;
     }

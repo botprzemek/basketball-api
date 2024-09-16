@@ -1,16 +1,20 @@
 import * as database from "@/services/data/database";
 import * as cache from "@/services/data/cache";
+import { success } from "@/utils/error";
 import { generate } from "@/utils/password";
 import filter from "@/utils/filter";
 
-export const find = async (): Promise<User[]> => {
+export const find = async (): Promise<Data<User[]>> => {
     const cached: User[] = await cache.get<User[]>("users");
 
     if (cached && cached.length > 0) {
-        return cached;
+        return success<User[]>(cached);
     }
 
-    return database.get()<User[]>`SELECT *FROM users`;
+    return success<User[]>(
+        await database.get()<User[]>`SELECT *
+                                     FROM users`,
+    );
 };
 
 export const findById = async (id: bigint): Promise<User | undefined> => {
@@ -49,19 +53,16 @@ export const create = async (users: User[]): Promise<void> => {
     await cache.set("users", cached);
 };
 
-// TODO Update handler
-
-export const update = async (users: User[]): Promise<void> => {
-    const test: any = users
-        .map((user: User) => filter(user, ["id"]))
-        .map((user: User) => ({
-            ...user,
-            password: generate(user.password),
-        }));
+export const update = async (user: User): Promise<void> => {
+    user = filter(user, ["id"]);
+    user = {
+        ...user,
+        password: generate(user.password),
+    };
 
     const result = await database.get()<
         User[]
-    >`INSERT INTO users ${database.get()(test)} RETURNING *`;
+    >`UPDATE INTO users ${database.get()(user)} RETURNING *`;
 
     const cached: User[] = (await cache.get("users")) as User[];
 
@@ -74,12 +75,10 @@ export const update = async (users: User[]): Promise<void> => {
     await cache.set("users", cached);
 };
 
-// TODO Remove handler
-
 export const remove = async (id: bigint): Promise<void> => {
-    const result = await database.get()<
-        User[]
-    >`DELETE FROM users WHERE users.id = ${id.toString()}`;
+    const result = await database.get()<User[]>`DELETE
+                                                FROM users
+                                                WHERE users.id = ${id.toString()} RETURNING *`;
 
     const cached: User[] = (await cache.get("users")) as User[];
 

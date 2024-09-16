@@ -1,5 +1,5 @@
 import { getAddress } from "@/config/types/server";
-import { logInfo, logError } from "@/utils/logger";
+import { logError, logInfo } from "@/utils/logger";
 import router from "@/server/router";
 
 import { createServer, Server as HttpServer } from "node:http";
@@ -21,6 +21,7 @@ export const listen = (server: HttpServer = api): void => {
     }
 
     process.on("SIGINT", close);
+    process.on("SIGTERM", close);
     process.on("uncaughtException", (error: Error): void =>
         logError(getAddress().host, [error.stack as string]),
     );

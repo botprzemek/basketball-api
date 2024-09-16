@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { get, getById, post, put, _delete } from "@/server/handlers/v1/users";
+import { _delete, get, getById, post, put } from "@/server/handlers/users";
 
 const router: Router = Router()
     .get("/users", get)

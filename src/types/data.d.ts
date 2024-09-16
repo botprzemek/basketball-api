@@ -1,6 +1,11 @@
-type Excluded<Resource, Omitted> = Omit<Resource, Omitted>;
+type DataError = {
+    status: number;
+    code: number;
+    title: string;
+    message: string;
+};
 
-type Payload<Resource, Omitted> = {
-    data: Excluded<Resource, Omitted>[];
-    error?: Error;
+type Data<Resource> = {
+    data: Resource[];
+    error?: DataError;
 };
