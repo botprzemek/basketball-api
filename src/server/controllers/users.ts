@@ -1,14 +1,12 @@
 import { create, find, remove, update } from "@/services/data/models/user";
 import { failure } from "@/utils/error";
-import postgres from "postgres";
+import { PostgresError } from "postgres";
 
 export const get = async (): Promise<Data<User[]>> => {
     try {
-        return await find();
+        return find();
     } catch (error) {
-        console.log(error);
-
-        if (error instanceof postgres.PostgresError) {
+        if ((error as PostgresError).code === "ENOTFOUND") {
             return failure({
                 code: 500,
                 message: "",
@@ -36,4 +34,5 @@ export const post = async (users: User[]): Promise<any> => await create(users);
 
 export const put = async (users: User[]): Promise<void> => await update(users);
 
-export const _delete = async (id: bigint): Promise<void> => await remove(id);
+export const _delete = async (ids: bigint[]): Promise<void> =>
+    await remove(ids);

@@ -6,6 +6,6 @@ type DataError = {
 };
 
 type Data<Resource> = {
-    data: Resource[];
+    data: Resource;
     error?: DataError;
 };
