@@ -1,38 +1,47 @@
 import * as database from "@/services/data/database";
 import * as cache from "@/services/data/cache";
-import { success } from "@/utils/error";
+import { failure, success } from "@/utils/error";
 import { generate } from "@/utils/password";
 import filter from "@/utils/filter";
-import { TransactionSql } from "postgres";
 
 export const find = async (): Promise<Data<User[]>> => {
     const cached: User[] = await cache.get<User[]>("users");
 
     if (cached && cached.length > 0) {
-        return success<User>(cached);
+        return success<User[]>(cached);
     }
 
-    return success<User>(
+    return success<User[]>(
         await database.get()<User[]>`SELECT *
                                      FROM users`,
     );
 };
 
-export const findById = async (id: bigint): Promise<User | undefined> => {
+export const findById = async (id: bigint): Promise<Data<User[]>> => {
     const cached: User[] = await cache.get<User[]>("users");
 
-    if (cached && cached.length > 0) {
-        const user = cached.find((user: User): boolean => user.id === id);
+    if (cached && cached.length === 0) {
+        const [user]: [User?] = await database.get()`SELECT *
+                                                     FROM users
+                                                     WHERE users.id = ${id.toString()}`;
 
-        if (user) {
-            return user;
+        if (!user) {
+            return failure({
+                code: 404,
+                message: "",
+                status: 404,
+                title: "User not found",
+            });
         }
+
+        return success<User[]>([user]);
     }
 
-    const [user]: [User?] =
-        await database.get()`SELECT * FROM users WHERE users.id = ${id.toString()}`;
+    const user: User | undefined = cached.find(
+        (user: User): boolean => user.id === id,
+    );
 
-    return user;
+    if (user) return success<User[]>([user]);
 };
 
 export const create = async (users: User[]): Promise<void> => {
@@ -47,40 +56,41 @@ export const create = async (users: User[]): Promise<void> => {
         User[]
     >`INSERT INTO users ${database.get()(test)} RETURNING *`;
 
-    const cached: User[] = await cache.get<User[]>("users");
-
-    if (!cached || cached.length === 0) {
-        return;
-    }
-
-    cached.push(...result);
-
-    await cache.set("users", cached);
+    void cache.clear("users");
 };
 
 export const update = async (id: bigint, user: User): Promise<void> => {
-    user = {
-        ...user,
-        password: generate(user.password),
-    };
-
-    const result = await database.get()<
-        User[]
-    >`UPDATE INTO users ${database.get()(user)} WHERE id = ${id.toString()} RETURNING *`;
-
-    const cached: User[] = (await cache.get("users")) as User[];
-
-    if (!cached || cached.length === 0) {
+    if (!id) {
         return;
     }
 
-    cached.push(...result);
+    const path: string = `users/${id}`;
 
-    await cache.set("users", cached);
+    user = {
+        ...user,
+        id: undefined,
+        password: generate(user.password),
+    };
+
+    const [updated]: [User?] =
+        await database.get()`UPDATE INTO users ${database.get()(user)} RETURNING *`;
+
+    if (!updated) {
+        return;
+    }
+
+    await cache.set(path, updated);
 };
 
 export const remove = async (id: bigint): Promise<void> => {
-    await database.get()`DELETE FROM users WHERE id = ${id.toString()}`;
+    const path: string = ;
+    const [result] = await database.get()`DELETE
+                                                FROM users
+                                                WHERE users.id = ${id.toString()} RETURNING *`;
 
-    await cache.clear("users");
+    if (!result) {
+        return;
+    }
+
+    await cache.clear(["users", `users/${id}`]);
 };
