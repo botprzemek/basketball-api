@@ -1,18 +1,12 @@
-export const success = <Resource>(data: Resource[]): Data<Resource[]> => ({
+export const success = (data: Model[]): Data<Model[]> => ({
     data,
 });
 
-export const failure = <Resource>(error: DataError): Data<Resource[]> => ({
+export const failure = (error: DataError): Data<Model[]> => ({
     data: [],
     error,
 });
 
-export const isFailure = <Resource>(
-    result: Data<Resource[]>,
+export const isFailure = (
+    result: Data<Model[]>,
 ): result is { data: []; error: DataError } => !!result.error;
-
-export const map = <Resource, Transformed>(
-    result: Data<Resource[]>,
-    method: (data: Resource) => Transformed,
-): Data<Resource[] | Transformed[]> =>
-    !isFailure(result) ? { data: result.data.map(method) } : result;

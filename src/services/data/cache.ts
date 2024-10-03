@@ -9,10 +9,13 @@ BigInt.prototype.toJSON = function () {
 
 const instance: Redis = new Redis(getUrl());
 
-export const get = async (key: string): Promise<Model[] | Model> =>
+export const get = async (key: string): Promise<Model[]> =>
     JSON.parse(`${await instance.get(key)}`);
 
-export const set = async (key: string, data: Model[] | Model): Promise<"OK"> =>
+export const getOne = async (key: string): Promise<Model> =>
+    JSON.parse(`${await instance.get(key)}`);
+
+export const set = async (key: string, data: Model | Model[]): Promise<"OK"> =>
     instance.set(key, JSON.stringify(data), "EX", getExpireTime());
 
 export const clear = async (keys: string[]): Promise<number> =>

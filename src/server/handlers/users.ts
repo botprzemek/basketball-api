@@ -3,36 +3,33 @@ import * as controller from "@/server/controllers/users";
 
 import { gzipSync } from "node:zlib";
 
-import express from "express";
+import { Request, Response } from "express";
 import { isFailure } from "@/utils/error";
 
 export const get = async (
-    _request: express.Request,
-    response: express.Response,
+    _request: Request,
+    response: Response,
 ): Promise<void> => {
     const result: Data<User[]> = await controller.get();
 
+    response.status(isFailure(result) ? result.error.status : 200);
+
     const value: string = JSON.stringify(result);
-
-    if (isFailure(result)) {
-        response.status(result.error.status).end(value);
-        return;
-    }
-
     const buffer: Buffer = Buffer.from(value);
 
     if (useCompression()) {
-        gzipSync(value);
-        response.set("Content-Encoding", "gzip").end(gzipSync(buffer));
+        response.set("Content-Encoding", "gzip");
+        response.end(gzipSync(buffer));
+
         return;
     }
 
-    response.status(200).end(buffer);
+    response.end(buffer);
 };
 
 export const getById = async (
-    request: express.Request,
-    response: express.Response,
+    request: Request,
+    response: Response,
 ): Promise<void> => {
     const { id } = request.params;
 
@@ -47,8 +44,8 @@ export const getById = async (
 };
 
 export const post = async (
-    request: express.Request,
-    response: express.Response,
+    request: Request,
+    response: Response,
 ): Promise<void> => {
     const { data } = request.body;
 
@@ -63,9 +60,15 @@ export const post = async (
 };
 
 export const put = async (
-    request: express.Request,
-    response: express.Response,
+    request: Request,
+    response: Response,
 ): Promise<void> => {
+    const { id } = request.params;
+
+    if (!id || !/^\d{16,20}$/.test(id.toString())) {
+        response.status(400).end();
+        return;
+    }
     const { data } = request.body;
 
     if (!data || data.length === 0) {
@@ -73,23 +76,23 @@ export const put = async (
         return;
     }
 
-    await controller.put(data);
+    await controller.put(BigInt(id), data);
 
     response.status(204).end();
 };
 
 export const _delete = async (
-    request: express.Request,
-    response: express.Response,
+    request: Request,
+    response: Response,
 ): Promise<void> => {
-    const { id } = request.query;
+    const { id } = request.params;
 
     if (!id || !/^\d{16,20}$/.test(id.toString())) {
         response.status(400).end();
         return;
     }
 
-    await controller._delete(BigInt(id.toString()));
+    await controller._delete(BigInt(id));
 
     response.status(204).end();
 };

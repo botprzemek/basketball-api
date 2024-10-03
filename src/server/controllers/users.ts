@@ -5,32 +5,10 @@ import {
     remove,
     update,
 } from "@/services/data/models/user";
-import { failure } from "@/utils/error";
-import postgres from "postgres";
 
-export const get = async (): Promise<Data<User[]>> => {
-    try {
-        return find();
-    } catch (error) {
-        if (error instanceof postgres.PostgresError) {
-            return failure({
-                code: 500,
-                message: "",
-                status: 500,
-                title: "Database error",
-            });
-        }
+export const get = async (): Promise<Data<User[]>> => find();
 
-        return failure({
-            code: 500,
-            message: "",
-            status: 500,
-            title: "Server error",
-        });
-    }
-};
-
-export const getById = async (id: bigint): Promise<Data<User | undefined>> => {
+export const getById = async (id: bigint): Promise<Data<User[]>> => {
     return findById(id);
 };
 
