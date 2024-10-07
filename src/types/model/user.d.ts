@@ -1,5 +1,5 @@
 type User = {
-    id?: bigint;
+    id?: string;
     email: string;
     recovery_email?: string;
     password: string;

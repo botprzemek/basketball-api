@@ -1,6 +1,6 @@
 import * as database from "@/services/data/database";
 import * as cache from "@/services/data/cache";
-import { failure, success } from "@/utils/error";
+import { failure, isFailure, success } from "@/utils/error";
 import { generate } from "@/utils/password";
 import filter from "@/utils/filter";
 import postgres from "postgres";
@@ -36,7 +36,7 @@ export const find = async (): Promise<Data<User[]>> => {
     }
 };
 
-export const findById = async (id: bigint): Promise<Data<User[]>> => {
+export const findById = async (id: string): Promise<Data<User[]>> => {
     const cached: User = await cache.getOne(`users/${id}`);
 
     if (cached) {
@@ -45,7 +45,7 @@ export const findById = async (id: bigint): Promise<Data<User[]>> => {
 
     const [user]: [User?] = await database.get()`SELECT *
                                                      FROM users
-                                                     WHERE users.id = ${id.toString()}`;
+                                                 WHERE users.id = ${id}`;
 
     if (!user) {
         return failure({
@@ -74,35 +74,55 @@ export const create = async (users: User[]): Promise<void> => {
     void cache.clear(["users"]);
 };
 
-export const update = async (id: bigint, user: User): Promise<void> => {
-    if (!id) {
-        return;
-    }
-
-    const data = {
-        ...user,
-        id: undefined,
-        password: generate(user.password),
-    };
+export const update = async (id: string, user: User): Promise<Data<User[]>> => {
+    user.password = generate(user.password);
+    delete user.id;
 
     const [updated]: [User?] =
-        await database.get()`UPDATE INTO users ${database.get()(data)} RETURNING *`;
+        await database.get()`UPDATE INTO users ${database.get()(user)} RETURNING *`;
 
     if (!updated) {
-        return;
+        return failure({
+            code: 500,
+            message: "",
+            status: 500,
+            title: "Failed to update user in database",
+        });
     }
 
-    await cache.set(`users/${id}`, updated);
+    void cache.set(`users/${id}`, updated);
+
+    const users: Data<User[]> = await find();
+
+    if (isFailure(users)) {
+        return users;
+    }
+
+    void cache.set("users", users.data);
+
+    return users;
 };
 
-export const remove = async (id: bigint): Promise<void> => {
+export const remove = async (id: string): Promise<Data<DataPayload>> => {
     const [result] = await database.get()`DELETE
                                                 FROM users
-                                                WHERE users.id = ${id.toString()} RETURNING *`;
+                                          WHERE users.id = ${id} RETURNING *`;
 
     if (!result) {
-        return;
+        return failure({
+            code: 500,
+            message: "",
+            status: 500,
+            title: "Failed to remove user from database",
+        });
     }
 
     await cache.clear(["users", `users/${id}`]);
+
+    return success({
+        code: 200,
+        message: "",
+        status: 200,
+        title: "Failed to remove user from database",
+    });
 };
