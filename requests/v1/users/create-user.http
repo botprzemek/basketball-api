@@ -6,14 +6,6 @@ Content-Type: application/json
     {
       "email": "james@example.com",
       "password": "my-secret-password"
-    },
-    {
-      "email": "monica@example.com",
-      "password": "my-secret-password"
-    },
-    {
-      "email": "drake@example.com",
-      "password": "my-secret-password"
     }
   ]
 }

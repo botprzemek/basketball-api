@@ -1,6 +1,4 @@
-export const success = (
-    data: Model[] | DataPayload,
-): Data<Model[] | DataPayload> => ({
+export const success = (data: Model[] | DataPayload): Data<Model[]> => ({
     data,
 });
 

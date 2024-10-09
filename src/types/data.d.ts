@@ -6,6 +6,6 @@ type DataPayload = {
 };
 
 type Data<Resource> = {
-    data: Resource;
+    data: Resource | DataPayload;
     error?: DataPayload;
 };

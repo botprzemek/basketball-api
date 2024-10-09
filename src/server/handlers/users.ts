@@ -1,16 +1,22 @@
 import { useCompression } from "@/config/types/server";
-import * as controller from "@/server/controllers/users";
+import {
+    find,
+    findById,
+    create,
+    update,
+    remove,
+} from "@/services/data/models/user";
 
 import { gzipSync } from "node:zlib";
 
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { isFailure } from "@/utils/error";
 
 export const get = async (
     _request: Request,
     response: Response,
 ): Promise<void> => {
-    const result: Data<User[]> = await controller.get();
+    const result: Data<User[]> = await find();
 
     response.status(isFailure(result) ? result.error.status : 200);
 
@@ -38,9 +44,21 @@ export const getById = async (
         return;
     }
 
-    const result = await controller.getById(BigInt(id));
+    const result: Data<User[]> = await findById(id);
 
-    response.status(200).end(JSON.stringify(result));
+    response.status(isFailure(result) ? result.error.status : 200);
+
+    const value: string = JSON.stringify(result);
+    const buffer: Buffer = Buffer.from(value);
+
+    if (useCompression()) {
+        response.set("Content-Encoding", "gzip");
+        response.end(gzipSync(buffer));
+
+        return;
+    }
+
+    response.end(buffer);
 };
 
 export const post = async (
@@ -54,9 +72,21 @@ export const post = async (
         return;
     }
 
-    await controller.post(data);
+    const result: Data<User[]> = await create(data);
 
-    response.status(201).end();
+    response.status(isFailure(result) ? result.error.status : 200);
+
+    const value: string = JSON.stringify(result);
+    const buffer: Buffer = Buffer.from(value);
+
+    if (useCompression()) {
+        response.set("Content-Encoding", "gzip");
+        response.end(gzipSync(buffer));
+
+        return;
+    }
+
+    response.end(buffer);
 };
 
 export const put = async (
@@ -65,10 +95,11 @@ export const put = async (
 ): Promise<void> => {
     const { id } = request.params;
 
-    if (!id || !/^\d{16,20}$/.test(id.toString())) {
+    if (!id || !/^\d{16,20}$/.test(id)) {
         response.status(400).end();
         return;
     }
+
     const { data } = request.body;
 
     if (!data || data.length === 0) {
@@ -76,9 +107,21 @@ export const put = async (
         return;
     }
 
-    await controller.put(BigInt(id), data);
+    const result: Data<User[]> = await update(id, data);
 
-    response.status(204).end();
+    response.status(isFailure(result) ? result.error.status : 200);
+
+    const value: string = JSON.stringify(result);
+    const buffer: Buffer = Buffer.from(value);
+
+    if (useCompression()) {
+        response.set("Content-Encoding", "gzip");
+        response.end(gzipSync(buffer));
+
+        return;
+    }
+
+    response.end(buffer);
 };
 
 export const _delete = async (
@@ -87,12 +130,24 @@ export const _delete = async (
 ): Promise<void> => {
     const { id } = request.params;
 
-    if (!id || !/^\d{16,20}$/.test(id.toString())) {
+    if (!id || !/^\d{16,20}$/.test(id)) {
         response.status(400).end();
         return;
     }
 
-    await controller._delete(BigInt(id));
+    const result: Data<User[]> = await remove(id);
 
-    response.status(204).end();
+    response.status(isFailure(result) ? result.error.status : 200);
+
+    const value: string = JSON.stringify(result);
+    const buffer: Buffer = Buffer.from(value);
+
+    if (useCompression()) {
+        response.set("Content-Encoding", "gzip");
+        response.end(gzipSync(buffer));
+
+        return;
+    }
+
+    response.end(buffer);
 };
