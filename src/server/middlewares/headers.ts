@@ -22,7 +22,11 @@ const headers: Record<string, string> = {
     "Content-Type": "application/json",
 };
 
-export default (_request: Request, response: Response, next: NextFunction) => {
+export default (
+    _request: Request,
+    response: Response,
+    next: NextFunction,
+): void => {
     response.removeHeader("X-Powered-By");
     Object.keys(headers).forEach((key: keyof typeof headers): void => {
         response.setHeader(key, headers[key] as string);

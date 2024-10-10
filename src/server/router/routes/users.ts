@@ -1,11 +1,13 @@
-import { Router } from "express";
 import { _delete, get, getById, post, put } from "@/server/handlers/users";
+import key from "@/server/middlewares/key";
+
+import { Router } from "express";
 
 const router: Router = Router()
     .get("/users", get)
-    .post("/users", post)
     .get("/users/:id", getById)
-    .put("/users/:id", put)
-    .delete("/users/:id", _delete);
+    .post("/users", key, post)
+    .put("/users/:id", key, put)
+    .delete("/users/:id", key, _delete);
 
 export default router;

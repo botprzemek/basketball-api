@@ -14,7 +14,9 @@ const format = (key: string, value: string | number, format: RegExp): string =>
 
 const generate = (config: ConfigType): string[] => {
     const result: string[] = [];
-    const stack: Array<{ obj: any; parentKey: string }> = [{ obj: config, parentKey: "" }];
+    const stack: Array<{ obj: any; parentKey: string }> = [
+        { obj: config, parentKey: "" },
+    ];
 
     while (stack.length > 0) {
         const { obj, parentKey } = stack.pop()!;
@@ -35,7 +37,11 @@ const generate = (config: ConfigType): string[] => {
 };
 
 const read = (name: string, config: ConfigType): Buffer => {
-    const path: string = join(dirname(fileURLToPath(import.meta.url)), "../..", `.env.${name}`);
+    const path: string = join(
+        dirname(fileURLToPath(import.meta.url)),
+        "../..",
+        `.env.${name}`,
+    );
 
     if (existsSync(path)) {
         return readFileSync(path);
@@ -48,9 +54,14 @@ const read = (name: string, config: ConfigType): Buffer => {
     return Buffer.from(generated);
 };
 
-const set = (key: string, value: string): string => (process.env[key] = value.toString());
+const set = (key: string, value: string): string =>
+    (process.env[key] = value.toString());
 
-const match = (variables: Record<string, string>, line: string, value: RegExp): void => {
+const match = (
+    variables: Record<string, string>,
+    line: string,
+    value: RegExp,
+): void => {
     const matches: RegExpMatchArray | null = line.match(value);
 
     if (!(matches && matches[1] && matches[2])) {
@@ -78,4 +89,8 @@ export const load = (name: string, config: ConfigType): void => {
     Object.entries(variables)
         .filter(([key, value]) => value && !process.env[key])
         .map(([key, value]) => set(`${name}_${key}`.toUpperCase(), value));
+};
+
+export default {
+    load,
 };

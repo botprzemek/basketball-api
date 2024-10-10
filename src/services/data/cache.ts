@@ -1,4 +1,4 @@
-import { getExpireTime, getUrl } from "@/config/types/cache";
+import { getUrl, getExpireTime } from "@/config/types/cache";
 
 import { Redis } from "ioredis";
 
@@ -20,3 +20,10 @@ export const set = async (key: string, data: Model | Model[]): Promise<"OK"> =>
 
 export const clear = async (keys: string[]): Promise<number> =>
     instance.del(keys);
+
+export default {
+    get,
+    getOne,
+    set,
+    clear,
+};

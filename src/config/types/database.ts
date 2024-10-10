@@ -41,3 +41,8 @@ export const getOptions = () => {
         },
     };
 };
+
+export default {
+    getUrl,
+    getOptions,
+};

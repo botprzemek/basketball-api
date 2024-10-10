@@ -7,18 +7,27 @@ const OPTIONS: PasswordOptions = {
     encoding: ENCODING,
 };
 
-const generateSalt = ({ keyLength, encoding }: PasswordOptions = OPTIONS): string =>
+const generateSalt = ({
+    keyLength,
+    encoding,
+}: PasswordOptions = OPTIONS): string =>
     randomBytes(keyLength * 0.25).toString(encoding);
 
-const generateHash = (password: string, salt: string, { keyLength, encoding }: PasswordOptions = OPTIONS): string =>
-    scryptSync(password, salt, keyLength).toString(encoding);
+const generateHash = (
+    password: string,
+    salt: string,
+    { keyLength, encoding }: PasswordOptions = OPTIONS,
+): string => scryptSync(password, salt, keyLength).toString(encoding);
 
 export const generate = (password: string): string => {
     const salt: string = generateSalt();
     return `${generateHash(password, salt)}.${salt}`;
 };
 
-export const compare = (storedHash: string, suppliedPassword: string): boolean => {
+export const compare = (
+    storedHash: string,
+    suppliedPassword: string,
+): boolean => {
     const [password, salt] = storedHash.split(".");
 
     if (!password || !salt) {
@@ -29,4 +38,9 @@ export const compare = (storedHash: string, suppliedPassword: string): boolean =
     const suppliedBuf: Buffer = scryptSync(suppliedPassword, salt, KEY_LENGTH);
 
     return timingSafeEqual(storedBuf, suppliedBuf);
+};
+
+export default {
+    generate,
+    compare,
 };

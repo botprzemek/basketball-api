@@ -25,3 +25,8 @@ export const getUrl = (): string => {
 };
 
 export const getExpireTime = (): number => getConfig().expireTime;
+
+export default {
+    getUrl,
+    getExpireTime,
+};

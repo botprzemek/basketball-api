@@ -1,8 +1,12 @@
-import { logInfo } from "@/utils/logger";
+import logger from "@/utils/logger";
 
 import { NextFunction, Request, Response } from "express";
 
-export default (request: Request, response: Response, next: NextFunction): void => {
+export default (
+    request: Request,
+    response: Response,
+    next: NextFunction,
+): void => {
     const start: Date = new Date();
 
     response.on("finish", (): void => {
@@ -10,7 +14,7 @@ export default (request: Request, response: Response, next: NextFunction): void 
             return;
         }
 
-        logInfo(request.ip, [
+        logger.info(request.ip, [
             response.statusCode,
             request.method.toUpperCase(),
             request.originalUrl,
