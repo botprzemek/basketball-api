@@ -10,7 +10,7 @@ export default (
 ): void => {
     const key: string | string[] | undefined = request.headers["X-API-KEY"];
 
-    if (key !== `${getToken()}`) {
+    if (key !== `${getToken().secret}`) {
         const error = failure({
             code: 403,
             message: "",
