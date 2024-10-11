@@ -8,7 +8,7 @@ export default (
     response: Response,
     next: NextFunction,
 ): void => {
-    const key: string | string[] | undefined = request.headers["X-API-KEY"];
+    const key: string | string[] | undefined = request.headers["X-Api-Key"];
 
     if (key !== `${getToken().secret}`) {
         const error = failure({
