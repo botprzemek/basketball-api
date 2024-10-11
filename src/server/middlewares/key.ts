@@ -8,9 +8,9 @@ export default (
     response: Response,
     next: NextFunction,
 ): void => {
-    const key: string | string[] | undefined = request.headers["X-Api-Key"];
+    const key: string | string[] | undefined = request.headers["x-api-key"];
 
-    if (key !== `${getToken().secret}`) {
+    if (key !== getToken().secret) {
         const error = failure({
             code: 403,
             message: "",
