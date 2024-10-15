@@ -23,9 +23,10 @@ export const listen = (server: HttpServer = api): void => {
 
     process.on("SIGINT", close);
     process.on("SIGTERM", close);
-    process.on("uncaughtException", (error: Error): void =>
-        logger.error(getAddress().host, [error.stack as string]),
-    );
+    process.on("uncaughtException", (error: Error): void => {
+        logger.error(getAddress().host, [error.stack as string]);
+        // TODO Exit request
+    });
 
     server.listen(getAddress().port, getAddress().host, () =>
         logger.info(getAddress().host, [

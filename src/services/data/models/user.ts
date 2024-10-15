@@ -3,22 +3,22 @@ import cache from "@/services/data/cache";
 import { failure, success } from "@/utils/error";
 import { generate } from "@/utils/password";
 
-export const find = async (): Promise<Data<User[]>> => {
-    const cached: User[] = await cache.get("users");
+export const find = async (id?: string): Promise<Data> => {
+    if (!id) {
+        const cached = await cache.get("users");
 
-    if (cached && cached.length > 0) {
-        return success(cached);
+        if (cached && cached.length > 0) {
+            return success(cached);
+        }
+
+        const users: User[] = await database.get()<User[]>`SELECT * FROM users`;
+
+        void cache.set("users", users);
+
+        return success(users);
     }
 
-    const users: User[] = await database.get()<User[]>`SELECT * FROM users`;
-
-    void cache.set("users", users);
-
-    return success(users);
-};
-
-export const findById = async (id: string): Promise<Data<User[]>> => {
-    const cached: User = await cache.getOne(`users/${id}`);
+    const cached = await cache.getOne(`users/${id}`);
 
     if (cached) {
         return success([cached]);
@@ -42,7 +42,7 @@ export const findById = async (id: string): Promise<Data<User[]>> => {
     return success([user]);
 };
 
-export const create = async (users: User[]): Promise<Data<User[]>> => {
+export const create = async (users: User[]): Promise<Data> => {
     users.map((user: User): User => {
         user.password = generate(user.password);
         delete user.id;
@@ -60,7 +60,7 @@ export const create = async (users: User[]): Promise<Data<User[]>> => {
             code: 500,
             message: "",
             status: 500,
-            title: "Failed to create user in database",
+            title: "Failed to create User",
         });
     }
 
@@ -72,7 +72,7 @@ export const create = async (users: User[]): Promise<Data<User[]>> => {
     return success(refreshed);
 };
 
-export const update = async (id: string, user: User): Promise<Data<User[]>> => {
+export const update = async (id: string, user: User): Promise<Data> => {
     user.password = generate(user.password);
     delete user.id;
 
@@ -84,7 +84,7 @@ export const update = async (id: string, user: User): Promise<Data<User[]>> => {
             code: 500,
             message: "",
             status: 500,
-            title: "Failed to update user in database",
+            title: "Failed to update User",
         });
     }
 
@@ -98,7 +98,7 @@ export const update = async (id: string, user: User): Promise<Data<User[]>> => {
     return success(users);
 };
 
-export const remove = async (id: string): Promise<Data<User[]>> => {
+export const remove = async (id: string): Promise<Data> => {
     const [result] = await database.get()`DELETE
                                                 FROM users
                                           WHERE users.id = ${id} RETURNING *`;
@@ -122,4 +122,4 @@ export const remove = async (id: string): Promise<Data<User[]>> => {
     });
 };
 
-export default { find, findById, create, update, remove };
+export default { find, create, update, remove };

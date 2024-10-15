@@ -1,9 +1,9 @@
 import user from "@/services/data/models/user";
+import validate from "@/utils/validate";
 import send from "@/utils/send";
+import { failure } from "@/utils/error";
 
 import { Request, Response } from "express";
-import { failure } from "@/utils/error";
-import validate from "@/utils/validate";
 
 export const get = async (
     _request: Request,
@@ -19,7 +19,7 @@ export const getById = async (
     const { id } = request.params;
 
     if (!validate.id(id)) {
-        const error = failure({
+        const error: Data = failure({
             code: 400,
             message: "",
             status: 400,
@@ -31,7 +31,7 @@ export const getById = async (
         return;
     }
 
-    send(await user.findById(id), response);
+    send(await user.find(id), response);
 };
 
 export const post = async (
@@ -41,7 +41,7 @@ export const post = async (
     const { data } = request.body;
 
     if (!validate.data(data)) {
-        const error = failure({
+        const error: Data = failure({
             code: 400,
             message: "",
             status: 400,
@@ -53,7 +53,7 @@ export const post = async (
         return;
     }
 
-    send(await user.create(data), response);
+    send(await user.create(data as User[]), response);
 };
 
 export const put = async (
@@ -63,7 +63,7 @@ export const put = async (
     const { id } = request.params;
 
     if (!validate.id(id)) {
-        const error = failure({
+        const error: Data = failure({
             code: 400,
             message: "",
             status: 400,
@@ -78,7 +78,7 @@ export const put = async (
     const { data } = request.body;
 
     if (!validate.data(data)) {
-        const error = failure({
+        const error: Data = failure({
             code: 400,
             message: "",
             status: 400,
@@ -100,7 +100,7 @@ export const _delete = async (
     const { id } = request.params;
 
     if (!validate.id(id)) {
-        const error = failure({
+        const error: Data = failure({
             code: 400,
             message: "",
             status: 400,
