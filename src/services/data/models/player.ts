@@ -12,7 +12,7 @@ export const find = async (id?: string): Promise<Data> => {
 
         const players: Player[] = await database.get()<
             Player[]
-        >`SELECT * FROM players, identities WHERE players.identity_id = identities.id`;
+        >`SELECT * FROM players_identities`;
 
         // TODO
 
