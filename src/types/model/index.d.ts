@@ -1,1 +1,1 @@
-type Model = User | Player;
+type Model = User | Player | AuthToken;

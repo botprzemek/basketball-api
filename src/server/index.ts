@@ -4,16 +4,6 @@ import { getAddress } from "@/config/types/server";
 
 import { createServer, Server as HttpServer } from "node:http";
 
-const close = (): void => {
-    logger.info(getAddress().host, ["LISTEN", `Closing API server`]);
-
-    api.close((err) => {
-        logger.info(getAddress().host, ["LISTEN", `Stopped API server`]);
-
-        process.exit(err ? 1 : 0);
-    });
-};
-
 const api: HttpServer = createServer(router);
 
 export const listen = (server: HttpServer = api): void => {
@@ -34,4 +24,19 @@ export const listen = (server: HttpServer = api): void => {
             `Started API server on port ${getAddress().port}`,
         ]),
     );
+};
+
+export const close = (): void => {
+    logger.info(getAddress().host, ["LISTEN", `Closing API server`]);
+
+    api.close((err) => {
+        logger.info(getAddress().host, ["LISTEN", `Stopped API server`]);
+
+        process.exit(err ? 1 : 0);
+    });
+};
+
+export default {
+    listen,
+    close,
 };

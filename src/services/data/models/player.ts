@@ -2,34 +2,41 @@ import database from "@/services/data/database";
 import cache from "@/services/data/cache";
 import { failure, success } from "@/utils/error";
 
-export const find = async (id?: string): Promise<Data> => {
-    if (!id) {
-        const cached = await cache.get("players");
+export const find = async (user: User): Promise<Data> => {
+    const cached = await cache.get(`${user.id}/players`);
 
-        if (cached && cached.length > 0) {
-            return success(cached);
-        }
-
-        const players: Player[] = await database.get()<
-            Player[]
-        >`SELECT * FROM players_identities`;
-
-        // TODO
-
-        void cache.set("players", players);
-
-        return success(players);
+    if (cached && cached.length > 0) {
+        return success(cached);
     }
 
-    const cached = await cache.getOne(`players/${id}`);
+    const players: Player[] = await database.get()<Player[]>`
+        SELECT *
+        FROM
+            players_identities,
+            users
+        WHERE
+            players_identities.user_id = users.id
+        AND
+            users.id = ${user.id}`;
+    // TODO
+
+    void cache.set(`${user.id}/players`, players);
+
+    return success(players);
+};
+
+export const findById = async (user: User, id?: UUID): Promise<Data> => {
+    const cached = await cache.getOne(`${user.id}/players/${id}`);
 
     if (cached) {
         return success([cached]);
     }
 
     const [player]: [Player?] = await database.get()`SELECT *
-                                                     FROM players
-                                                 WHERE players.id = ${id}`;
+                                                 FROM
+                                                     players_identities
+                                                 WHERE
+                                                     players_identities.id = ${id}`;
 
     if (!player) {
         return failure({
@@ -40,12 +47,12 @@ export const find = async (id?: string): Promise<Data> => {
         });
     }
 
-    void cache.set(`players/${id}`, player);
+    void cache.set(`${user.id}/players/${id}`, player);
 
     return success([player]);
 };
 
-export const create = async (players: Player[]): Promise<Data> => {
+export const create = async (players: Model[]): Promise<Data> => {
     const result = await database.get()<
         Player[]
     >`INSERT INTO players ${database.get()(players)} RETURNING *`;
@@ -116,4 +123,4 @@ export const remove = async (id: string): Promise<Data> => {
     });
 };
 
-export default { find, create, update, remove };
+export default { find, findById, create, update, remove };

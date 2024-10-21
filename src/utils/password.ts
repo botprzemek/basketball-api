@@ -2,6 +2,7 @@ import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 
 const KEY_LENGTH: number = 64;
 const ENCODING: BufferEncoding = "hex";
+
 const OPTIONS: PasswordOptions = {
     keyLength: KEY_LENGTH,
     encoding: ENCODING,

@@ -1,12 +1,12 @@
-// import { _delete, get, getById, post, put } from "@/server/handlers/team";
+import { _delete, get, getById, post, put } from "@/server/handlers/players";
 
 import { Router } from "express";
 
-const router: Router = Router();
-// .get("/teams", get)
-// .get("/teams:id", getById)
-// .post("/teams", post)
-// .put("teams/:id", put)
-// .delete("/teams", _delete);
+const router: Router = Router()
+    .get("/", get)
+    .get("/:id", getById)
+    .post("/", post)
+    .put("/:id", put)
+    .delete("/:id", _delete);
 
 export default router;

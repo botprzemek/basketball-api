@@ -17,7 +17,12 @@ const DEFAULT: Config.Server = {
     },
     token: {
         secret: "your-token-secret",
-        expiresIn: "1d",
+        refreshOptions: {
+            expiresIn: "1w",
+        },
+        accessOptions: {
+            expiresIn: "1h",
+        },
     },
     version: 1,
 };
@@ -47,7 +52,16 @@ const getConfig = (env: NodeJS.ProcessEnv = process.env): Config.Server => ({
     },
     token: {
         secret: env.SERVER_TOKEN_SECRET ?? DEFAULT.token.secret,
-        expiresIn: env.SERVER_TOKEN_EXPIRES_IN ?? DEFAULT.token.expiresIn,
+        refreshOptions: {
+            expiresIn:
+                env.SERVER_TOKEN_REFRESH_OPTIONS_EXPIRES_IN ??
+                DEFAULT.token.refreshOptions.expiresIn,
+        },
+        accessOptions: {
+            expiresIn:
+                env.SERVER_TOKEN_ACCESS_OPTIONS_EXPIRES_IN ??
+                DEFAULT.token.accessOptions.expiresIn,
+        },
     },
     version: parseInt(env.SERVER_VERSION ?? `${DEFAULT.version}`),
 });

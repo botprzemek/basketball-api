@@ -1,5 +1,5 @@
 interface Player extends Identity {
-    id?: string;
+    id?: UUID;
     user_id: UUID;
     team_id: UUID;
     nickname: string;

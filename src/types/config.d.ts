@@ -14,9 +14,14 @@ interface Router {
     mergeParams: boolean;
 }
 
+interface TokenOptions {
+    expiresIn: string;
+}
+
 interface Token {
     secret: Secret;
-    expiresIn: string;
+    refreshOptions: TokenOptions;
+    accessOptions: TokenOptions;
 }
 
 namespace Config {
