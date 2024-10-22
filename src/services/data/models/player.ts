@@ -3,21 +3,20 @@ import cache from "@/services/data/cache";
 import { failure, success } from "@/utils/error";
 
 export const find = async (user: User): Promise<Data> => {
+    if (!user.id) {
+        return failure({ code: 0, message: "", status: 0, title: "" });
+    }
+
     const cached = await cache.get(`${user.id}/players`);
 
     if (cached && cached.length > 0) {
         return success(cached);
     }
 
-    const players: Player[] = await database.get()<Player[]>`
+    const players: Player[] = await database.get()`
         SELECT *
-        FROM
-            players_identities,
-            users
-        WHERE
-            players_identities.user_id = users.id
-        AND
-            users.id = ${user.id}`;
+        FROM players_identities
+        WHERE players_identities.user_id = ${user.id.toString()}`;
     // TODO
 
     void cache.set(`${user.id}/players`, players);

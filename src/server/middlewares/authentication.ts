@@ -28,7 +28,13 @@ export default (
     }
 
     try {
-        request.user = jwt.verify(token, getToken().secret).user;
+        const payload = jwt.verify(token, getToken().secret);
+
+        if (typeof payload === "string") {
+            return send(INVALID_TOKEN, response);
+        }
+
+        request.user = payload.user;
     } catch (error) {
         return send(INVALID_TOKEN, response);
     }
