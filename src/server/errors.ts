@@ -16,16 +16,16 @@ export const INVALID_TOKEN: Data = failure({
 
 export const ID_NOT_VALID: Data = failure({
     code: 400,
-    message: "",
+    message: "ID is not valid",
     status: 400,
-    title: "Player ID is not valid",
+    title: "",
 });
 
 export const DATA_NOT_VALID: Data = failure({
     code: 400,
     message: "",
     status: 400,
-    title: "User Data is not valid",
+    title: "Data is not valid",
 });
 
 export default {

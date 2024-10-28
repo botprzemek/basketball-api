@@ -1,5 +1,5 @@
 interface Identity {
-    identities_id: UUID;
+    id?: UUID;
     user_id: UUID;
     first_name: string;
     last_name: string;

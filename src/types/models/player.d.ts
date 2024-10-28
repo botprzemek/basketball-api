@@ -1,7 +1,8 @@
-interface Player extends Identity {
+interface Player {
     id?: UUID;
     user_id: UUID;
     team_id: UUID;
+    identity: Identity;
     nickname: string;
     number: number;
     position: "PG" | "SG" | "SF" | "PF" | "C";

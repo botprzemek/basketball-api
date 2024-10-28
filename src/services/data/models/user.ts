@@ -2,23 +2,24 @@ import database from "@/services/data/database";
 import cache from "@/services/data/cache";
 import { failure, success } from "@/utils/error";
 import { generate } from "@/utils/password";
+import { TransactionSql } from "postgres";
 
-export const find = async (id?: string): Promise<Data> => {
-    if (!id) {
-        const cached = await cache.get("users");
+export const find = async (): Promise<Data> => {
+    const cached: User[] = await cache.get<User[]>("users");
 
-        if (cached && cached.length > 0) {
-            return success(cached);
-        }
-
-        const users: User[] = await database.get()<User[]>`SELECT * FROM users`;
-
-        void cache.set("users", users);
-
-        return success(users);
+    if (cached && cached.length > 0) {
+        return success(cached);
     }
 
-    const cached = await cache.getOne(`users/${id}`);
+    const users: User[] = await database.get()<User[]>`SELECT * FROM users`;
+
+    void cache.set("users", users);
+
+    return success(users);
+};
+
+export const findById = async (id: UUID): Promise<Data> => {
+    const cached = await cache.get<User>(`users/${id}`);
 
     if (cached) {
         return success([cached]);
@@ -42,16 +43,32 @@ export const find = async (id?: string): Promise<Data> => {
     return success([user]);
 };
 
-export const create = async (users: User[]): Promise<Data> => {
-    users.map((user: User): User => {
-        user.password = generate(user.password);
-        delete user.id;
-        return user;
-    });
+export const create = async (data: User): Promise<Data> => {
+    const result: User = await database
+        .get()
+        .begin(async (sql: TransactionSql): Promise<User> => {
+            data.password = generate(data.password);
 
-    const result = await database.get()<
-        User[]
-    >`INSERT INTO users ${database.get()(users)} RETURNING *`;
+            const [identity]: [Identity] = await sql`
+                INSERT INTO identities ${sql(data.identity)} RETURNING *
+            `;
+
+            delete data.identity;
+
+            const [user]: [User] = await sql`
+                INSERT INTO users ${sql({
+                    ...data,
+                    identity_id: identity.id,
+                })} RETURNING *
+            `;
+
+            return {
+                ...user,
+                identity,
+            };
+        });
+
+    console.log(result);
 
     void cache.clear(["users"]);
 

@@ -11,7 +11,7 @@ const route = (resource: any): Router =>
         .get("/:id", getById(resource.findById))
         .post("/", post(resource.create))
         .put("/:id", put(resource.update))
-        .delete("/:id", _delete(resource._delete));
+        .delete("/:id", _delete(resource.remove));
 
 export const routes: Router = Router(getRouter())
     .use("/auth", auth)
