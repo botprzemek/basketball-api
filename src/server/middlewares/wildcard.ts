@@ -1,5 +1,6 @@
 import { failure } from "@/utils/error";
 import send from "@/utils/send";
+
 import { Request, Response } from "express";
 
 export default (_request: Request, response: Response): void =>

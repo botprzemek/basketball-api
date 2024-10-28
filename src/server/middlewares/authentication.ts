@@ -1,5 +1,5 @@
 import { getToken } from "@/config/types/server";
-import { INVALID_TOKEN, TOKEN_NOT_FOUND } from "@/server/errors/authentication";
+import { INVALID_TOKEN, TOKEN_NOT_FOUND } from "@/server/errors/errors";
 import send from "@/utils/send";
 
 import { NextFunction, Request, Response } from "express";

@@ -114,12 +114,14 @@ export const remove = async (id: string): Promise<Data> => {
 
     void cache.clear(["users", `users/${id}`]);
 
-    return success({
-        code: 200,
-        message: "",
-        status: 200,
-        title: "Successfully removed User",
-    });
+    return success([
+        {
+            code: 200,
+            message: "",
+            status: 200,
+            title: "Successfully removed User",
+        },
+    ]);
 };
 
 export default { find, create, update, remove };

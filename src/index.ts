@@ -1,1 +1,1 @@
-import("@/server").then((_) => _.listen());
+import("@/server").then((_) => _.default());

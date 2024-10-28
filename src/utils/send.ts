@@ -1,11 +1,9 @@
+import { Response } from "express";
 import { isFailure } from "@/utils/error";
 import { useCompression } from "@/config/types/server";
-
 import { gzipSync } from "node:zlib";
 
-import { Response } from "express";
-
-export default (data: Data, response: Response, status?: number): void => {
+export const send = (data: Data, response: Response, status?: number): void => {
     response.status(status || 200);
 
     if (isFailure(data)) {
@@ -23,3 +21,5 @@ export default (data: Data, response: Response, status?: number): void => {
     response.set("Content-Encoding", "gzip");
     response.end(gzipSync(buffer));
 };
+
+export default send;
