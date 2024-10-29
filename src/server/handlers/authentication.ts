@@ -1,8 +1,7 @@
-import validate from "@/utils/validate";
 import send from "@/utils/send";
 import { compare, generate } from "@/utils/password";
-import { getToken } from "@/config/types/server";
-import { failure, success } from "@/utils/error";
+import { getToken } from "@/config/server";
+import { success } from "@/utils/error";
 
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
