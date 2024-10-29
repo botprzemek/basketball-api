@@ -1,1 +1,1 @@
-type UUID = `${string}-${string}-${string}-${string}-${string}`;
+type UUID = string & `${string}-${string}-${string}-${string}-${string}`;

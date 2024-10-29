@@ -1,5 +1,6 @@
+import { getUrl, getOptions } from "@/config/database";
+
 import postgres from "postgres";
-import { getUrl, getOptions } from "@/config/types/database";
 
 const instance: postgres.Sql = postgres(getUrl(), getOptions());
 

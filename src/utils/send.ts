@@ -1,13 +1,19 @@
-import { Response } from "express";
 import { isFailure } from "@/utils/error";
-import { useCompression } from "@/config/types/server";
+import { useCompression } from "@/config/server";
+
 import { gzipSync } from "node:zlib";
 
-export const send = (data: Data, response: Response, status?: number): void => {
+import { Response } from "express";
+
+export const send = (
+    data: Payload,
+    response: Response,
+    status?: number,
+): void => {
     response.status(status || 200);
 
     if (isFailure(data)) {
-        response.status(data.error.status);
+        response.status(data.error?.status || 500);
     }
 
     const value: string = JSON.stringify(data);

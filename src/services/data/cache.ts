@@ -1,4 +1,4 @@
-import { getUrl, getExpireTime } from "@/config/types/cache";
+import { getUrl, getExpireTime } from "@/config/cache";
 
 import { Redis } from "ioredis";
 

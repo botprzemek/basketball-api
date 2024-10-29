@@ -1,12 +1,12 @@
-export const success = (data: Model[] | DataPayload[]): Data => ({
+export const success = (data: Payload.Data): Payload => ({
     data,
 });
 
-export const failure = (error: DataPayload): Data => ({
+export const failure = (error: Payload.Details): Payload => ({
     data: [],
     error,
 });
 
 export const isFailure = (
-    result: Data,
-): result is { data: []; error: DataPayload } => !!result.error;
+    result: Payload,
+): result is Payload & { error: Payload.Details } => Boolean(result.error);

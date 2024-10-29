@@ -2,7 +2,7 @@ import logger from "@/server/middlewares/logger";
 import headers from "@/server/middlewares/headers";
 import routes from "@/server/routes";
 import wildcard from "@/server/middlewares/wildcard";
-import { getVersion } from "@/config/types/server";
+import { getVersion } from "@/config/server";
 
 import express, { Express, json } from "express";
 

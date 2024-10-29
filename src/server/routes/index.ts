@@ -1,20 +1,24 @@
 import user from "@/services/data/models/user";
-import auth from "@/server/routes/auth";
-import { getRouter } from "@/config/types/server";
+import { getRouter } from "@/config/server";
 import { _delete, get, getById, post, put } from "@/server/handlers";
 
 import { Router } from "express";
 
-const route = (resource: any): Router =>
+const generate = ({
+    name,
+    find,
+    findById,
+    create,
+    update,
+    remove,
+}: Resource): Router =>
     Router()
-        .get("/", get(resource.find))
-        .get("/:id", getById(resource.findById))
-        .post("/", post(resource.create))
-        .put("/:id", put(resource.update))
-        .delete("/:id", _delete(resource.remove));
+        .get("/", get(name, find))
+        .get("/:id", getById(name, findById))
+        .post("/", post(name, create))
+        .put("/:id", put(name, update))
+        .delete("/:id", _delete(name, remove));
 
-export const routes: Router = Router(getRouter())
-    .use("/auth", auth)
-    .use("/users", route(user));
+export const routes: Router = Router(getRouter()).use("/users", generate(user));
 
 export default routes;

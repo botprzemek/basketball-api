@@ -24,7 +24,7 @@ interface Token {
     accessOptions: TokenOptions;
 }
 
-namespace Config {
+declare namespace Config {
     interface Cache extends Connection {
         user: string;
         expireTime: number;

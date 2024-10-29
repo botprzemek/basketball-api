@@ -1,6 +1,6 @@
 import logger from "@/utils/logger";
 import router from "@/server/router";
-import { getAddress } from "@/config/types/server";
+import { getAddress } from "@/config/server";
 
 import { createServer, Server as HttpServer } from "node:http";
 
