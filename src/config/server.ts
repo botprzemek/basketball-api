@@ -11,6 +11,12 @@ const DEFAULT: Config.Server = {
         secure: false,
     },
     host: process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
+    http: {
+        keepAliveTimeout: 100,
+        headersTimeout: 65000,
+        maxConnections: 10000,
+        maxHeadersCount: 1000,
+    },
     port: 3000,
     router: {
         mergeParams: true,
@@ -44,6 +50,22 @@ const getConfig = (env: NodeJS.ProcessEnv = process.env): Config.Server => ({
             : DEFAULT.cookie.secure,
     } as Cookie,
     host: env.SERVER_HOST ?? DEFAULT.host,
+    http: {
+        keepAliveTimeout: parseInt(
+            env.SERVER_HTTP_KEEP_ALIVE_TIMEOUT ??
+                `${DEFAULT.http.keepAliveTimeout}`,
+        ),
+        headersTimeout: parseInt(
+            env.SERVER_HTTP_HEADERS_TIMEOUT ?? `${DEFAULT.http.headersTimeout}`,
+        ),
+        maxConnections: parseInt(
+            env.SERVER_HTTP_MAX_CONNECTIONS ?? `${DEFAULT.http.maxConnections}`,
+        ),
+        maxHeadersCount: parseInt(
+            env.SERVER_HTTP_MAX_HEADERS_COUNT ??
+                `${DEFAULT.http.maxHeadersCount}`,
+        ),
+    },
     port: parseInt(env.SERVER_PORT ?? `${DEFAULT.port}`),
     router: {
         mergeParams: /true/.test(`${process.env.SERVER_ROUTER_MERGE_PARAMS}`)
@@ -70,12 +92,14 @@ load("server", getConfig());
 
 export const useCompression = (): boolean => getConfig().compression;
 
-export const getCookie = (): Cookie => getConfig().cookie;
-
 export const getAddress = (): Connection => ({
     host: getConfig().host,
     port: getConfig().port,
 });
+
+export const getCookie = (): Cookie => getConfig().cookie;
+
+export const getHttp = (): Http => getConfig().http;
 
 export const getRouter = (): Router => getConfig().router;
 
@@ -85,8 +109,8 @@ export const getVersion = (): number => getConfig().version;
 
 export default {
     useCompression,
-    getCookie,
     getAddress,
+    getCookie,
     getRouter,
     getToken,
     getVersion,

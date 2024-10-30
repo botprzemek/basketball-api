@@ -1,10 +1,10 @@
 import logger from "@/utils/logger";
 import router from "@/server/router";
-import { getAddress, getVersion } from "@/config/server";
+import { getAddress, getHttp, getVersion } from "@/config/server";
 
-import { createServer, Server as HttpServer } from "node:http";
 import cluster from "node:cluster";
-import os from "os";
+import { createServer, Server as HttpServer } from "node:http";
+import os from "node:os";
 
 const close = (server: HttpServer): void => {
     logger.info(getAddress().host, ["LISTEN", "Closing API server"]);
@@ -41,9 +41,9 @@ export default (): void => {
     if (!cluster.isPrimary) {
         const server = createServer(router);
 
-        server.keepAliveTimeout = 65000;
-        server.headersTimeout = 65000;
-        server.maxHeadersCount = 1000;
+        Object.entries(getHttp()).forEach(([key, value]) => {
+            (server as any)[key] = value;
+        });
 
         return listen(server);
     }

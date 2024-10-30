@@ -10,6 +10,13 @@ interface Cookie {
     secure: boolean;
 }
 
+interface Http {
+    keepAliveTimeout: number;
+    headersTimeout: number;
+    maxConnections: number;
+    maxHeadersCount: number;
+}
+
 interface Router {
     mergeParams: boolean;
 }
@@ -38,6 +45,7 @@ declare namespace Config {
     interface Server extends Connection {
         compression: boolean;
         cookie: Cookie;
+        http: Http;
         router: Router;
         token: Token;
         version: number;
