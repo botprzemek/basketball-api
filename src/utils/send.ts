@@ -1,5 +1,5 @@
 import { isFailure } from "@/utils/error";
-import { useCompression } from "@/config/server";
+import { useCompression } from "@/config/types/server";
 
 import { gzipSync } from "node:zlib";
 

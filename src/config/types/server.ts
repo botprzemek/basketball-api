@@ -1,5 +1,3 @@
-import { load } from "@/config";
-
 import process from "node:process";
 
 const DEFAULT: Config.Server = {
@@ -10,6 +8,7 @@ const DEFAULT: Config.Server = {
         sameSite: "lax",
         secure: false,
     },
+    environment: "production",
     host: process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
     http: {
         keepAliveTimeout: 100,
@@ -33,7 +32,9 @@ const DEFAULT: Config.Server = {
     version: 1,
 };
 
-const getConfig = (env: NodeJS.ProcessEnv = process.env): Config.Server => ({
+export const getConfig = (
+    env: NodeJS.ProcessEnv = process.env,
+): Config.Server => ({
     compression: /true/.test(`${env.SERVER_COMPRESSION}`)
         ? false
         : DEFAULT.compression,
@@ -49,6 +50,9 @@ const getConfig = (env: NodeJS.ProcessEnv = process.env): Config.Server => ({
             ? false
             : DEFAULT.cookie.secure,
     } as Cookie,
+    environment: process.env.NODE_ENV
+        ? process.env.NODE_ENV
+        : DEFAULT.environment,
     host: env.SERVER_HOST ?? DEFAULT.host,
     http: {
         keepAliveTimeout: parseInt(
@@ -88,8 +92,6 @@ const getConfig = (env: NodeJS.ProcessEnv = process.env): Config.Server => ({
     version: parseInt(env.SERVER_VERSION ?? `${DEFAULT.version}`),
 });
 
-load("server", getConfig());
-
 export const useCompression = (): boolean => getConfig().compression;
 
 export const getAddress = (): Connection => ({
@@ -98,6 +100,8 @@ export const getAddress = (): Connection => ({
 });
 
 export const getCookie = (): Cookie => getConfig().cookie;
+
+export const getEnvironment = (): string => getConfig().environment;
 
 export const getHttp = (): Http => getConfig().http;
 
@@ -108,9 +112,11 @@ export const getToken = (): Token => getConfig().token;
 export const getVersion = (): number => getConfig().version;
 
 export default {
+    getConfig,
     useCompression,
     getAddress,
     getCookie,
+    getEnvironment,
     getRouter,
     getToken,
     getVersion,

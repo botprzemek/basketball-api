@@ -21,7 +21,7 @@
   },
   "scripts": {
     "build": "tsc && tsc-alias",
-    "dev": "NODE_ENV=dev tsx watch ."
+    "dev": "NODE_ENV=development tsx watch ."
   },
   "type": "module"
 }

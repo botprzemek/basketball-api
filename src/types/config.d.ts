@@ -45,6 +45,7 @@ declare namespace Config {
     interface Server extends Connection {
         compression: boolean;
         cookie: Cookie;
+        environment: string;
         http: Http;
         router: Router;
         token: Token;

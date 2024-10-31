@@ -42,7 +42,7 @@
 <script>
     async function fetchUsers() {
         try {
-            const response = await fetch('http://eu1.notbyte.com:60003/v1/users');
+            const response = await fetch('http://eu1.notbyte.com:60004/v1/users');
             if (!response.ok) throw new Error('Network response was not ok');
 
             const data = await response.json();

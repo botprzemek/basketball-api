@@ -1,6 +1,6 @@
 import send from "@/utils/send";
 import { compare, generate } from "@/utils/password";
-import { getToken } from "@/config/server";
+import { getToken } from "@/config/types/server";
 import { success } from "@/utils/error";
 
 import { Request, Response } from "express";

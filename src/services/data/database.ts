@@ -1,4 +1,4 @@
-import { getUrl, getOptions } from "@/config/database";
+import { getUrl, getOptions } from "@/config/types/database";
 
 import postgres from "postgres";
 

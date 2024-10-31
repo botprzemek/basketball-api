@@ -1,5 +1,5 @@
 import user from "@/services/data/models/user";
-import { getRouter } from "@/config/server";
+import { getRouter } from "@/config/types/server";
 import { _delete, get, getById, post, put } from "@/server/handlers";
 
 import { Router } from "express";

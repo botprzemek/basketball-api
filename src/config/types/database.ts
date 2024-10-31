@@ -1,5 +1,3 @@
-import { load } from "@/config";
-
 import process from "node:process";
 import { URL } from "node:url";
 
@@ -12,14 +10,14 @@ const DEFAULT: Config.Database = {
     name: "basketball",
 };
 
-const getConfig = (env: NodeJS.ProcessEnv = process.env): Config.Database => ({
+export const getConfig = (
+    env: NodeJS.ProcessEnv = process.env,
+): Config.Database => ({
     host: env.DATABASE_HOST ?? DEFAULT.host,
     port: parseInt(env.DATABASE_PORT ?? `${DEFAULT.port}`),
     user: env.DATABASE_USER ?? DEFAULT.user,
     name: env.DATABASE_NAME ?? DEFAULT.name,
 });
-
-load("database", getConfig());
 
 export const getUrl = (): string => {
     const { host, port, user, name }: Config.Database = getConfig();
@@ -43,6 +41,7 @@ export const getOptions = () => {
 };
 
 export default {
+    getConfig,
     getUrl,
     getOptions,
 };

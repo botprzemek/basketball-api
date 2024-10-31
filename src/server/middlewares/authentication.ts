@@ -1,4 +1,4 @@
-import { getToken } from "@/config/server";
+import { getToken } from "@/config/types/server";
 import { INVALID_TOKEN, TOKEN_NOT_FOUND } from "@/server/errors/auth";
 import send from "@/utils/send";
 

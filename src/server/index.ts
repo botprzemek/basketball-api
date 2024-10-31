@@ -1,10 +1,16 @@
+import config from "@/config";
 import logger from "@/utils/logger";
 import router from "@/server/router";
-import { getAddress, getHttp, getVersion } from "@/config/server";
+import {
+    getAddress,
+    getEnvironment,
+    getHttp,
+    getVersion,
+} from "@/config/types/server";
 
 import cluster from "node:cluster";
 import { createServer, Server as HttpServer } from "node:http";
-import os from "node:os";
+import { cpus } from "node:os";
 
 const close = (server: HttpServer): void => {
     logger.info(getAddress().host, ["LISTEN", "Closing API server"]);
@@ -29,17 +35,12 @@ export const listen = (server: HttpServer): void => {
         // Exit request
     });
 
-    server.listen(getAddress().port, getAddress().host, () =>
-        logger.info(getAddress().host, [
-            "LISTEN",
-            `Started API server on http://${getAddress().host}:${getAddress().port}/v${getVersion()}`,
-        ]),
-    );
+    server.listen(getAddress().port, getAddress().host);
 };
 
-export default (): void => {
-    if (!cluster.isPrimary) {
-        const server = createServer(router);
+export const start = async (): Promise<void> => {
+    if (cluster.isWorker) {
+        const server: HttpServer = createServer(router);
 
         Object.entries(getHttp()).forEach(([key, value]) => {
             (server as any)[key] = value;
@@ -48,9 +49,22 @@ export default (): void => {
         return listen(server);
     }
 
-    for (let i = 0; i < os.cpus().length; i++) {
+    logger.info(getAddress().host, [
+        "LISTEN",
+        `Started API server on http://${getAddress().host}:${getAddress().port}/v${getVersion()}`,
+    ]);
+
+    if (getEnvironment() === "development") {
+        const server: HttpServer = createServer(router);
+
+        return listen(server);
+    }
+
+    for (let i = 0; i < cpus().length; i++) {
         cluster.fork();
     }
 
     cluster.on("exit", (_) => cluster.fork());
 };
+
+export default start;
