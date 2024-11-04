@@ -58,7 +58,7 @@ const updateTransaction = async (
     return user;
 };
 
-export const name: Resource.Type = "user";
+export const name: Resource.Type = "users";
 
 export const find: Resource.Find = async (): Resource.Return => {
     const cached: User[] = await cache.get<User[]>("users");
@@ -107,15 +107,34 @@ export const create: Resource.Create = async (data: {
     identity: Identity;
     user: User;
 }): Resource.Return => {
-    const result: User = await database
-        .get()
-        .begin(
-            "write",
-            async (sql: TransactionSql): Promise<User> =>
-                insertTransaction(sql, data),
-        );
+    try {
+        const result: User = await database
+            .get()
+            .begin(
+                async (sql: TransactionSql): Promise<User> =>
+                    insertTransaction(sql, data),
+            );
 
-    if (!result) {
+        if (!result) {
+            return failure({
+                code: 500,
+                message: "Failed to create user",
+                status: 500,
+                title: ",
+            });
+        }
+    } catch (error: any) {
+        console.log(error.constraint_name);
+
+        if (error.constraint_name === "users_username_key") {
+            return failure({
+                code: 400,
+                message: "Username is already taken",
+                status: 400,
+                title: ",
+            });
+        }
+
         return failure({
             code: 500,
             message: "Failed to create user",
@@ -145,7 +164,6 @@ export const update: Resource.Update = async (
     const result: User = await database
         .get()
         .begin(
-            "write",
             async (sql: TransactionSql): Promise<User> =>
                 updateTransaction(sql, data),
         );

@@ -1,5 +1,5 @@
 declare namespace Resource {
-    type Type = "user";
+    type Type = "auth" | "users";
 
     type Return = Promise<Payload>;
 

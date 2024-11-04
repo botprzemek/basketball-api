@@ -1,6 +1,5 @@
 import config from "@/config";
 import logger from "@/utils/logger";
-import router from "@/server/router";
 import {
     getAddress,
     getEnvironment,
@@ -39,8 +38,12 @@ export const listen = (server: HttpServer): void => {
 };
 
 export const start = async (): Promise<void> => {
+    await config;
+
     if (cluster.isWorker) {
-        const server: HttpServer = createServer(router);
+        const server: HttpServer = createServer(
+            (await import("@/server/router")).default,
+        );
 
         Object.entries(getHttp()).forEach(([key, value]) => {
             (server as any)[key] = value;
@@ -55,7 +58,9 @@ export const start = async (): Promise<void> => {
     ]);
 
     if (getEnvironment() === "development") {
-        const server: HttpServer = createServer(router);
+        const server: HttpServer = createServer(
+            (await import("@/server/router")).default,
+        );
 
         return listen(server);
     }

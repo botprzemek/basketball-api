@@ -1,10 +1,12 @@
 import send from "@/utils/send";
-import { compare, generate } from "@/utils/password";
+import { compare } from "@/utils/password";
 import { getToken } from "@/config/types/server";
 import { success } from "@/utils/error";
 
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { post } from "@/server/handlers/index";
+import user from "@/services/data/models/user";
 
 const users: any[] = [
     {
@@ -54,19 +56,7 @@ export const login = async (
     send(success([data]), response);
 };
 
-export const register = async (
-    request: Request,
-    response: Response,
-): Promise<void> => {
-    const { username, password } = request.body;
-
-    response.json({
-        username,
-        password: generate(password),
-    });
-
-    response.status(201).end();
-};
+export const register = post("auth", user.create);
 
 export const refresh = async (
     request: Request,

@@ -1,4 +1,6 @@
+import send from "@/utils/send";
 import { NextFunction, Request, Response } from "express";
+import { failure } from "@/utils/error";
 
 export default (resource: string, action: string) =>
     (request: Request, response: Response, next: NextFunction): void => {
@@ -9,5 +11,13 @@ export default (resource: string, action: string) =>
             return next();
         }
 
-        response.status(401).send("Unauthorized");
+        send(
+            failure({
+                code: 401,
+                message: "No access to resource",
+                status: 401,
+                title: "",
+            }),
+            response,
+        );
     };

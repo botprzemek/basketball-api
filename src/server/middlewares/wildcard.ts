@@ -6,7 +6,7 @@ import { Request, Response } from "express";
 export default (_request: Request, response: Response): void =>
     send(
         failure({
-            code: 0,
+            code: 404,
             message: "Resource not found",
             status: 404,
             title: "",
