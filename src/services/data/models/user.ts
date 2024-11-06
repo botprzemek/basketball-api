@@ -61,7 +61,7 @@ const updateTransaction = async (
 export const name: Resource.Type = "users";
 
 export const find: Resource.Find = async (): Resource.Return => {
-    const cached: User[] = await cache.get<User[]>("users");
+    const cached: User[] = await cache.get<User[]>(name);
 
     if (cached && cached.length > 0) {
         return success(cached);
@@ -71,7 +71,7 @@ export const find: Resource.Find = async (): Resource.Return => {
         User[]
     >`SELECT * FROM users_details`;
 
-    void cache.set("users", users);
+    void cache.set(name, users);
 
     return success(users);
 };
@@ -79,7 +79,7 @@ export const find: Resource.Find = async (): Resource.Return => {
 export const findById: Resource.FindById = async (
     id: UUID,
 ): Resource.Return => {
-    const cached = await cache.get<User>(`users/${id}`);
+    const cached = await cache.get<User>(`${name}/${id}`);
 
     if (cached) {
         return success([cached]);
@@ -98,7 +98,7 @@ export const findById: Resource.FindById = async (
         });
     }
 
-    void cache.set(`users/${id}`, user);
+    void cache.set(`${name}/${id}`, user);
 
     return success([user]);
 };
@@ -120,7 +120,7 @@ export const create: Resource.Create = async (data: {
                 code: 500,
                 message: "Failed to create user",
                 status: 500,
-                title: ",
+                title: "",
             });
         }
     } catch (error: any) {
@@ -131,7 +131,7 @@ export const create: Resource.Create = async (data: {
                 code: 400,
                 message: "Username is already taken",
                 status: 400,
-                title: ",
+                title: "",
             });
         }
 
@@ -143,13 +143,13 @@ export const create: Resource.Create = async (data: {
         });
     }
 
-    void cache.clear(["users"]);
+    void cache.clear([name]);
 
     const users: User[] = await database.get()<
         User[]
     >`SELECT * FROM users_details`;
 
-    void cache.set("users", users);
+    void cache.set(name, users);
 
     return success(users);
 };
@@ -180,9 +180,9 @@ export const update: Resource.Update = async (
     const user: User[] = await database.get()<User[]>`SELECT *
                                  FROM users_details WHERE id = ${id}`;
 
-    void cache.set(`users/${id}`, user);
+    void cache.set(`${name}/${id}`, user);
 
-    void cache.clear(["users"]);
+    void cache.clear([name]);
 
     return success([
         {
@@ -194,10 +194,10 @@ export const update: Resource.Update = async (
     ]);
 };
 
-export const remove: Resource.Remove = async (id: string): Resource.Return => {
-    const [result] = await database.get()`DELETE
-                                                FROM users
-                                          WHERE users.id = ${id} RETURNING *`;
+export const remove: Resource.Remove = async (id: UUID): Resource.Return => {
+    const [result] =
+        await database.get()`UPDATE users SET is_deleted = true, deleted_at = now()
+                                          WHERE id = ${id} RETURNING *`;
 
     if (!result) {
         return failure({
@@ -208,7 +208,7 @@ export const remove: Resource.Remove = async (id: string): Resource.Return => {
         });
     }
 
-    void cache.clear(["users", `users/${id}`]);
+    void cache.clear([name, `${name}/${id}`]);
 
     return success([
         {

@@ -2,8 +2,7 @@ import { getUrl, getExpireTime } from "@/config/types/cache";
 
 import { Redis } from "ioredis";
 
-// @ts-ignore
-BigInt.prototype.toJSON = function () {
+BigInt.prototype.toJSON = function (): string {
     return this.toString();
 };
 

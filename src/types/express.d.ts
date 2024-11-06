@@ -1,5 +1,3 @@
-declare namespace Express {
-    export interface Request {
-        user?: import("@/types/model/user").User;
-    }
+interface BigInt {
+    user?: import("@/types/model/user").User;
 }
