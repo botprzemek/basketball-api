@@ -6,7 +6,7 @@ import { _delete, get, getById, post, put } from "@/server/handlers";
 import { Router } from "express";
 import authorization from "@/server/middlewares/authorization";
 
-const generate = ({
+export const generate = ({
     name,
     find,
     findById,

@@ -1,12 +1,14 @@
 import send from "@/utils/send";
 import { compare } from "@/utils/password";
 import { getToken } from "@/config/types/server";
-import { success } from "@/utils/error";
+import { failure, isFailure, success } from "@/utils/error";
 
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { post } from "@/server/handlers/index";
 import user from "@/services/data/models/user";
+import validate from "@/utils/validate";
+import { INVALID_DATA } from "@/server/errors";
 
 const users: any[] = [
     {
@@ -56,7 +58,34 @@ export const login = async (
     send(success([data]), response);
 };
 
-export const register = post("auth", user.create);
+export const register = async (
+    request: Request,
+    response: Response,
+): Promise<void> => {
+    const { data } = request.body;
+
+    if (!validate.data(data)) {
+        return send(INVALID_DATA("auth"), response);
+    }
+
+    const result: Payload = await user.create(data);
+
+    if (isFailure(result)) {
+        return send(result, response);
+    }
+
+    return send(
+        success([
+            {
+                code: 200,
+                message: "User created successfully",
+                status: 200,
+                title: "",
+            },
+        ]),
+        response,
+    );
+};
 
 export const refresh = async (
     request: Request,

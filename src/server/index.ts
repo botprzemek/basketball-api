@@ -11,7 +11,7 @@ import cluster from "node:cluster";
 import { createServer, Server as HttpServer } from "node:http";
 import { cpus } from "node:os";
 
-const close = (server: HttpServer): void => {
+export const close = (server: HttpServer): void => {
     logger.info(getAddress().host, ["LISTEN", "Closing API server"]);
 
     server.close((err: Error | undefined): void => {
@@ -61,10 +61,6 @@ export const start = async (): Promise<void> => {
         const server: HttpServer = createServer(
             (await import("@/server/router")).default,
         );
-
-        await (
-            await import("@/services/data/models/user")
-        ).remove("024f0cef-70fb-4bd8-877b-7a4dbe2e432f");
 
         return listen(server);
     }

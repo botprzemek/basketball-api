@@ -6,7 +6,7 @@ import { getEnvironment, getVersion } from "@/config/types/server";
 
 import express, { Express, json } from "express";
 
-export const router: Express = express().use(json()).use(headers);
+const router: Express = express().use(json()).use(headers);
 
 if (getEnvironment() === "development") {
     router.use(logger);

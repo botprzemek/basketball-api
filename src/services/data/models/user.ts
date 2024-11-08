@@ -5,6 +5,50 @@ import { generate } from "@/utils/password";
 
 import { TransactionSql } from "postgres";
 
+const USER_FIND_FAILED = failure({
+    code: 404,
+    message: "User not found",
+    status: 404,
+    title: "",
+});
+
+const USER_CREATE_FAILED = failure({
+    code: 500,
+    message: "Failed to create user",
+    status: 500,
+    title: "",
+});
+
+const USER_CREATE_TAKEN = failure({
+    code: 400,
+    message: "User name is already taken",
+    status: 400,
+    title: "",
+});
+
+const USER_UPDATE_SUCCESS = success([
+    {
+        code: 200,
+        message: "Successfully updated user",
+        status: 200,
+        title: "",
+    },
+]);
+
+const USER_REMOVE_NOT_FOUND = failure({
+    code: 404,
+    message: "User not found",
+    status: 404,
+    title: "",
+});
+
+const USER_REMOVE_SUCCESS = failure({
+    code: 500,
+    message: "Failed to remove user",
+    status: 500,
+    title: "",
+});
+
 const insertTransaction = async (
     sql: TransactionSql,
     data: {
@@ -12,11 +56,11 @@ const insertTransaction = async (
         user: User;
     },
 ): Promise<User> => {
-    const [{ id: identityId }]: [{ id: UUID }] = await sql`
+    const [{ id: id }]: [{ id: UUID }] = await sql`
         INSERT INTO identities ${sql(data.identity)} RETURNING id
     `;
 
-    data.user.identity_id = identityId;
+    data.user.identity_id = id;
     data.user.password = generate(data.user.password);
     data.user.verification_token = generate(data.user.password);
 
@@ -90,12 +134,7 @@ export const findById: Resource.FindById = async (
                                                  WHERE users_details.id = ${id}`;
 
     if (!user) {
-        return failure({
-            code: 404,
-            message: "User not found",
-            status: 404,
-            title: "",
-        });
+        return USER_FIND_FAILED;
     }
 
     void cache.set(`${name}/${id}`, user);
@@ -116,31 +155,17 @@ export const create: Resource.Create = async (data: {
             );
 
         if (!result) {
-            return failure({
-                code: 500,
-                message: "Failed to create user",
-                status: 500,
-                title: "",
-            });
+            return USER_CREATE_FAILED;
         }
     } catch (error: any) {
-        console.log(error.constraint_name);
-
-        if (error.constraint_name === "users_username_key") {
-            return failure({
-                code: 400,
-                message: "Username is already taken",
-                status: 400,
-                title: "",
-            });
+        switch (error.constraint_name) {
+            case "users_username_key": {
+                return USER_CREATE_TAKEN;
+            }
+            default: {
+                return USER_CREATE_FAILED;
+            }
         }
-
-        return failure({
-            code: 500,
-            message: "Failed to create user",
-            status: 500,
-            title: "",
-        });
     }
 
     void cache.clear([name]);
@@ -184,14 +209,7 @@ export const update: Resource.Update = async (
 
     void cache.clear([name]);
 
-    return success([
-        {
-            code: 200,
-            message: "Successfully updated user",
-            status: 200,
-            title: "",
-        },
-    ]);
+    return USER_UPDATE_SUCCESS;
 };
 
 export const remove: Resource.Remove = async (id: UUID): Resource.Return => {
@@ -200,24 +218,12 @@ export const remove: Resource.Remove = async (id: UUID): Resource.Return => {
                                           WHERE id = ${id} RETURNING *`;
 
     if (!result) {
-        return failure({
-            code: 404,
-            message: "User not found",
-            status: 404,
-            title: "",
-        });
+        return USER_REMOVE_NOT_FOUND;
     }
 
     void cache.clear([name, `${name}/${id}`]);
 
-    return success([
-        {
-            code: 200,
-            message: "Successfully removed user",
-            status: 200,
-            title: "",
-        },
-    ]);
+    return USER_REMOVE_SUCCESS;
 };
 
 export default {

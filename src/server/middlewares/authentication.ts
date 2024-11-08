@@ -34,7 +34,7 @@ export default (
             return send(INVALID_TOKEN(), response);
         }
 
-        request.user = payload.user;
+        // request.user = payload.user;
     } catch (error) {
         return send(INVALID_TOKEN(), response);
     }
