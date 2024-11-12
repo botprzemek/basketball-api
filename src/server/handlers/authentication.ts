@@ -1,61 +1,43 @@
 import send from "@/utils/send";
 import { compare } from "@/utils/password";
-import { getToken } from "@/config/types/server";
-import { failure, isFailure, success } from "@/utils/error";
+import { isFailure, success } from "@/utils/error";
 
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import { post } from "@/server/handlers/index";
 import user from "@/services/data/models/user";
 import validate from "@/utils/validate";
 import { INVALID_DATA } from "@/server/errors";
-
-const users: any[] = [
-    {
-        username: "test",
-        password:
-            "dcae124da4a6eb0a090a970ac57e8e55fa58d5da4dc14c7df83b6a1dfbcf0db8fc1c91cb5277b521aa6989d3eff8de07b25d741c31489ce69cbc3245677b27fd.337e28a88dcef50a10e43aa4cd2fc00c",
-    },
-];
 
 export const login = async (
     request: Request,
     response: Response,
 ): Promise<void> => {
-    const { username, password } = request.body;
+    const { data } = request.body;
 
-    if (username !== users.at(0).username) {
+    if (!validate.data<User>(data)) {
+        return send(INVALID_DATA("auth"), response);
+    }
+
+    const result = (await user.findByUsername(data.username)).data.at(0);
+
+    if (!result) {
         response.sendStatus(701);
         return;
     }
 
-    if (!compare(users.at(0).password, password)) {
+    if (!compare(result.password, data.password)) {
         response.sendStatus(702);
         return;
     }
 
-    const data: AuthToken = {
-        refresh_token: jwt.sign(
+    return send(
+        success([
             {
-                user: {
-                    id: "00000000-0000-0000-0000-000000000004",
-                },
+                refresh_token: "generated_refresh_token",
+                access_token: "generated_access_token",
             },
-            getToken().secret,
-            getToken().refreshOptions,
-        ),
-        access_token: jwt.sign(
-            {
-                user: {
-                    id: "00000000-0000-0000-0000-000000000004",
-                },
-            },
-            getToken().secret,
-            getToken().accessOptions,
-        ),
-    };
-
-    send(success([data]), response);
+        ]),
+        response,
+    );
 };
 
 export const register = async (

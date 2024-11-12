@@ -142,6 +142,32 @@ export const findById: Resource.FindById = async (
     return success([user]);
 };
 
+export const findByUsername: Resource.FindByUsername = async (
+    username: string,
+): Resource.Return => {
+    const cached = await cache.get<User[]>(name);
+
+    if (cached) {
+        const user = cached.filter((user) => user.username === username).at(0);
+
+        if (user) {
+            success([user]);
+        }
+    }
+
+    const [user]: [User?] = await database.get()`SELECT *
+                                                 FROM users_details
+                                                 WHERE users_details.username = ${username}`;
+
+    if (!user) {
+        return USER_FIND_FAILED;
+    }
+
+    void cache.set(`${name}/${user.id}`, user);
+
+    return success([user]);
+};
+
 export const create: Resource.Create = async (data: {
     identity: Identity;
     user: User;
@@ -230,6 +256,7 @@ export default {
     name,
     find,
     findById,
+    findByUsername,
     create,
     update,
     remove,

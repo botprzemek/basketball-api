@@ -4,9 +4,9 @@ import routes from "@/server/routes";
 import wildcard from "@/server/middlewares/wildcard";
 import { getEnvironment, getVersion } from "@/config/types/server";
 
-import express, { Express, json } from "express";
+import express, { json } from "express";
 
-const router: Express = express().use(json()).use(headers);
+const router = express().use(json()).use(headers);
 
 if (getEnvironment() === "development") {
     router.use(logger);
