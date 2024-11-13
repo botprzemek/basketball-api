@@ -41,7 +41,7 @@ export const start = async (): Promise<void> => {
     await config;
 
     if (cluster.isWorker) {
-        const server: HttpServer = createServer(
+        const server = createServer(
             (await import("@/server/router")).default,
         );
 
@@ -58,7 +58,7 @@ export const start = async (): Promise<void> => {
     ]);
 
     if (getEnvironment() === "development") {
-        const server: HttpServer = createServer(
+        const server = createServer(
             (await import("@/server/router")).default,
         );
 

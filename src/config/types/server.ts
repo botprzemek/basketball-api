@@ -105,7 +105,7 @@ export const getEnvironment = (): string => getConfig().environment;
 
 export const getHttp = (): Http => getConfig().http;
 
-export const getRouter = (): Router => getConfig().router;
+export const getRouterOptions = (): Router => getConfig().router;
 
 export const getToken = (): Token => getConfig().token;
 
@@ -117,7 +117,7 @@ export default {
     getAddress,
     getCookie,
     getEnvironment,
-    getRouter,
+    getRouterOptions,
     getToken,
     getVersion,
 };

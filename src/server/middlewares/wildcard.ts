@@ -1,15 +1,13 @@
-import { failure } from "@/utils/error";
-import send from "@/utils/send";
+import { send } from "@/utils/send";
+import { wrapper } from "@/utils/wrapper";
 
 import { Request, Response } from "express";
 
 export default (_request: Request, response: Response): void =>
     send(
-        failure({
-            code: 404,
-            message: "Resource not found",
+        wrapper({
             status: 404,
-            title: "",
+            message: "Resource not found",
         }),
         response,
     );

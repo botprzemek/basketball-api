@@ -1,13 +1,13 @@
 import { access, constants, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import * as process from "node:process";
 import { fileURLToPath } from "node:url";
+import * as process from "node:process";
 
 type ConfigType = Config.Cache | Config.Database | Config.Server;
 
-const NEWLINES_MATCH: RegExp = /\r\n|\n|\r/;
-const VALUE_MATCH: RegExp = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/;
-const ENV_FORMAT: RegExp = /([a-z])([A-Z])/g;
+const NEWLINES_MATCH = /\r\n|\n|\r/;
+const VALUE_MATCH = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/;
+const ENV_FORMAT = /([a-z])([A-Z])/g;
 
 const format = (key: string, value: string | number, format: RegExp): string =>
     `${key.replace(format, "$1_$2").toUpperCase()}=${value}\n`;
@@ -37,7 +37,7 @@ const generate = (config: ConfigType): string[] => {
 };
 
 const read = async (name: string, config: ConfigType): Promise<Buffer> => {
-    const path: string = join(
+    const path = join(
         dirname(fileURLToPath(import.meta.url)),
         "../..",
         `.env.${name}`,
@@ -48,7 +48,7 @@ const read = async (name: string, config: ConfigType): Promise<Buffer> => {
 
         return readFile(path);
     } catch (error) {
-        const generated: string = generate(config).join("");
+        const generated = generate(config).join("");
 
         await writeFile(path, generated);
 
@@ -64,7 +64,7 @@ const match = (
     line: string,
     value: RegExp,
 ): void => {
-    const matches: RegExpMatchArray | null = line.match(value);
+    const matches = line.match(value);
 
     if (!(matches && matches[1] && matches[2])) {
         return;
@@ -85,8 +85,8 @@ const parse = (source: Buffer, splitter: RegExp): Record<string, string> => {
 };
 
 export const load = async (name: string, config: ConfigType): Promise<void> => {
-    const buffer: Buffer = await read(name, config);
-    const variables: Record<string, string> = parse(buffer, NEWLINES_MATCH);
+    const buffer = await read(name, config);
+    const variables = parse(buffer, NEWLINES_MATCH);
 
     Object.entries(variables)
         .filter(([key, value]) => value && !process.env[key])
