@@ -2,7 +2,7 @@ import database from "@/services/database";
 import cache from "@/services/cache";
 import { wrapper } from "@/utils/wrapper";
 
-export const find = async () => {
+export const find = async (): User.Result => {
     try {
         const cached = await cache.get<User.Entity[]>("users");
 
@@ -10,8 +10,8 @@ export const find = async () => {
             return wrapper(cached);
         }
 
-        const stored = (await database.get()<User.Entity[]>`SELECT *
-                                                            FROM basketball.users`) as User.Entity[];
+        const stored = await database.get()<User.Entity[]>`SELECT *
+                                                           FROM basketball.users_details`;
 
         void cache.set("users", stored);
 
@@ -24,8 +24,8 @@ export const find = async () => {
     }
 };
 
-export const controller = {
+export const controller: User.Controller = {
     find,
-} as User.Controller;
+};
 
 export default controller;

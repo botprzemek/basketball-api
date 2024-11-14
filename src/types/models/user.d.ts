@@ -20,7 +20,7 @@ namespace User {
 
     type FindByUsername = (username: string) => Result;
 
-    type Create = (
+    type Add = (
         username: string,
         password: string,
         recovery_email?: string,
@@ -37,7 +37,7 @@ namespace User {
 
         findByUsername?: FindByUsername;
 
-        create?: Create;
+        add?: Add;
 
         update?: Update;
 
