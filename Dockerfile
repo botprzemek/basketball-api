@@ -26,7 +26,7 @@ RUN npm install --clean --production
 
 COPY --from=setup --chown=node:node /app/dist ./dist
 
-RUN npm prune --production
+RUN npm prune --omit=dev
 
 # Create a clean environment
 
