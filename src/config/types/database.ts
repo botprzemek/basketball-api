@@ -4,7 +4,7 @@ import { URL } from "node:url";
 import postgres from "postgres";
 
 const DEFAULT: Config.Database = {
-    host: "basketball-database-1",
+    host: "basketball-queries-1",
     port: 26257,
     user: "basketball",
     name: "basketball",

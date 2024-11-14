@@ -1,13 +1,30 @@
-import send from "@/utils/send";
+import { useCompression } from "@/config/types/server";
 
-import { Request, Response } from "express";
+import { gzipSync } from "node:zlib";
 
-export const get =
-    (controller: User.Find) =>
-    async (_request: Request, response: Response): Promise<void> => {
-        send(await controller(), response);
-    };
+import { Response } from "express";
 
-export default {
-    get,
+export const send = (
+    payload: Payload,
+    response: Response,
+    status?: number,
+): void => {
+    response.status(status || 200);
+
+    if (payload.error) {
+        response.status(payload.error?.status || 500);
+    }
+
+    const value = JSON.stringify(payload);
+    const buffer = Buffer.from(value);
+
+    if (!useCompression()) {
+        response.end(buffer);
+        return;
+    }
+
+    response.set("Content-Encoding", "gzip");
+    response.end(gzipSync(buffer));
 };
+
+export default send;

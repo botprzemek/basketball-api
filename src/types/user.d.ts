@@ -1,6 +1,6 @@
 namespace User {
     type Entity = {
-        id: UUID;
+        id?: UUID;
         identity_id?: UUID;
         username: string;
         password: string;
@@ -20,11 +20,7 @@ namespace User {
 
     type FindByUsername = (username: string) => Result;
 
-    type Add = (
-        username: string,
-        password: string,
-        recovery_email?: string,
-    ) => Result;
+    type Create = (user: Entity) => Result;
 
     type Update = (user: Entity) => Result;
 
@@ -33,14 +29,14 @@ namespace User {
     type Controller = {
         find: Find;
 
-        findById?: FindById;
+        findById: FindById;
 
-        findByUsername?: FindByUsername;
+        findByUsername: FindByUsername;
 
-        add?: Add;
+        create: Create;
 
-        update?: Update;
+        update: Update;
 
-        remove?: Remove;
+        remove: Remove;
     };
 }

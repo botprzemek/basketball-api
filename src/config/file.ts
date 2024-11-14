@@ -3,8 +3,6 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as process from "node:process";
 
-type ConfigType = Config.Cache | Config.Database | Config.Server;
-
 const NEWLINES_MATCH = /\r\n|\n|\r/;
 const VALUE_MATCH = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/;
 const ENV_FORMAT = /([a-z])([A-Z])/g;
@@ -12,7 +10,7 @@ const ENV_FORMAT = /([a-z])([A-Z])/g;
 const format = (key: string, value: string | number, format: RegExp): string =>
     `${key.replace(format, "$1_$2").toUpperCase()}=${value}\n`;
 
-const generate = (config: ConfigType): string[] => {
+const generate = (config: Config.Type): string[] => {
     const result: string[] = [];
     const stack: Array<{ obj: any; parentKey: string }> = [
         { obj: config, parentKey: "" },
@@ -36,7 +34,7 @@ const generate = (config: ConfigType): string[] => {
     return result;
 };
 
-const read = async (name: string, config: ConfigType): Promise<Buffer> => {
+const read = async (name: string, config: Config.Type): Promise<Buffer> => {
     const path = join(
         dirname(fileURLToPath(import.meta.url)),
         "../..",
@@ -84,7 +82,10 @@ const parse = (source: Buffer, splitter: RegExp): Record<string, string> => {
     return variables;
 };
 
-export const load = async (name: string, config: ConfigType): Promise<void> => {
+export const load = async (
+    name: string,
+    config: Config.Type,
+): Promise<void> => {
     const buffer = await read(name, config);
     const variables = parse(buffer, NEWLINES_MATCH);
 

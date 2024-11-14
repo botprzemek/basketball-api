@@ -49,7 +49,7 @@ export const getConfig = (
         secure: /true/.test(`${env.SERVER_COOKIE_SECURE}`)
             ? false
             : DEFAULT.cookie.secure,
-    } as Cookie,
+    } as Config.Cookie,
     environment: process.env.NODE_ENV
         ? process.env.NODE_ENV
         : DEFAULT.environment,
@@ -94,20 +94,20 @@ export const getConfig = (
 
 export const useCompression = (): boolean => getConfig().compression;
 
-export const getAddress = (): Connection => ({
+export const getAddress = (): Config.Connection => ({
     host: getConfig().host,
     port: getConfig().port,
 });
 
-export const getCookie = (): Cookie => getConfig().cookie;
+export const getCookie = (): Config.Cookie => getConfig().cookie;
 
 export const getEnvironment = (): string => getConfig().environment;
 
-export const getHttp = (): Http => getConfig().http;
+export const getHttp = (): Config.Http => getConfig().http;
 
-export const getRouterOptions = (): Router => getConfig().router;
+export const getRouterOptions = (): Config.Router => getConfig().router;
 
-export const getToken = (): Token => getConfig().token;
+export const getToken = (): Config.Token => getConfig().token;
 
 export const getVersion = (): number => getConfig().version;
 

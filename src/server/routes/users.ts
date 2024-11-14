@@ -1,9 +1,10 @@
-import { get } from "@/server/handlers";
-import user from "@/services/model/user";
+import { get, getById, post, put, _delete } from "@/server/handlers/user";
 
 import { Router } from "express";
 
-export const generate = ({ find }: User.Controller) =>
-    Router().get("/", get(find));
-
-export default generate(user);
+export default Router()
+    .get("/", get)
+    .get("/:id", getById)
+    .post("/", post)
+    .put("/:id", put)
+    .delete("/:id", _delete);

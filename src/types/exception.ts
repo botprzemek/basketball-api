@@ -1,4 +1,4 @@
-interface Exception {
+type Exception = {
     status: number;
     message: string;
-}
+};
