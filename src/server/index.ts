@@ -30,8 +30,8 @@ export const listen = (server: HttpServer): void => {
     process.on("SIGTERM", () => close(server));
     process.on("uncaughtException", (error: Error): void => {
         logger.error(getAddress().host, [error.stack as string]);
-        // TODO
-        // Exit request
+
+        server.closeIdleConnections();
     });
 
     server.listen(getAddress().port, getAddress().host);
@@ -41,9 +41,7 @@ export const start = async (): Promise<void> => {
     await config;
 
     if (cluster.isWorker) {
-        const server = createServer(
-            (await import("@/server/router")).default,
-        );
+        const server = createServer((await import("@/server/router")).default);
 
         Object.entries(getHttp()).forEach(([key, value]) => {
             (server as any)[key] = value;
@@ -58,9 +56,7 @@ export const start = async (): Promise<void> => {
     ]);
 
     if (getEnvironment() === "development") {
-        const server = createServer(
-            (await import("@/server/router")).default,
-        );
+        const server = createServer((await import("@/server/router")).default);
 
         return listen(server);
     }

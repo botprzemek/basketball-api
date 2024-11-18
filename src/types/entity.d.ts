@@ -1,1 +1,0 @@
-type Entity = User.Entity;

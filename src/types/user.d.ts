@@ -1,42 +1,40 @@
 namespace User {
     type Entity = {
-        id?: UUID;
-        identity_id?: UUID;
+        id: UUID;
+        identity_id: UUID;
         username: string;
         password: string;
-        recovery_email?: string;
-        refresh_token?: string;
-        verification_token?: string;
-        logged_at?: Date;
-        deleted_at?: Date;
-        is_deleted?: boolean;
+        recovery_email: string;
+        refresh_token: string;
+        verification_token: string;
+        logged_at: Date;
+        deleted_at: Date;
+        is_deleted: boolean;
     };
 
     type Result = Promise<Payload<Entity>>;
 
-    type Find = () => Result;
+    type FindById = UUID;
 
-    type FindById = (id: UUID) => Result;
+    type FindByUsername = string;
 
-    type FindByUsername = (username: string) => Result;
+    type Create = Pick<Entity, "username", "password">;
 
-    type Create = (user: Entity) => Result;
+    type Update = Partial<Entity>;
 
-    type Update = (user: Entity) => Result;
-
-    type Remove = (id: UUID) => Result;
+    type Remove = UUID;
 
     type Controller = {
-        find: Find;
+        find: () => Result;
 
-        findById: FindById;
+        findById: (id: FindById) => Result;
 
-        findByUsername: FindByUsername;
+        findByUsername: (username: FindByUsername) => Result;
 
-        create: Create;
+        create: (user: Create) => Result;
 
-        update: Update;
+        update: (user: Update) => Result;
 
-        remove: Remove;
+        remove: (id: Remove) => Result;
     };
 }

@@ -1,4 +1,4 @@
-import controller from "@/models/user";
+import controller from "@/server/controllers/user";
 import { send } from "@/server/handlers";
 
 import { Request, Response } from "express";
