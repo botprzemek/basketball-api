@@ -44,7 +44,7 @@ const controller = (key: string) =>
                 wrapper({
                     status: 501,
                     message: "Function not implemented",
-                ),
+                }),
             ),
 
         remove: (id: User.Remove) =>

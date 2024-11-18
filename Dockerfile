@@ -16,13 +16,13 @@ RUN npm run build
 
 FROM setup AS production
 
+ENV NODE_ENV=production
+
 WORKDIR /app
 
 COPY --chown=node:node package*.json .
 
-ENV NODE_ENV=production
-
-RUN npm install --clean --production
+RUN npm install --clean --omit=dev
 
 COPY --from=setup --chown=node:node /app/dist ./dist
 
@@ -31,6 +31,8 @@ RUN npm prune --omit=dev
 # Create a clean environment
 
 FROM alpine AS runner
+
+ENV NODE_ENV=production
 
 LABEL authors="botprzemek"
 
@@ -41,8 +43,6 @@ WORKDIR /app
 COPY --from=production --chown=node:node /app/dist ./dist
 COPY --from=production --chown=node:node /app/node_modules ./node_modules
 COPY --from=production --chown=node:node /app/package.json ./package.json
-
-ENV NODE_ENV=production
 
 CMD ["node", "./dist/index.js"]
 
