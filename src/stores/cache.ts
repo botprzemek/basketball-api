@@ -2,10 +2,6 @@ import { getExpireTime, getUrl } from "@/config/types/cache";
 
 import { Redis } from "ioredis";
 
-BigInt.prototype.toJSON = function (): string {
-    return this.toString();
-};
-
 const instance = new Redis(getUrl());
 
 // THIS IS THE BOTTLENECK (CONNECTION AND instance.get(key) method).

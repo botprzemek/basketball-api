@@ -27,4 +27,6 @@ export const send = (
     response.end(gzipSync(buffer));
 };
 
-export default send;
+export default {
+    send,
+};
