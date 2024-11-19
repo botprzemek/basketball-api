@@ -3,12 +3,12 @@ import { URL } from "node:url";
 
 import postgres from "postgres";
 
-const DEFAULT: Config.Database = {
+const DEFAULT = {
     host: "basketball-database-1",
     port: 26257,
     user: "basketball",
     name: "basketball",
-};
+} satisfies Config.Database;
 
 export const getConfig = (
     env: NodeJS.ProcessEnv = process.env,

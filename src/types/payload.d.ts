@@ -1,12 +1,16 @@
 type Entity = User.Entity;
 
+type Query = () => Promise<Entity[]>;
+
 type Exception = {
     status: number;
     message: string;
 };
 
+type Data = Partial<Entity>[] | Exception;
+
 type Payload = {
-    data: Array<Entity | Exception>;
+    data: Data;
     error?: Exception;
 };
 

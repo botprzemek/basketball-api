@@ -1,48 +1,57 @@
-import { getEnvironment } from "@/config/types/server";
 import cache from "@/stores/cache";
 
-export const wrapper = (data: Entity[] | Exception): Payload => {
-    if (!Array.isArray(data)) {
+export const wrap = (data: Data): Payload => {
+    if (Array.isArray(data)) {
         return {
-            data: [],
-            error: data,
+            data,
         };
     }
 
     return {
-        data,
+        data: [],
+        error: data,
     };
 };
 
-export const access = async (key: string, query: Function): Result => {
+export const access = async (key: string, query: Query): Result => {
     try {
-        const cached = await cache.get<User.Entity[]>(key);
+        const cached = await cache.get(key);
 
         if (cached) {
-            return wrapper(cached);
+            return wrap(cached);
         }
 
         const stored = await query();
 
-        void cache.set<User.Entity[]>(key, stored);
+        void cache.set(key, stored);
 
-        return wrapper(stored);
+        return wrap(stored);
     } catch (error) {
-        // TODO
-        // Error handling
+        // TODO ERROR HANDLING
 
-        if (getEnvironment() === "development") {
-            console.error(error);
+        if (error instanceof Error) {
+            return wrap({
+                status: 500,
+                message: error.message,
+            });
         }
 
-        return wrapper({
+        return wrap({
             status: 500,
             message: "Internal Server Error",
         });
     }
 };
 
+export const NOT_IMPLEMENTED = new Promise<Payload>(() =>
+    wrap({
+        status: 501,
+        message: "Function not implemented",
+    }),
+) satisfies Result;
+
 export default {
-    wrapper,
+    wrap,
     access,
+    NOT_IMPLEMENTED,
 };

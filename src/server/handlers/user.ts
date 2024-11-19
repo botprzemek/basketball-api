@@ -13,6 +13,7 @@ export const get = async (
     // TODO
     // VALIDATION
     // PARAMETER FILTERING
+    // TYPE GUARD
 
     if (username && typeof username === "string") {
         return send(await findByUsername(username), response);
@@ -30,6 +31,7 @@ export const getById = async (
 
     // TODO
     // VALIDATION
+    // TYPE GUARD
 
     send(await findById(id), response);
 };
@@ -43,6 +45,7 @@ export const post = async (
 
     // TODO
     // VALIDATION
+    // TYPE GUARD
 
     send(await create(user), response);
 };
@@ -56,6 +59,7 @@ export const put = async (
 
     // TODO
     // VALIDATION
+    // TYPE GUARD
 
     send(await update(user), response);
 };
@@ -69,6 +73,7 @@ export const _delete = async (
 
     // TODO
     // VALIDATION
+    // TYPE GUARD
 
     send(await remove(id), response);
 };

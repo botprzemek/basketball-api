@@ -1,12 +1,12 @@
 import process from "node:process";
 import { URL } from "node:url";
 
-const DEFAULT: Config.Cache = {
+const DEFAULT = {
     host: "basketball-cache",
     port: 6379,
     user: "default",
     expireTime: 60 * 60,
-};
+} satisfies Config.Cache;
 
 export const getConfig = (
     env: NodeJS.ProcessEnv = process.env,

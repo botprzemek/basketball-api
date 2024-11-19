@@ -1,6 +1,6 @@
 import process from "node:process";
 
-const DEFAULT: Config.Server = {
+const DEFAULT = {
     compression: true,
     cookie: {
         httpOnly: true,
@@ -9,7 +9,7 @@ const DEFAULT: Config.Server = {
         secure: false,
     },
     environment: "production",
-    host: process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
+    host: "0.0.0.0",
     http: {
         keepAliveTimeout: 100,
         headersTimeout: 65000,
@@ -30,7 +30,7 @@ const DEFAULT: Config.Server = {
         },
     },
     version: 1,
-};
+} satisfies Config.Server;
 
 export const getConfig = (
     env: NodeJS.ProcessEnv = process.env,

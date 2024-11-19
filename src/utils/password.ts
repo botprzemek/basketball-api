@@ -1,28 +1,25 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 
-const KEY_LENGTH = 64;
-const ENCODING = "hex";
-
-const OPTIONS: PasswordOptions = {
-    keyLength: KEY_LENGTH,
-    encoding: ENCODING,
-};
+const OPTIONS = {
+    keyLength: 64,
+    encoding: "hex",
+} satisfies PasswordOptions;
 
 const generateSalt = ({
     keyLength,
     encoding,
-}: PasswordOptions = OPTIONS): string =>
+}: PasswordOptions): string =>
     randomBytes(keyLength * 0.25).toString(encoding);
 
 const generateHash = (
     password: string,
     salt: string,
-    { keyLength, encoding }: PasswordOptions = OPTIONS,
+    { keyLength, encoding }: PasswordOptions,
 ): string => scryptSync(password, salt, keyLength).toString(encoding);
 
 export const generate = (password: string): string => {
-    const salt: string = generateSalt();
-    return `${generateHash(password, salt)}.${salt}`;
+    const salt: string = generateSalt(OPTIONS);
+    return `${generateHash(password, salt, OPTIONS)}.${salt}`;
 };
 
 export const compare = (
@@ -35,8 +32,8 @@ export const compare = (
         return false;
     }
 
-    const storedBuf: Buffer = Buffer.from(password, ENCODING);
-    const suppliedBuf: Buffer = scryptSync(suppliedPassword, salt, KEY_LENGTH);
+    const storedBuf = Buffer.from(password, OPTIONS.encoding);
+    const suppliedBuf = scryptSync(suppliedPassword, salt, OPTIONS.keyLength);
 
     return timingSafeEqual(storedBuf, suppliedBuf);
 };

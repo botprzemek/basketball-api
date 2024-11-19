@@ -29,9 +29,9 @@ export default (
 ): void => {
     response.removeHeader("X-Powered-By");
 
-    Object.keys(headers).forEach((key: keyof typeof headers): void => {
-        response.setHeader(key, headers[key] as string);
-    });
+    Object
+      .keys(headers)
+      .forEach((key: keyof typeof headers) => response.setHeader(key, headers[key] as string));
 
     next();
 };
