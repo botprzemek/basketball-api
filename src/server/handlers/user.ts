@@ -1,5 +1,5 @@
-import controller from "@/controllers/user";
-import { send } from "@/server/handlers";
+import controller from "@/server/controllers/user";
+import { send } from "@/server/data";
 
 import { Request, Response } from "express";
 

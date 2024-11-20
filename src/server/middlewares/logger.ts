@@ -1,4 +1,4 @@
-import logger from "@/utils/logger";
+import { info } from "@/utils/logger";
 
 import { NextFunction, Request, Response } from "express";
 
@@ -7,18 +7,18 @@ export default (
     response: Response,
     next: NextFunction,
 ): void => {
-    const start: Date = new Date();
+    const start = performance.now();
 
     response.on("finish", (): void => {
         if (!request.ip) {
             return;
         }
 
-        logger.info(request.ip, [
+        info(request.ip, [
             response.statusCode,
             request.method.toUpperCase(),
             request.originalUrl,
-            `(${new Date().getTime() - start.getTime()}ms)`,
+            `(${performance.now() - start}μs)`,
         ]);
     });
 

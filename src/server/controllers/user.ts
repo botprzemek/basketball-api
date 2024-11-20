@@ -1,5 +1,5 @@
 import database from "@/stores/database";
-import { access, NOT_IMPLEMENTED } from "@/utils/data";
+import { access, NOT_IMPLEMENTED } from "@/server/data";
 
 export default (key: string) =>
     ({

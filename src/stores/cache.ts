@@ -1,19 +1,32 @@
 import { getExpireTime, getUrl } from "@/config/types/cache";
 
+import { gunzipSync, gzipSync } from "node:zlib";
+
 import { Redis } from "ioredis";
 
 const instance = new Redis(getUrl());
 
-// THIS IS THE BOTTLENECK (CONNECTION AND instance.get(key) method).
+export const get = async (key: string): Promise<Entity[] | null> => {
+    const compressed = await instance.getBuffer(key);
 
-export const get = async (key: string): Promise<Entity[]> =>
-    JSON.parse(`${await instance.get(key)}`);
+    if (!compressed) {
+        return null;
+    }
 
-export const set = async (key: string, data: Entity[]): Promise<"OK"> =>
-    instance.set(key, JSON.stringify(data), "EX", getExpireTime());
+    const decompressed = gunzipSync(compressed);
 
-export const clear = async (keys: string[]): Promise<number> =>
-    instance.del(keys);
+    return JSON.parse(decompressed.toString());
+};
+
+export const set = async (key: string, data: Entity[]): Promise<"OK"> => {
+    const compressed = gzipSync(JSON.stringify(data));
+
+    return instance.set(key, compressed, "EX", getExpireTime());
+};
+
+export const clear = async (keys: string[]): Promise<number> => {
+    return instance.del(keys);
+};
 
 export default {
     get,
