@@ -18,7 +18,7 @@ export const wrap = (data: Data): Payload => {
     };
 };
 
-export const access = async (key: string, query: Query): Result => {
+export const get = async (key: string, query: Query): Result => {
     try {
         const cached = await cache.get(key);
 
@@ -77,16 +77,14 @@ export const send = (
     response.end(convert(payload));
 };
 
-export const NOT_IMPLEMENTED = new Promise<Payload>(() =>
-    wrap({
-        status: 501,
-        message: "Function not implemented",
-    }),
-) satisfies Result;
+export const NOT_IMPLEMENTED = wrap({
+    status: 501,
+    message: "Function not implemented",
+});
 
 export default {
     wrap,
-    access,
+    get,
     send,
     NOT_IMPLEMENTED,
 };

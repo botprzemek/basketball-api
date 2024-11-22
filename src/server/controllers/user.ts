@@ -1,17 +1,17 @@
 import database from "@/stores/database";
-import { access, NOT_IMPLEMENTED } from "@/server/data";
+import { get, NOT_IMPLEMENTED } from "@/server/data";
 
 export default (key: string) =>
     ({
         find: () =>
-            access(
+            get(
                 key,
                 () => database.get()<User.Entity[]>`SELECT *
                                                     FROM basketball.users`,
             ),
 
         findById: (id: User.FindById) =>
-            access(
+            get(
                 key,
                 () => database.get()<User.Entity[]>`SELECT *
                                                     FROM basketball.users
@@ -19,16 +19,16 @@ export default (key: string) =>
             ),
 
         findByUsername: (username: User.FindByUsername) =>
-            access(
+            get(
                 key,
                 () => database.get()<User.Entity[]>`SELECT *
                                                     FROM basketball.users
                                                     WHERE users.username = ${username}`,
             ),
 
-        create: (user: User.Create) => NOT_IMPLEMENTED,
+        create: async (user: User.Create) => NOT_IMPLEMENTED,
 
-        update: (user: User.Update) => NOT_IMPLEMENTED,
+        update: async (user: User.Update) => NOT_IMPLEMENTED,
 
-        remove: (id: User.Remove) => NOT_IMPLEMENTED,
+        remove: async (id: User.Remove) => NOT_IMPLEMENTED,
     }) satisfies User.Controller;

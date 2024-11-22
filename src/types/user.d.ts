@@ -12,13 +12,13 @@ namespace User {
         is_deleted: boolean;
     };
 
-    type Result = Promise<Payload<Entity>>;
+    type Result = Payload<Entity> | Promise<Payload<Entity>>;
 
     type FindById = UUID;
 
     type FindByUsername = string;
 
-    type Create = Pick<Entity, "username", "password">;
+    type Create = Pick<Entity, "username" | "password">;
 
     type Update = Partial<Entity>;
 

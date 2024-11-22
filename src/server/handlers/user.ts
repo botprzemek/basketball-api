@@ -1,7 +1,12 @@
 import controller from "@/server/controllers/user";
-import { send } from "@/server/data";
+import { send, wrap } from "@/server/data";
 
 import { Request, Response } from "express";
+import {
+    isIdValid,
+    isPasswordValid,
+    isUsernameValid,
+} from "@/server/validation/user";
 
 export const get = async (
     request: Request,
@@ -10,16 +15,22 @@ export const get = async (
     const { find, findByUsername } = controller(request.originalUrl);
     const username = request.query.username;
 
-    // TODO
-    // VALIDATION
-    // PARAMETER FILTERING
-    // TYPE GUARD
+    if (!username) {
+        return send(await find(), response);
+    }
 
-    if (username && typeof username === "string") {
+    if (isUsernameValid(username)) {
         return send(await findByUsername(username), response);
     }
 
-    send(await find(), response);
+    return send(
+        wrap({
+            status: 400,
+            message:
+                "Username field is not valid, please refer to the documentation.",
+        }),
+        response,
+    );
 };
 
 export const getById = async (
@@ -27,13 +38,20 @@ export const getById = async (
     response: Response,
 ): Promise<void> => {
     const { findById } = controller(request.originalUrl);
-    const id = request.params.id as UUID;
+    const id = request.params.id;
 
-    // TODO
-    // VALIDATION
-    // TYPE GUARD
+    if (isIdValid(id)) {
+        return send(await findById(id), response);
+    }
 
-    send(await findById(id), response);
+    return send(
+        wrap({
+            status: 400,
+            message:
+                "Id field is not valid, please refer to the documentation.",
+        }),
+        response,
+    );
 };
 
 export const post = async (
@@ -41,13 +59,33 @@ export const post = async (
     response: Response,
 ): Promise<void> => {
     const { create } = controller(request.originalUrl);
-    const { user } = request.body;
+    const { username, password } = request.body;
 
-    // TODO
-    // VALIDATION
-    // TYPE GUARD
+    if (!isUsernameValid(username)) {
+        return send(
+            wrap({
+                status: 400,
+                message:
+                    "Username field is not valid, please refer to the documentation.",
+            }),
+            response,
+        );
+    }
 
-    send(await create(user), response);
+    if (!isPasswordValid(password)) {
+        return send(
+            wrap({
+                status: 400,
+                message:
+                    "Password field is not valid, please refer to the documentation.",
+            }),
+            response,
+        );
+    }
+
+    const user = { username, password } satisfies User.Create;
+
+    return send(await create(user), response);
 };
 
 export const put = async (
