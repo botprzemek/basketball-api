@@ -1,16 +1,32 @@
-const TEST_UUID =
-    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
-const TEST_USERNAME = /^([a-zA-Z0-9._\-]){5,}$/;
-const TEST_PASSWORD = /^(?!.*(.)\1\1).{8,}$/;
-
-// TODO
-// FIX UUID REGEX
+const expressions = {
+    UUID: /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+    USERNAME: /^([a-zA-Z0-9._\-]){5,}$/,
+    PASSWORD: /^(?!.*(.)\1\1).{8,}$/,
+};
 
 export const isIdValid = (uuid: unknown): uuid is UUID =>
-    typeof uuid === "string" && TEST_UUID.test(uuid);
+    typeof uuid === "string" && expressions.UUID.test(uuid);
 
 export const isUsernameValid = (username: unknown): username is string =>
-    typeof username === "string" && TEST_USERNAME.test(username);
+    typeof username === "string" && expressions.USERNAME.test(username);
 
 export const isPasswordValid = (password: unknown): password is string =>
-    typeof password === "string" && TEST_PASSWORD.test(password);
+    typeof password === "string" && expressions.PASSWORD.test(password);
+
+export const isUserCreateValid = (user: unknown): user is User.Create => {
+    if (!user || typeof user !== "object") {
+        return false;
+    }
+
+    if (!("username" in user) || !("password" in user)) {
+        return false;
+    }
+
+    return isUsernameValid(user.username) && isPasswordValid(user.password);
+};
+
+export default {
+    isIdValid,
+    isUsernameValid,
+    isPasswordValid,
+};

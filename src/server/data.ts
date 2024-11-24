@@ -78,7 +78,7 @@ export const send = (
 };
 
 export const NOT_IMPLEMENTED = wrap({
-    status: 501,
+    status: 200,
     message: "Function not implemented",
 });
 

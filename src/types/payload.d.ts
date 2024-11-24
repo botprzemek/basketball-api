@@ -5,6 +5,7 @@ type Query = () => Promise<Entity[]>;
 type Exception = {
     status: number;
     message: string;
+    _link?: string;
 };
 
 type Data = Partial<Entity>[] | Exception;

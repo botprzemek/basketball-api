@@ -4,7 +4,7 @@ import { send, wrap } from "@/server/data";
 import { Request, Response } from "express";
 import {
     isIdValid,
-    isPasswordValid,
+    isUserCreateValid,
     isUsernameValid,
 } from "@/server/validation/user";
 
@@ -59,31 +59,18 @@ export const post = async (
     response: Response,
 ): Promise<void> => {
     const { create } = controller(request.originalUrl);
-    const { username, password } = request.body;
+    const { user } = request.body;
 
-    if (!isUsernameValid(username)) {
+    if (!isUserCreateValid(user)) {
         return send(
             wrap({
                 status: 400,
                 message:
-                    "Username field is not valid, please refer to the documentation.",
+                    "Body field is not valid, please refer to the documentation.",
             }),
             response,
         );
     }
-
-    if (!isPasswordValid(password)) {
-        return send(
-            wrap({
-                status: 400,
-                message:
-                    "Password field is not valid, please refer to the documentation.",
-            }),
-            response,
-        );
-    }
-
-    const user = { username, password } satisfies User.Create;
 
     return send(await create(user), response);
 };
@@ -107,13 +94,20 @@ export const _delete = async (
     response: Response,
 ): Promise<void> => {
     const { remove } = controller(request.originalUrl);
-    const id = request.params.id as UUID;
+    const id = request.params.id;
 
-    // TODO
-    // VALIDATION
-    // TYPE GUARD
+    if (isIdValid(id)) {
+        return send(await remove(id), response);
+    }
 
-    send(await remove(id), response);
+    return send(
+        wrap({
+            status: 400,
+            message:
+                "Id field is not valid, please refer to the documentation.",
+        }),
+        response,
+    );
 };
 
 export default {
