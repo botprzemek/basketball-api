@@ -1,32 +1,75 @@
-const expressions = {
-    UUID: /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
-    USERNAME: /^([a-zA-Z0-9._\-]){5,}$/,
-    PASSWORD: /^(?!.*(.)\1\1).{8,}$/,
+import {
+    entityHasField,
+    isEntityValid,
+    isFieldValid,
+} from "@/server/validation/index";
+
+const expressions: { [key in keyof User.Entity]: RegExp } = {
+    id: /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+    identity_id:
+        /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+    username: /^([a-zA-Z0-9._\-]){5,}$/,
+    password: /^(?!.*(.)\1\1).{8,}$/,
+    recovery_email: /^$/,
+    refresh_token: /^$/,
+    verification_token: /^$/,
+    logged_at: /^$/,
+    deleted_at: /^$/,
+    is_deleted: /^true$/,
 };
 
-export const isIdValid = (uuid: unknown): uuid is UUID =>
-    typeof uuid === "string" && expressions.UUID.test(uuid);
+export const isIdValid = (id: unknown) =>
+    isFieldValid<UUID>(id, expressions.id);
 
-export const isUsernameValid = (username: unknown): username is string =>
-    typeof username === "string" && expressions.USERNAME.test(username);
-
-export const isPasswordValid = (password: unknown): password is string =>
-    typeof password === "string" && expressions.PASSWORD.test(password);
+export const isUsernameValid = (username: unknown) =>
+    isFieldValid<string>(username, expressions.username);
 
 export const isUserCreateValid = (user: unknown): user is User.Create => {
-    if (!user || typeof user !== "object") {
+    if (!isEntityValid<User.Create>(user)) {
         return false;
     }
 
-    if (!("username" in user) || !("password" in user)) {
+    const fields = ["username", "password"] satisfies Array<keyof User.Create>;
+
+    const hasFields = fields.some((field) => entityHasField(field, user));
+
+    if (!hasFields) {
         return false;
     }
 
-    return isUsernameValid(user.username) && isPasswordValid(user.password);
+    return !fields.some(
+        (field) => !isFieldValid<string>(user[field], expressions[field]),
+    );
+};
+
+export const isUserUpdateValid = (user: unknown): user is User.Update => {
+    if (!isEntityValid<User.Update>(user)) {
+        return false;
+    }
+
+    const fields = [
+        "identity_id",
+        "username",
+        "password",
+        "recovery_email",
+        "refresh_token",
+        "verification_token",
+        "logged_at",
+        "deleted_at",
+        "is_deleted",
+    ] satisfies Array<keyof User.Update>;
+
+    return !fields.some((field) => {
+        if (!entityHasField(field, user)) {
+            return false;
+        }
+
+        return isFieldValid<string>(user[field], expressions[field]);
+    });
 };
 
 export default {
     isIdValid,
-    isUsernameValid,
-    isPasswordValid,
+    isUserCreateValid,
+    isUserUpdateValid,
 };

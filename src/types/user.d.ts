@@ -20,7 +20,7 @@ namespace User {
 
     type Create = Pick<Entity, "username" | "password">;
 
-    type Update = Partial<Entity>;
+    type Update = Partial<Omit<Entity, "id">>;
 
     type Remove = UUID;
 

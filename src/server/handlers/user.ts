@@ -1,12 +1,13 @@
 import controller from "@/server/controllers/user";
 import { send, wrap } from "@/server/data";
-
-import { Request, Response } from "express";
 import {
     isIdValid,
     isUserCreateValid,
     isUsernameValid,
+    isUserUpdateValid,
 } from "@/server/validation/user";
+
+import { Request, Response } from "express";
 
 export const get = async (
     request: Request,
@@ -59,20 +60,25 @@ export const post = async (
     response: Response,
 ): Promise<void> => {
     const { create } = controller(request.originalUrl);
-    const { user } = request.body;
+    const { username, password } = request.body;
 
-    if (!isUserCreateValid(user)) {
-        return send(
-            wrap({
-                status: 400,
-                message:
-                    "Body field is not valid, please refer to the documentation.",
-            }),
-            response,
-        );
+    const user = {
+        username,
+        password,
+    };
+
+    if (isUserCreateValid(user)) {
+        return send(await create(user), response);
     }
 
-    return send(await create(user), response);
+    return send(
+        wrap({
+            status: 400,
+            message:
+                "User object is not valid, please refer to the documentation.",
+        }),
+        response,
+    );
 };
 
 export const put = async (
@@ -80,13 +86,25 @@ export const put = async (
     response: Response,
 ): Promise<void> => {
     const { update } = controller(request.originalUrl);
-    const { user } = request.body;
+    const { username, password } = request.body;
 
-    // TODO
-    // VALIDATION
-    // TYPE GUARD
+    const user = {
+        username,
+        password,
+    };
 
-    send(await update(user), response);
+    if (isUserUpdateValid(user)) {
+        return send(await update(user), response);
+    }
+
+    return send(
+        wrap({
+            status: 400,
+            message:
+                "User object is not valid, please refer to the documentation.",
+        }),
+        response,
+    );
 };
 
 export const _delete = async (
