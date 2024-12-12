@@ -11,6 +11,10 @@ import cluster from "node:cluster";
 import { createServer, Server as HttpServer } from "node:http";
 import { cpus } from "node:os";
 
+
+import { get } from "@/stores/database";
+
+
 export const listen = (server: HttpServer): void => {
     if (server.listening) {
         return;
@@ -28,8 +32,12 @@ export const listen = (server: HttpServer): void => {
 export const start = async (): Promise<void> => {
     await config;
 
+    await import("@/stores/migrations");
+
+    setTimeout(async () => console.log(await get().select("*").from("players")), 5000);
+
     if (cluster.isWorker) {
-        const server = createServer((await import("@/server/router")).default);
+        const server = createServer();
 
         Object.entries(getHttp()).forEach(([key, value]) => {
             (server as any)[key] = value;
@@ -39,7 +47,7 @@ export const start = async (): Promise<void> => {
     }
 
     if (getEnvironment() === "development") {
-        const server = createServer((await import("@/server/router")).default);
+        const server = createServer();
 
         logger.info(getAddress().host, [
             "LISTEN",

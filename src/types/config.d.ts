@@ -1,4 +1,4 @@
-declare namespace Config {
+namespace Config {
     type Type = Cache | Database | Server;
 
     interface Cache extends Connection {
@@ -49,7 +49,7 @@ declare namespace Config {
     }
 
     interface Token {
-        secret: Secret;
+        secret: string;
         refreshOptions: TokenOptions;
         accessOptions: TokenOptions;
     }

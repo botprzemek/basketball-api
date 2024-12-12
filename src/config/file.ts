@@ -90,8 +90,9 @@ export const load = async (
     const variables = parse(buffer, NEWLINES_MATCH);
 
     Object.entries(variables)
-        .filter(([key, value]) => value && !process.env[key])
-        .map(([key, value]) => set(`${name}_${key}`.toUpperCase(), value));
+        .forEach(([key, value]) => {
+            set(`${name}_${key}`.toUpperCase(), value)
+        });
 };
 
 export default load;

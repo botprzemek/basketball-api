@@ -1,10 +1,14 @@
-import { getUrl, getOptions } from "@/config/types/database";
+import { getUrl } from "@/config/types/database";
 
-import postgres from "postgres";
+import knex, { type Knex } from "knex";
 
-const instance: postgres.Sql = postgres(getUrl(), getOptions());
+const instance = knex({
+    client: "cockroachdb",
+    connection: getUrl(),
+    pool: { min: 0, max: 20 },
+});
 
-export const get = (): postgres.Sql => instance;
+export const get = (): Knex => instance;
 
 export default {
     get,

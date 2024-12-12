@@ -1,8 +1,6 @@
 import { send, wrap } from "@/server/data";
 
-import { Request, Response } from "express";
-
-export default (_request: Request, response: Response): void =>
+export default (_request: Request, response: Response): void => {
     send(
         wrap({
             status: 404,
@@ -10,3 +8,4 @@ export default (_request: Request, response: Response): void =>
         }),
         response,
     );
+}
